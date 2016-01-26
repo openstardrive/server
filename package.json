@@ -6,7 +6,9 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.13.4"
+  },
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.4.1"
