@@ -1,0 +1,25 @@
+{
+  "name": "node-osd-server",
+  "version": "0.0.1",
+  "description": "An OpenStarDrive server.",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.4.1"
+  },
+  "scripts": {
+    "test": "mocha -w --recursive --no-colors"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/allan_stewart/node-osd-server.git"
+  },
+  "author": "Allan Stewart",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/allan_stewart/node-osd-server#readme",
+  "private": true
+}
