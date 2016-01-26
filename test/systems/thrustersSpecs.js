@@ -26,6 +26,21 @@ describe('thrusters', function () {
     });
   });
 
+  describe('getState', function () {
+    it('should return the current state of the system', function () {
+      thrusters.requiredPower = 1;
+      thrusters.currentPower = 2;
+
+      var state = thrusters.getState();
+      state.should.deep.equal({
+        id: 'thrusters',
+        name: 'Thrusters',
+        currentPower: 2,
+        requiredPower: 1
+      });
+    });
+  });
+
   describe('setAttitude', function () {
     it('should update the attitude', function () {
       thrusters.setAttitude({yaw:10, pitch:20, roll:30});

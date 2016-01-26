@@ -4,7 +4,7 @@ var System = require('./system.js');
 
 class Thrusters extends System {
   constructor() {
-    super();
+    super({id: 'thrusters', name: 'Thrusters'});
     this.velocity = {x: 0, y:0, z:0};
     this.attitude = {yaw: 0, pitch: 0, roll: 0};
   }
