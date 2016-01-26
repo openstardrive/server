@@ -78,6 +78,15 @@ describe('thrusters', function () {
       thrusters.attitude.pitch.should.equal(2);
       thrusters.attitude.roll.should.equal(3);
     });
+
+    it('should not change the attitude if there is not enough power', function () {
+      thrusters.setAttitude({yaw: 1, pitch: 2, roll: 3});
+      thrusters.requiredPower = 10;
+      thrusters.setAttitude({yaw: 9, pitch: 8, roll: 7});
+      thrusters.attitude.yaw.should.equal(1);
+      thrusters.attitude.pitch.should.equal(2);
+      thrusters.attitude.roll.should.equal(3);
+    });
   });
 
   describe('setVelocity', function () {
@@ -106,6 +115,15 @@ describe('thrusters', function () {
     it('should ignore null input', function () {
       thrusters.setVelocity({x: 1, y: 2, z: 3});
       thrusters.setVelocity();
+      thrusters.velocity.x.should.equal(1);
+      thrusters.velocity.y.should.equal(2);
+      thrusters.velocity.z.should.equal(3);
+    });
+
+    it('should not change velocity if there is not enough power', function () {
+      thrusters.setVelocity({x: 1, y: 2, z: 3});
+      thrusters.requiredPower = 10;
+      thrusters.setVelocity({x: 7, y: 8, z: 9});
       thrusters.velocity.x.should.equal(1);
       thrusters.velocity.y.should.equal(2);
       thrusters.velocity.z.should.equal(3);

@@ -10,6 +10,8 @@ class Thrusters extends System {
   }
 
   setAttitude(newAttitude) {
+    if (!super.hasEnoughPower()) return;
+
     newAttitude = newAttitude || {};
     if (isNumber(newAttitude.yaw)) {
       this.attitude.yaw = adjustDegrees(newAttitude.yaw);
@@ -23,6 +25,8 @@ class Thrusters extends System {
   }
 
   setVelocity(newVelocity) {
+    if (!super.hasEnoughPower()) return;
+    
     newVelocity = newVelocity || {};
     if (isNumber(newVelocity.x)) {
       this.velocity.x = Math.round(newVelocity.x);
