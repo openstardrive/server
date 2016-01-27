@@ -104,4 +104,21 @@ describe('engines', function () {
       should.equal(engines.heat.secondsUntilOverheat, null);
     });
   });
+
+  describe('onPulse', function () {
+    it('should update the current heat', function () {
+      engines.setCurrentSpeed(10);
+      engines.heat.current.should.equal(engines.heat.powered);
+
+      engines.onPulse(150000);
+      engines.heat.current.should.be.closeTo(55, closeEnough);
+
+      engines.onPulse(150001);
+      engines.heat.current.should.equal(engines.heat.max);
+
+      engines.setCurrentSpeed(0);
+      engines.onPulse(150000);
+      engines.heat.current.should.be.closeTo(75, closeEnough);
+    });
+  });
 });

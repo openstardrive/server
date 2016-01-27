@@ -77,7 +77,7 @@ class Engines extends System {
 
   calculateHeatDeltaForCooldown() {
     var coolingPerMinute = this.heat.max / this.heat.minutesToCoolDown;
-    this.heat.delta = coolingPerMinute / millisecondsPerMinute;
+    this.heat.delta = -1 * coolingPerMinute / millisecondsPerMinute;
   }
 
   calculateSecondsUntilOverheat() {
@@ -88,6 +88,11 @@ class Engines extends System {
       return;
     }
     this.heat.secondsUntilOverheat = null;
+  }
+
+  onPulse(millisecondsSinceLastPulse) {
+    var newHeat = this.heat.current + (this.heat.delta * millisecondsSinceLastPulse);
+    this.heat.current = Math.max(Math.min(newHeat, this.heat.max), 0);
   }
 }
 
