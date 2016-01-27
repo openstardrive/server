@@ -40,7 +40,7 @@ describe('engines', function () {
         name: 'Test Engines',
         power: { current: 2, required: 1 },
         speed: { max: 10, current: 0, cruising: 6 },
-        heat: {max: 100,  powered: 10, current: 10, cruising: 50 }
+        heat: {max: 100,  powered: 10, current: 10, cruising: 50, secondsUntilOverheat: null }
       });
     });
   });
@@ -117,16 +117,20 @@ describe('engines', function () {
     it('should update the current heat', function () {
       engines.setCurrentSpeed(10);
       engines.heat.current.should.equal(engines.heat.powered);
+      should.equal(engines.heat.secondsUntilOverheat, 300);
 
       engines.onPulse(150000);
       engines.heat.current.should.be.closeTo(55, closeEnough);
+      should.equal(engines.heat.secondsUntilOverheat, 150);
 
       engines.onPulse(150001);
       engines.heat.current.should.equal(engines.heat.max);
+      should.equal(engines.heat.secondsUntilOverheat, null);
 
       engines.setCurrentSpeed(0);
       engines.onPulse(150000);
       engines.heat.current.should.be.closeTo(75, closeEnough);
+      should.equal(engines.heat.secondsUntilOverheat, null);
     });
   });
 

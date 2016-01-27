@@ -23,7 +23,8 @@ class Engines extends System {
       current: Math.round(this.heat.current),
       max: this.heat.max,
       powered: this.heat.powered,
-      cruising: this.heat.cruising
+      cruising: this.heat.cruising,
+      secondsUntilOverheat: this.heat.secondsUntilOverheat
     };
     return state;
   }
@@ -108,6 +109,8 @@ class Engines extends System {
       newHeat = this.heat.target;
     }
     this.heat.current = Math.max(Math.min(newHeat, this.heat.max), 0);
+
+    this.calculateSecondsUntilOverheat();
   }
 }
 
