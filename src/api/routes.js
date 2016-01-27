@@ -24,5 +24,6 @@ exports.registerRoutes = function (app, config) {
     response.status(404).send({error: 'system ' + request.params.id + ' does not exist'});
   });
 
+  require('./engineRoutes.js').registerRoutes(app, config);
   require('./thrusterRoutes.js').registerRoutes(app, config);
 };
