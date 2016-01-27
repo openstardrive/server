@@ -9,6 +9,13 @@ class Thrusters extends System {
     this.attitude = {yaw: 0, pitch: 0, roll: 0};
   }
 
+  getState() {
+    var state = super.getState();
+    state.velocity = this.velocity;
+    state.attitude = this.attitude;
+    return state;
+  }
+
   setAttitude(newAttitude) {
     if (!super.hasEnoughPower()) return;
 
@@ -26,7 +33,7 @@ class Thrusters extends System {
 
   setVelocity(newVelocity) {
     if (!super.hasEnoughPower()) return;
-    
+
     newVelocity = newVelocity || {};
     if (isNumber(newVelocity.x)) {
       this.velocity.x = Math.round(newVelocity.x);

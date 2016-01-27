@@ -30,13 +30,17 @@ describe('thrusters', function () {
     it('should return the current state of the system', function () {
       thrusters.requiredPower = 1;
       thrusters.currentPower = 2;
+      thrusters.setAttitude({yaw: 10, pitch: 20, roll: 30});
+      thrusters.setVelocity({x: 1, y: 2, z: 3});
 
       var state = thrusters.getState();
       state.should.deep.equal({
         id: 'thrusters',
         name: 'Thrusters',
         currentPower: 2,
-        requiredPower: 1
+        requiredPower: 1,
+        attitude: {yaw: 10, pitch: 20, roll: 30},
+        velocity: {x: 1, y: 2, z: 3}
       });
     });
   });
