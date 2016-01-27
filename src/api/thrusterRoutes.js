@@ -6,4 +6,9 @@ exports.registerRoutes = function (app, config) {
     thrusters.setAttitude(request.body);
     response.send(thrusters.attitude);
   });
+
+  app.post('/api/systems/thrusters/velocity', function (request, response) {
+    thrusters.setVelocity(request.body);
+    response.send(thrusters.velocity);
+  });
 };
