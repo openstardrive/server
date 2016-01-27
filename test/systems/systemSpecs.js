@@ -16,35 +16,37 @@ describe('system', function () {
     });
 
     it('has power levels set to zero', function () {
-        system.requiredPower.should.equal(0);
-        system.currentPower.should.equal(0);
+        system.power.required.should.equal(0);
+        system.power.current.should.equal(0);
     });
   });
 
   describe('getState', function () {
     it('should return the current state of the system', function () {
-      system.requiredPower = 1;
-      system.currentPower = 2;
+      system.power.required = 1;
+      system.power.current = 2;
 
       var state = system.getState();
       state.should.deep.equal({
         id: 'test-system',
         name: 'Test System',
-        currentPower: 2,
-        requiredPower: 1
+        power: {
+          current: 2,
+          required: 1
+        }
       });
     });
   });
 
   describe('hasEnoughPower', function () {
     it('returns true if there is enough power', function () {
-      system.requiredPower = 1;
-      system.currentPower = 1;
+      system.power.required = 1;
+      system.power.current = 1;
       system.hasEnoughPower().should.equal(true);
     });
     it('returns false if there is not enough power', function () {
-      system.requiredPower = 2;
-      system.currentPower = 1;
+      system.power.required = 2;
+      system.power.current = 1;
       system.hasEnoughPower().should.equal(false);
     });
   });

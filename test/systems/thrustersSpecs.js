@@ -11,8 +11,8 @@ describe('thrusters', function () {
 
   describe('initial state', function () {
     it('has power levels set to zero', function () {
-      thrusters.requiredPower.should.equal(0);
-      thrusters.currentPower.should.equal(0);
+      thrusters.power.required.should.equal(0);
+      thrusters.power.current.should.equal(0);
     })
     it('has velocity set to 0 on x, y, and z axis', function () {
       thrusters.velocity.x.should.equal(0);
@@ -28,8 +28,8 @@ describe('thrusters', function () {
 
   describe('getState', function () {
     it('should return the current state of the system', function () {
-      thrusters.requiredPower = 1;
-      thrusters.currentPower = 2;
+      thrusters.power.required = 1;
+      thrusters.power.current = 2;
       thrusters.setAttitude({yaw: 10, pitch: 20, roll: 30});
       thrusters.setVelocity({x: 1, y: 2, z: 3});
 
@@ -37,8 +37,10 @@ describe('thrusters', function () {
       state.should.deep.equal({
         id: 'thrusters',
         name: 'Thrusters',
-        currentPower: 2,
-        requiredPower: 1,
+        power: {
+          current: 2,
+          required: 1
+        },
         attitude: {yaw: 10, pitch: 20, roll: 30},
         velocity: {x: 1, y: 2, z: 3}
       });
@@ -85,7 +87,7 @@ describe('thrusters', function () {
 
     it('should not change the attitude if there is not enough power', function () {
       thrusters.setAttitude({yaw: 1, pitch: 2, roll: 3});
-      thrusters.requiredPower = 10;
+      thrusters.power.required = 10;
       thrusters.setAttitude({yaw: 9, pitch: 8, roll: 7});
       thrusters.attitude.yaw.should.equal(1);
       thrusters.attitude.pitch.should.equal(2);
@@ -126,7 +128,7 @@ describe('thrusters', function () {
 
     it('should not change velocity if there is not enough power', function () {
       thrusters.setVelocity({x: 1, y: 2, z: 3});
-      thrusters.requiredPower = 10;
+      thrusters.power.required = 10;
       thrusters.setVelocity({x: 7, y: 8, z: 9});
       thrusters.velocity.x.should.equal(1);
       thrusters.velocity.y.should.equal(2);

@@ -5,21 +5,22 @@ class System {
     data = data || {};
     this.id = data.id;
     this.name = data.name;
-    this.requiredPower = 0;
-    this.currentPower = 0;
+    this.power = {
+      current: 0,
+      required: 0
+    }
   }
 
   getState() {
     return {
       id: this.id,
       name: this.name,
-      requiredPower: this.requiredPower,
-      currentPower: this.currentPower
+      power: this.power
     };
   }
 
   hasEnoughPower() {
-    return this.currentPower >= this.requiredPower;
+    return this.power.current >= this.power.required;
   }
 }
 
