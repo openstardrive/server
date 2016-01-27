@@ -1,6 +1,7 @@
-require('chai').should();
+var should = require('chai').should();
 var Engines = require('../../src/systems/engines.js');
 
+var closeEnough = 0.001;
 
 describe('engines', function () {
   var engines;
@@ -21,8 +22,8 @@ describe('engines', function () {
     });
 
     it('has default heat levels', function () {
-      engines.heat.min.should.equal(0);
       engines.heat.max.should.equal(100);
+      engines.heat.powered.should.equal(10);
       engines.heat.current.should.equal(10);
     });
   });
@@ -37,8 +38,8 @@ describe('engines', function () {
         id: 'test-engines',
         name: 'Test Engines',
         power: { current: 2, required: 1 },
-        speed: { max: 10, current: 0 },
-        heat: { min: 0, max: 100, current: 10 }
+        speed: { max: 10, current: 0, cruising: 6 },
+        heat: {max: 100,  powered: 10, current: 10, cruising: 50 }
       });
     });
   });
@@ -80,6 +81,27 @@ describe('engines', function () {
       engines.power.required = 10;
       engines.setCurrentSpeed(3)
       engines.speed.current.should.equal(2);
+    });
+
+    it('should calculate the heat values for max speed', function () {
+      engines.setCurrentSpeed(10);
+      engines.heat.target.should.equal(engines.heat.max);
+      engines.heat.delta.should.be.closeTo(0.0003, closeEnough);
+      engines.heat.secondsUntilOverheat.should.equal(300);
+    });
+
+    it('should calculate the heat values for partial speed', function () {
+      engines.setCurrentSpeed(5);
+      engines.heat.target.should.equal(50);
+      engines.heat.delta.should.be.closeTo(0.00015, closeEnough);
+      should.equal(engines.heat.secondsUntilOverheat, null);
+    });
+
+    it('should calculate the heat values for no speed', function () {
+      engines.setCurrentSpeed(0);
+      engines.heat.target.should.equal(engines.heat.powered);
+      engines.heat.delta.should.be.closeTo(-0.00016, closeEnough);
+      should.equal(engines.heat.secondsUntilOverheat, null);
     });
   });
 });

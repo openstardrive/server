@@ -2,17 +2,29 @@
 
 var System = require('./system.js');
 
+const millisecondsPerMinute = 60000;
+const millisecondsPerSecond = 1000;
+
 class Engines extends System {
   constructor(data) {
     super(data);
-    this.speed = { max: 10, current: 0 };
-    this.heat = { min: 0, max: 100, current: 10 }
+    this.speed = { max: 10, current: 0, cruising: 6 };
+    this.heat = {
+      current: 10, target: 10, delta: 0, secondsUntilOverheat: null,
+      max: 100, powered: 10, cruising: 50,
+      minutesAtMaxSpeed: 5, minutesToCoolDown: 10
+    }
   }
 
   getState() {
     var state = super.getState();
     state.speed = this.speed;
-    state.heat = this.heat;
+    state.heat = {
+      current: Math.round(this.heat.current),
+      max: this.heat.max,
+      powered: this.heat.powered,
+      cruising: this.heat.cruising
+    };
     return state;
   }
 
@@ -22,7 +34,60 @@ class Engines extends System {
     }
     if (typeof newSpeed === "number") {
       this.speed.current = Math.round(Math.max(Math.min(newSpeed, this.speed.max), 0));
+      this.calculateHeatValuesForCurrentSpeed();
     }
+  }
+
+  calculateHeatValuesForCurrentSpeed() {
+    this.calculateTargetHeat();
+    this.calculateHeatDelta();
+    this.calculateSecondsUntilOverheat();
+  }
+
+  calculateTargetHeat() {
+    if (this.speed.current > 0) {
+      if (this.speed.current > this.speed.cruising) {
+        this.heat.target = this.heat.max
+      } else {
+        this.heat.target = this.heat.cruising
+      }
+    } else {
+      if (super.hasEnoughPower()) {
+        this.heat.target =  this.heat.powered;
+      } else {
+        this.heat.target = 0;
+      }
+    }
+  }
+
+  calculateHeatDelta() {
+    if (this.heat.target > this.heat.current) {
+      this.calculateHeatDeltaForCurrentSpeed();
+    } else {
+      this.calculateHeatDeltaForCooldown();
+    }
+  }
+
+  calculateHeatDeltaForCurrentSpeed() {
+    var currentSpeed = Math.max(this.speed.current, 1);
+    var minutesAtCurrentSpeed = this.heat.minutesAtMaxSpeed * (this.speed.max / currentSpeed);
+    var heatPerMinute = (this.heat.max - this.heat.powered) / minutesAtCurrentSpeed;
+    this.heat.delta = heatPerMinute / millisecondsPerMinute;
+  }
+
+  calculateHeatDeltaForCooldown() {
+    var coolingPerMinute = this.heat.max / this.heat.minutesToCoolDown;
+    this.heat.delta = coolingPerMinute / millisecondsPerMinute;
+  }
+
+  calculateSecondsUntilOverheat() {
+    var remainingHeat = this.heat.max - this.heat.current;
+    if (this.heat.target == this.heat.max && this.heat.delta > 0 && remainingHeat > 0) {
+      var millisecondsUntilOverheat = remainingHeat / this.heat.delta;
+      this.heat.secondsUntilOverheat = Math.floor(millisecondsUntilOverheat / millisecondsPerSecond);
+      return;
+    }
+    this.heat.secondsUntilOverheat = null;
   }
 }
 
