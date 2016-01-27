@@ -47,9 +47,13 @@
 
       function increaseSpeed(id) {
         var system = getSystemById(id);
-        console.log(id, system);
         var newSpeed = system.speed.current + 1;
-        console.log(system.speed.current, "=>", newSpeed);
+        setSpeed(id, newSpeed);
+      }
+
+      function decreaseSpeed(id) {
+        var system = getSystemById(id);
+        var newSpeed = system.speed.current - 1;
         setSpeed(id, newSpeed);
       }
 
