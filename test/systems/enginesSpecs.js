@@ -1,5 +1,6 @@
 var should = require('chai').should();
 var Engines = require('../../src/systems/engines.js');
+const EventEmitter = require('events');
 
 var closeEnough = 0.001;
 
@@ -119,6 +120,23 @@ describe('engines', function () {
       engines.setCurrentSpeed(0);
       engines.onPulse(150000);
       engines.heat.current.should.be.closeTo(75, closeEnough);
+    });
+  });
+
+  describe('setEventBus', function () {
+    var bus;
+
+    beforeEach(function () {
+      bus = new EventEmitter();
+      engines.setEventBus(bus);
+    });
+
+    it('should set the event bus', function () {
+      engines.eventBus.should.equal(bus);
+    });
+
+    it('should register for the pulse event', function () {
+      bus.listeners('pulse').should.contain(engines.onPulse);
     });
   });
 });

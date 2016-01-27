@@ -90,6 +90,11 @@ class Engines extends System {
     this.heat.secondsUntilOverheat = null;
   }
 
+  setEventBus(emitter) {
+    super.setEventBus(emitter);
+    this.eventBus.on('pulse', this.onPulse);
+  }
+
   onPulse(millisecondsSinceLastPulse) {
     var newHeat = this.heat.current + (this.heat.delta * millisecondsSinceLastPulse);
     this.heat.current = Math.max(Math.min(newHeat, this.heat.max), 0);

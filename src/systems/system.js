@@ -22,6 +22,10 @@ class System {
   hasEnoughPower() {
     return this.power.current >= this.power.required;
   }
+
+  setEventBus(emitter) {
+    this.eventBus = emitter;
+  }
 }
 
 module.exports = System;
