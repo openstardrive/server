@@ -101,6 +101,12 @@ class Engines extends System {
   onPulse(millisecondsSinceLastPulse) {
     var newHeat = this.heat.current + (this.heat.delta * millisecondsSinceLastPulse);
     // TODO: stop at the target heat
+    if (this.heat.delta < 0 && newHeat < this.heat.target) {
+      newHeat = this.heat.target;
+    }
+    if (this.heat.delta > 0 && newHeat > this.heat.target) {
+      newHeat = this.heat.target;
+    }
     this.heat.current = Math.max(Math.min(newHeat, this.heat.max), 0);
   }
 }
