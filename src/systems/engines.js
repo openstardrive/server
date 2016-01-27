@@ -93,13 +93,14 @@ class Engines extends System {
   setEventBus(emitter) {
     super.setEventBus(emitter);
     var self = this;
-    this.eventBus.on('pulse', function () {
-      self.onPulse(arguments);
+    this.eventBus.on('pulse', function (millisecondsSinceLastPulse) {
+      self.onPulse(millisecondsSinceLastPulse);
     });
   }
 
   onPulse(millisecondsSinceLastPulse) {
     var newHeat = this.heat.current + (this.heat.delta * millisecondsSinceLastPulse);
+    // TODO: stop at the target heat
     this.heat.current = Math.max(Math.min(newHeat, this.heat.max), 0);
   }
 }
