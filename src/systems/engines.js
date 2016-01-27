@@ -92,7 +92,10 @@ class Engines extends System {
 
   setEventBus(emitter) {
     super.setEventBus(emitter);
-    this.eventBus.on('pulse', this.onPulse);
+    var self = this;
+    this.eventBus.on('pulse', function () {
+      self.onPulse(arguments);
+    });
   }
 
   onPulse(millisecondsSinceLastPulse) {

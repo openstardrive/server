@@ -1,11 +1,15 @@
 var Engines = require('./systems/engines.js');
 var Thrusters = require('./systems/thrusters.js');
+var eventBus = require('./eventBus.js');
 
 var systems = [
   new Engines({id: "ftl-engines", name: "FTL Engines"}),
   new Engines({id: "sublight-engines", name: "Sublight Engines"}),
   new Thrusters()
 ];
+systems.forEach(function (system) {
+  system.setEventBus(eventBus);
+});
 
 exports.getSystemById = function (id) {
   return systems.find(function (element) {

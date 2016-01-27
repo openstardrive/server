@@ -136,7 +136,7 @@ describe('engines', function () {
     });
 
     it('should register for the pulse event', function () {
-      bus.listeners('pulse').should.contain(engines.onPulse);
+      bus.listeners('pulse').length.should.equal(1);
     });
   });
 });
