@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title>OSD Server</title>
+    <script src="jquery-2.2.0.min.js"></script>
+    <script>
+      var data;
+
+      $.ajaxSetup({
+        contentType: "application/json; charset=utf-8"
+      });
+
+      function updatePage() {
+        for (i = 0; i < data.systems.length; i++) {
+          var system = data.systems[i];
+          if (system.id.indexOf("engines") >= 0) {
+            updateEngines(system);
+          }
+        }
+      }
+
+      function updateEngines(system) {
+        $('#' + system.id + '-speed').html(system.speed.current + ' / ' + system.speed.max);
+        $('#' + system.id + '-heat').html(system.heat.current + ' / ' + system.heat.max);
+      }
+
+      function poll() {
+        $.ajax('http://localhost:3000/api/state')
+        .done(function (newData) {
+          data = newData;
+          updatePage();
+        })
+        .fail(function () {
+          console.log(arguments);
+        });
+      }
+      setInterval(poll, 1000);
+
+      function getSystemById(id) {
+        for (i = 0; i < data.systems.length; i++) {
+          var system = data.systems[i];
+          if (system.id == id) {
+            return system;
+          }
+        }
+        return null;
+      }
+
+      function increaseSpeed(id) {
+        var system = getSystemById(id);
+        console.log(id, system);
+        var newSpeed = system.speed.current + 1;
+        console.log(system.speed.current, "=>", newSpeed);
+        setSpeed(id, newSpeed);
+      }
+
+      function setSpeed(id, newSpeed) {
+        var url = 'http://localhost:3000/api/systems/' + id + '/speed';
+        $.post(url, JSON.stringify({value: newSpeed}), {dataType: 'json'})
+          .done(function () {
+            console.log('new speed', newSpeed, 'sent to system', id);
+          })
+          .fail(function () {
+            console.log(arguments);
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <strong>FTL</strong>
+      <div>
+        Speed: <span id="ftl-engines-speed"></span>
+        <button onClick="decreaseSpeed('ftl-engines')">-</button>
+        <button onclick="increaseSpeed('ftl-engines')">+</button>
+        <br/>
+        Heat: <span id="ftl-engines-heat"></span><br/>
+      </div>
+    </div>
+
+    <br/>
+    <div>
+      <strong>Sublight</strong>
+      <div>
+        Speed: <span id="sublight-engines-speed"></span><br/>
+        Heat: <span id="sublight-engines-heat"></span><br/>
+      </div>
+    </div>
+  </body>
+</html>
