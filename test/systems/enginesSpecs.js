@@ -36,20 +36,50 @@ describe('engines', function () {
       state.should.deep.equal({
         id: 'test-engines',
         name: 'Test Engines',
-        power: {
-          current: 2,
-          required: 1
-        },
-        speed: {
-          max: 10,
-          current: 0
-        },
-        heat: {
-          min: 0,
-          max: 100,
-          current: 10
-        }
+        power: { current: 2, required: 1 },
+        speed: { max: 10, current: 0 },
+        heat: { min: 0, max: 100, current: 10 }
       });
+    });
+  });
+
+  describe('setCurrentSpeed', function () {
+    it('should set the current speed value', function () {
+      engines.setCurrentSpeed(3);
+      engines.speed.current.should.equal(3);
+    });
+
+    it('should max out at the maximum speed', function () {
+      engines.setCurrentSpeed(11);
+      engines.speed.current.should.equal(10);
+    });
+
+    it('should max out at the maximum speed', function () {
+      engines.setCurrentSpeed(11);
+      engines.speed.current.should.equal(10);
+    });
+
+    it('should treat negative numbers as zero', function () {
+      engines.setCurrentSpeed(-1);
+      engines.speed.current.should.equal(0);
+    });
+
+    it('should round to integers', function () {
+      engines.setCurrentSpeed(1.21);
+      engines.speed.current.should.equal(1);
+    });
+
+    it('should ignore non-numbers', function () {
+      engines.setCurrentSpeed(5);
+      engines.setCurrentSpeed("wat")
+      engines.speed.current.should.equal(5);
+    });
+
+    it('should do nothing if there is not enough power', function () {
+      engines.setCurrentSpeed(2);
+      engines.power.required = 10;
+      engines.setCurrentSpeed(3)
+      engines.speed.current.should.equal(2);
     });
   });
 });
