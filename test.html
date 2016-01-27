@@ -20,7 +20,13 @@
 
       function updateEngines(system) {
         $('#' + system.id + '-speed').html(system.speed.current + ' / ' + system.speed.max);
-        $('#' + system.id + '-heat').html(system.heat.current + ' / ' + system.heat.max);
+        var overheat = '';
+        if (system.heat.secondsUntilOverheat != null) {
+          var sec = system.heat.secondsUntilOverheat % 60;
+          var min = Math.floor(system.heat.secondsUntilOverheat / 60);
+          overheat = ' <strong> overheat in ' + min + ' minutes, ' + sec + ' seconds </strong>';
+        }
+        $('#' + system.id + '-heat').html(system.heat.current + ' / ' + system.heat.max + overheat);
       }
 
       function poll() {
@@ -85,7 +91,10 @@
     <div>
       <strong>Sublight</strong>
       <div>
-        Speed: <span id="sublight-engines-speed"></span><br/>
+        Speed: <span id="sublight-engines-speed"></span>
+        <button onClick="decreaseSpeed('sublight-engines')">-</button>
+        <button onclick="increaseSpeed('sublight-engines')">+</button>
+        <br/>
         Heat: <span id="sublight-engines-heat"></span><br/>
       </div>
     </div>
