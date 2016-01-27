@@ -91,9 +91,16 @@ describe('engines', function () {
       engines.heat.secondsUntilOverheat.should.equal(300);
     });
 
-    it('should calculate the heat values for partial speed', function () {
-      engines.setCurrentSpeed(5);
+    it('should calculate the heat values for cruising speed', function () {
+      engines.setCurrentSpeed(6);
       engines.heat.target.should.equal(50);
+      engines.heat.delta.should.be.closeTo(0.00015, closeEnough);
+      should.equal(engines.heat.secondsUntilOverheat, null);
+    });
+
+    it('should calculate the heat values for sub-cruising speed', function () {
+      engines.setCurrentSpeed(4);
+      engines.heat.target.should.be.closeTo(36.6666, closeEnough);
       engines.heat.delta.should.be.closeTo(0.00015, closeEnough);
       should.equal(engines.heat.secondsUntilOverheat, null);
     });

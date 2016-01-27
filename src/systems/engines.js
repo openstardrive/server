@@ -49,7 +49,8 @@ class Engines extends System {
       if (this.speed.current > this.speed.cruising) {
         this.heat.target = this.heat.max
       } else {
-        this.heat.target = this.heat.cruising
+        var steps = (this.heat.cruising - this.heat.powered) / Math.max(this.speed.cruising, 1);
+        this.heat.target = this.heat.powered + (steps * this.speed.current);
       }
     } else {
       if (super.hasEnoughPower()) {
@@ -100,7 +101,6 @@ class Engines extends System {
 
   onPulse(millisecondsSinceLastPulse) {
     var newHeat = this.heat.current + (this.heat.delta * millisecondsSinceLastPulse);
-    // TODO: stop at the target heat
     if (this.heat.delta < 0 && newHeat < this.heat.target) {
       newHeat = this.heat.target;
     }
