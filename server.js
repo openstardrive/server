@@ -1,10 +1,12 @@
 var serverVersion = require('./package.json').version;
 var express = require('express');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 var apiRoutes = require('./src/api/routes.js');
 
 var app = express();
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(cors());
 
 apiRoutes.registerRoutes(app, {serverVersion: serverVersion});
 
