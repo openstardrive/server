@@ -31,8 +31,8 @@ describe('engines', function () {
 
   describe('getState', function () {
     it('should return the current state of the system', function () {
-      engines.power.required = 1;
-      engines.power.current = 2;
+      engines.setRequiredPower(1);
+      engines.setCurrentPower(2);
 
       var state = engines.getState();
       state.should.deep.equal({
@@ -79,7 +79,7 @@ describe('engines', function () {
 
     it('should do nothing if there is not enough power', function () {
       engines.setCurrentSpeed(2);
-      engines.power.required = 10;
+      engines.setRequiredPower(10);
       engines.setCurrentSpeed(3)
       engines.speed.current.should.equal(2);
     });

@@ -23,8 +23,8 @@ describe('system', function () {
 
   describe('getState', function () {
     it('should return the current state of the system', function () {
-      system.power.required = 1;
-      system.power.current = 2;
+      system.setRequiredPower(1);
+      system.setCurrentPower(2);
 
       var state = system.getState();
       state.should.deep.equal({
@@ -40,13 +40,13 @@ describe('system', function () {
 
   describe('hasEnoughPower', function () {
     it('returns true if there is enough power', function () {
-      system.power.required = 1;
-      system.power.current = 1;
+      system.setRequiredPower(1);
+      system.setCurrentPower(1);
       system.hasEnoughPower().should.equal(true);
     });
     it('returns false if there is not enough power', function () {
-      system.power.required = 2;
-      system.power.current = 1;
+      system.setRequiredPower(2);
+      system.setCurrentPower(1);
       system.hasEnoughPower().should.equal(false);
     });
   });

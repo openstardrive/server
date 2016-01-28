@@ -28,8 +28,8 @@ describe('thrusters', function () {
 
   describe('getState', function () {
     it('should return the current state of the system', function () {
-      thrusters.power.required = 1;
-      thrusters.power.current = 2;
+      thrusters.setRequiredPower(1);
+      thrusters.setCurrentPower(2);
       thrusters.setAttitude({yaw: 10, pitch: 20, roll: 30});
       thrusters.setVelocity({x: 1, y: 2, z: 3});
 
@@ -87,7 +87,7 @@ describe('thrusters', function () {
 
     it('should not change the attitude if there is not enough power', function () {
       thrusters.setAttitude({yaw: 1, pitch: 2, roll: 3});
-      thrusters.power.required = 10;
+      thrusters.setRequiredPower(10);
       thrusters.setAttitude({yaw: 9, pitch: 8, roll: 7});
       thrusters.attitude.yaw.should.equal(1);
       thrusters.attitude.pitch.should.equal(2);
@@ -128,7 +128,7 @@ describe('thrusters', function () {
 
     it('should not change velocity if there is not enough power', function () {
       thrusters.setVelocity({x: 1, y: 2, z: 3});
-      thrusters.power.required = 10;
+      thrusters.setRequiredPower(10);
       thrusters.setVelocity({x: 7, y: 8, z: 9});
       thrusters.velocity.x.should.equal(1);
       thrusters.velocity.y.should.equal(2);
