@@ -50,4 +50,42 @@ describe('system', function () {
       system.hasEnoughPower().should.equal(false);
     });
   });
+
+  describe('setCurrentPower', function () {
+    it('sets the current power level', function () {
+      system.setCurrentPower(1);
+      system.power.current.should.equal(1);
+    });
+    it('rounds the value', function () {
+      system.setCurrentPower(2.78);
+      system.power.current.should.equal(3);
+    });
+    it('ignores non-numbers', function () {
+      system.setCurrentPower("x");
+      system.power.current.should.equal(0);
+    });
+    it('ignores negative numbers', function () {
+      system.setCurrentPower(-1);
+      system.power.current.should.equal(0);
+    });
+  });
+
+  describe('setRequiredPower', function () {
+    it('sets the required power level', function () {
+      system.setRequiredPower(1);
+      system.power.required.should.equal(1);
+    });
+    it('rounds the value', function () {
+      system.setRequiredPower(2.78);
+      system.power.required.should.equal(3);
+    });
+    it('ignores non-numbers', function () {
+      system.setRequiredPower("x");
+      system.power.required.should.equal(0);
+    });
+    it('ignores negative numbers', function () {
+      system.setRequiredPower(-1);
+      system.power.required.should.equal(0);
+    });
+  });
 });

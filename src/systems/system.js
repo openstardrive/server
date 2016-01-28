@@ -23,6 +23,16 @@ class System {
     return this.power.current >= this.power.required;
   }
 
+  setCurrentPower(newValue) {
+    if (typeof newValue !== "number" || newValue < 0) return;
+    this.power.current = Math.round(newValue);
+  }
+
+  setRequiredPower(newValue) {
+    if (typeof newValue !== "number" || newValue < 0) return;
+    this.power.required = Math.round(newValue);
+  }
+
   setEventBus(emitter) {
     this.eventBus = emitter;
   }
