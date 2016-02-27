@@ -1,6 +1,7 @@
 "use strict";
 
 var System = require('./system.js');
+var InputError = require('../inputError.js');
 
 class Thrusters extends System {
   constructor() {
@@ -17,33 +18,35 @@ class Thrusters extends System {
   }
 
   setAttitude(newAttitude) {
-    if (!super.hasEnoughPower()) return;
+    if (!super.hasEnoughPower()) {
+      throw new InputError('Insufficient power.');
+    };
 
     newAttitude = newAttitude || {};
-    if (isNumber(newAttitude.yaw)) {
-      this.attitude.yaw = adjustDegrees(newAttitude.yaw);
+
+    if (!isNumber(newAttitude.yaw) || !isNumber(newAttitude.pitch) || !isNumber(newAttitude.roll)) {
+      throw new InputError('Invalid attitude.');
     }
-    if (isNumber(newAttitude.pitch)) {
-      this.attitude.pitch = adjustDegrees(newAttitude.pitch);
-    }
-    if (isNumber(newAttitude.roll)) {
-      this.attitude.roll = adjustDegrees(newAttitude.roll);
-    }
+
+    this.attitude.yaw = adjustDegrees(newAttitude.yaw);
+    this.attitude.pitch = adjustDegrees(newAttitude.pitch);
+    this.attitude.roll = adjustDegrees(newAttitude.roll);
   }
 
   setVelocity(newVelocity) {
-    if (!super.hasEnoughPower()) return;
+    if (!super.hasEnoughPower()) {
+      throw new InputError('Insufficient power.')
+    };
 
     newVelocity = newVelocity || {};
-    if (isNumber(newVelocity.x)) {
-      this.velocity.x = Math.round(newVelocity.x);
+
+    if (!isNumber(newVelocity.x) || !isNumber(newVelocity.y) || !isNumber(newVelocity.z)) {
+      throw new InputError('Invalid velocity.');
     }
-    if (isNumber(newVelocity.y)) {
-      this.velocity.y = Math.round(newVelocity.y);
-    }
-    if (isNumber(newVelocity.z)) {
-      this.velocity.z = Math.round(newVelocity.z);
-    }
+
+    this.velocity.x = Math.round(newVelocity.x);
+    this.velocity.y = Math.round(newVelocity.y);
+    this.velocity.z = Math.round(newVelocity.z);
   }
 }
 

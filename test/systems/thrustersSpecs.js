@@ -1,5 +1,6 @@
-require('chai').should();
+var should = require('chai').should();
 var Thrusters = require('../../src/systems/thrusters.js');
+var InputError = require('../../src/inputError.js');
 
 
 describe('thrusters', function () {
@@ -69,29 +70,17 @@ describe('thrusters', function () {
       thrusters.attitude.roll.should.equal(181);
     });
 
-    it('should ignore non-numbers', function () {
-      thrusters.setAttitude({yaw: 1, pitch: 2, roll: 3});
-      thrusters.setAttitude({yaw: null, pitch: "abc", roll: []});
-      thrusters.attitude.yaw.should.equal(1);
-      thrusters.attitude.pitch.should.equal(2);
-      thrusters.attitude.roll.should.equal(3);
+    it('should throw on non-numbers', function () {
+      should.throw(function () { thrusters.setAttitude({yaw: null, pitch: "abc", roll: []}); }, InputError, 'Invalid attitude.' );
     });
 
-    it('should ignore null input', function () {
-      thrusters.setAttitude({yaw: 1, pitch: 2, roll: 3});
-      thrusters.setAttitude();
-      thrusters.attitude.yaw.should.equal(1);
-      thrusters.attitude.pitch.should.equal(2);
-      thrusters.attitude.roll.should.equal(3);
+    it('should throw on null input', function () {
+      should.throw(function () { thrusters.setAttitude(); }, InputError, 'Invalid attitude.' );
     });
 
-    it('should not change the attitude if there is not enough power', function () {
-      thrusters.setAttitude({yaw: 1, pitch: 2, roll: 3});
+    it('should throw if there is not enough power', function () {
       thrusters.setRequiredPower(10);
-      thrusters.setAttitude({yaw: 9, pitch: 8, roll: 7});
-      thrusters.attitude.yaw.should.equal(1);
-      thrusters.attitude.pitch.should.equal(2);
-      thrusters.attitude.roll.should.equal(3);
+      should.throw(function () { thrusters.setAttitude({yaw: 9, pitch: 8, roll: 7}); }, InputError, 'Insufficient power.' );
     });
   });
 
@@ -110,29 +99,17 @@ describe('thrusters', function () {
       thrusters.velocity.z.should.equal(181);
     });
 
-    it('should ignore non-numbers', function () {
-      thrusters.setVelocity({x: 1, y: 2, z: 3});
-      thrusters.setVelocity({x: null, y: "abc", z: []});
-      thrusters.velocity.x.should.equal(1);
-      thrusters.velocity.y.should.equal(2);
-      thrusters.velocity.z.should.equal(3);
+    it('should throw on non-numbers', function () {
+      should.throw(function () { thrusters.setVelocity({x: null, y: "abc", z: []}); }, InputError, 'Invalid velocity.' );
     });
 
-    it('should ignore null input', function () {
-      thrusters.setVelocity({x: 1, y: 2, z: 3});
-      thrusters.setVelocity();
-      thrusters.velocity.x.should.equal(1);
-      thrusters.velocity.y.should.equal(2);
-      thrusters.velocity.z.should.equal(3);
+    it('should throw on null input', function () {
+      should.throw(function () { thrusters.setVelocity(); }, InputError, 'Invalid velocity.' );
     });
 
-    it('should not change velocity if there is not enough power', function () {
-      thrusters.setVelocity({x: 1, y: 2, z: 3});
+    it('should throw if there is not enough power', function () {
       thrusters.setRequiredPower(10);
-      thrusters.setVelocity({x: 7, y: 8, z: 9});
-      thrusters.velocity.x.should.equal(1);
-      thrusters.velocity.y.should.equal(2);
-      thrusters.velocity.z.should.equal(3);
+      should.throw(function () { thrusters.setVelocity({x: 7, y: 8, z: 9}); }, InputError, 'Insufficient power.' );
     });
   });
 });
