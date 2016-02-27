@@ -1,5 +1,6 @@
-require('chai').should();
+var should = require('chai').should();
 var System = require('../../src/systems/system.js');
+var InputError = require('../../src/inputError.js');
 
 
 describe('system', function () {
@@ -60,11 +61,12 @@ describe('system', function () {
       system.setCurrentPower(2.78);
       system.power.current.should.equal(3);
     });
-    it('ignores non-numbers', function () {
-      system.setCurrentPower("x");
+    it('throws on non-numbers', function () {
+      should.throw(function () { system.setCurrentPower("x"); }, InputError, 'Invalid power value.');
       system.power.current.should.equal(0);
     });
-    it('ignores negative numbers', function () {
+    it('treats negative numbers as zero', function () {
+      system.setCurrentPower(2);
       system.setCurrentPower(-1);
       system.power.current.should.equal(0);
     });
@@ -79,11 +81,12 @@ describe('system', function () {
       system.setRequiredPower(2.78);
       system.power.required.should.equal(3);
     });
-    it('ignores non-numbers', function () {
-      system.setRequiredPower("x");
+    it('throws on non-numbers', function () {
+      should.throw(function () { system.setRequiredPower("x"); }, InputError, 'Invalid power value.');
       system.power.required.should.equal(0);
     });
-    it('ignores negative numbers', function () {
+    it('treats negative numbers as zero', function () {
+      system.setRequiredPower(2);
       system.setRequiredPower(-1);
       system.power.required.should.equal(0);
     });

@@ -1,5 +1,7 @@
 "use strict";
 
+var InputError = require('../inputError.js');
+
 class System {
   constructor(data) {
     data = data || {};
@@ -24,13 +26,17 @@ class System {
   }
 
   setCurrentPower(newValue) {
-    if (typeof newValue !== "number" || newValue < 0) return;
-    this.power.current = Math.round(newValue);
+    if (typeof newValue !== 'number') {
+      throw new InputError('Invalid power value.');
+    }
+    this.power.current = Math.max(0, Math.round(newValue));
   }
 
   setRequiredPower(newValue) {
-    if (typeof newValue !== "number" || newValue < 0) return;
-    this.power.required = Math.round(newValue);
+    if (typeof newValue !== 'number') {
+      throw new InputError('Invalid power value.');
+    }
+    this.power.required = Math.max(0, Math.round(newValue));
   }
 
   setEventBus(emitter) {
