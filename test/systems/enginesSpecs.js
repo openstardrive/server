@@ -1,5 +1,6 @@
 var should = require('chai').should();
 var Engines = require('../../src/systems/engines.js');
+var InputError = require('../../src/inputError.js');
 const EventEmitter = require('events');
 
 var closeEnough = 0.001;
@@ -71,16 +72,16 @@ describe('engines', function () {
       engines.speed.current.should.equal(1);
     });
 
-    it('should ignore non-numbers', function () {
+    it('should throw on receiving non-numbers', function () {
       engines.setCurrentSpeed(5);
-      engines.setCurrentSpeed("wat")
+      should.throw(function () { engines.setCurrentSpeed('wat'); }, InputError, 'Invalid speed.' );
       engines.speed.current.should.equal(5);
     });
 
-    it('should do nothing if there is not enough power', function () {
+    it('should throw if there is not enough power', function () {
       engines.setCurrentSpeed(2);
       engines.setRequiredPower(10);
-      engines.setCurrentSpeed(3)
+      should.throw(function () { engines.setCurrentSpeed(3); }, InputError, 'Insufficient power.' );
       engines.speed.current.should.equal(2);
     });
 

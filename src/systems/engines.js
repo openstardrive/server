@@ -1,6 +1,7 @@
 "use strict";
 
 var System = require('./system.js');
+var InputError = require('../inputError.js');
 
 const millisecondsPerMinute = 60000;
 const millisecondsPerSecond = 1000;
@@ -31,12 +32,14 @@ class Engines extends System {
 
   setCurrentSpeed(newSpeed) {
     if (!super.hasEnoughPower()) {
-      return;
+      throw new InputError('Insufficient power.');
     }
-    if (typeof newSpeed === "number") {
-      this.speed.current = Math.round(Math.max(Math.min(newSpeed, this.speed.max), 0));
-      this.calculateHeatValuesForCurrentSpeed();
+    if (typeof newSpeed !== "number") {
+      throw new InputError('Invalid speed.');
     }
+
+    this.speed.current = Math.round(Math.max(Math.min(newSpeed, this.speed.max), 0));
+    this.calculateHeatValuesForCurrentSpeed();
   }
 
   calculateHeatValuesForCurrentSpeed() {
