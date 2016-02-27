@@ -16,7 +16,7 @@
     "mocha": "^2.4.1"
   },
   "scripts": {
-    "test": "mocha -w --recursive --no-colors"
+    "test": "mocha -w --recursive --reporter dot"
   },
   "repository": {
     "type": "git",
