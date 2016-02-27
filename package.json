@@ -9,7 +9,8 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "cors": "^2.7.1",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
     "chai": "^3.4.1",
