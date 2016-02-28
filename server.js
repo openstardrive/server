@@ -14,7 +14,7 @@ apiRoutes.registerRoutes(app, {serverVersion: serverVersion});
 app.use(inputErrorHandler);
 
 app.listen(3000, function () {
-  console.log('OpenStarDrive server (v' + serverVersion + ') listening on port 3000!');
+  console.log('OpenStardrive server (v' + serverVersion + ') listening on port 3000!');
   logRoutes();
 });
 

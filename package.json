@@ -1,7 +1,7 @@
 {
   "name": "node-osd-server",
   "version": "0.0.1",
-  "description": "An OpenStarDrive server.",
+  "description": "An OpenStardrive server.",
   "main": "server.js",
   "directories": {
     "test": "test"

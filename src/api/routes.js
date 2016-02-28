@@ -2,7 +2,7 @@ var shipSystems = require('../shipSystems.js');
 
 exports.registerRoutes = function (app, config) {
   app.get('/api', function (request, response) {
-    response.send({name: 'OpenStarDrive server', version: config.serverVersion});
+    response.send({name: 'OpenStardrive server', version: config.serverVersion});
   });
 
   app.get('/api/state', function (request, response) {
