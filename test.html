@@ -4,10 +4,19 @@
     <script src="jquery-2.2.0.min.js"></script>
     <script>
       var data;
+      var apiBaseUrl = 'http://localhost:3000/api/';
 
       $.ajaxSetup({
         contentType: "application/json; charset=utf-8"
       });
+
+      $.put = function (url, data) {
+        return $.ajax({type: "PUT", url: url, contentType: "application/json", data: data});
+      };
+
+      $.delete = function (url) {
+        return $.ajax({type: "DELETE", url: url});
+      }
 
       function updatePage() {
         for (i = 0; i < data.systems.length; i++) {
@@ -33,11 +42,17 @@
       }
 
       function updateSensors(system) {
+        var space = $('#contact-space');
+        space.html('');
+        system.contacts.forEach(function (item) {
+          space.append('<div id="contact" style="background-color: blue; border-radius: 10; width: 10px; height: 10px; position: relative; ' +
+            'top: ' + item.position.y + 'px; left: ' + item.position.x + 'px;"></div>')
+        });
         $('#contacts').html(JSON.stringify(system.contacts, null, 2));
       }
 
       function poll() {
-        $.ajax('http://localhost:3000/api/state')
+        $.ajax(apiBaseUrl + 'state')
         .done(function (newData) {
           data = newData;
           updatePage();
@@ -71,7 +86,7 @@
       }
 
       function setSpeed(id, newSpeed) {
-        var url = 'http://localhost:3000/api/systems/' + id + '/speed';
+        var url = apiBaseUrl + 'systems/' + id + '/speed';
         $.post(url, JSON.stringify({value: newSpeed}), {dataType: 'json'})
           .done(function () {
             console.log('new speed', newSpeed, 'sent to system', id);
@@ -79,6 +94,71 @@
           .fail(function () {
             console.log(arguments);
           });
+      }
+
+      function newContact() {
+        var contact = {
+          name: $('#contact-name').val(),
+          position: {
+            x: parseInt($('#contact-x').val(), 10),
+            y: parseInt($('#contact-y').val(), 10)
+          }
+        };
+        var url = apiBaseUrl + 'systems/sensors/contacts';
+        $.post(url, JSON.stringify(contact))
+          .done(function (data) {
+            console.log('new contact created', data);
+          })
+          .fail(function () {
+            console.log('failed to create contact', arguments)
+          });
+      }
+
+      function findContact() {
+        var name = $('#contact-name').val();
+        var system = data.systems.find(function (system) {
+          return system.id === 'sensors';
+        });
+        return system.contacts.find(function (contact) {
+          return contact.name == name;
+        });
+      }
+
+      function updateContact() {
+        var contact = findContact();
+        if (!contact) {
+          console.log('Could not find contact to update');
+          return;
+        }
+        contact.destinations.push({
+          x: parseInt($('#contact-x').val(), 10),
+          y: parseInt($('#contact-y').val(), 10),
+          arriveInMilliseconds: parseInt($('#contact-seconds').val(), 10) * 1000
+        });
+        var url = apiBaseUrl + 'systems/sensors/contacts/' + contact.id;
+        $.put(url, JSON.stringify(contact))
+          .done(function (data) {
+            console.log('contact updated');
+          })
+          .fail(function () {
+            console.log('failed to update contact', arguments)
+          });
+      }
+
+      function removeContact() {
+        var contact = findContact();
+        if (!contact) {
+          console.log('Could not find contact to remove');
+          return;
+        }
+        var url = apiBaseUrl + 'systems/sensors/contacts/' + contact.id;
+        $.delete(url)
+        .done(function (data) {
+          console.log('contact deleted');
+        })
+        .fail(function () {
+          console.log('failed to delete contact', arguments)
+        });
       }
     </script>
   </head>
@@ -109,7 +189,18 @@
     <br/>
     <div>
       <strong>Sensors</strong>
-      Contacts: <pre id="contacts"></pre>
+      <div>
+        Name: <input type="text" size="10" id="contact-name" />
+        X: <input type="text" size="3" id="contact-x" />
+        Y: <input type="text" size="3" id="contact-y" />
+        Seconds: <input type="text" size="3" id="contact-seconds" />
+        <button onClick="newContact()">New</button>
+        <button onClick="updateContact()">Update</button>
+        <button onClick="removeContact()">Remove</button>
+      </div>
+      Contacts:
+      <div id="contact-space"></div>
+      <pre id="contacts"></pre>
     </div>
   </body>
 </html>
