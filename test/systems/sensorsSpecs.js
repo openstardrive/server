@@ -1,7 +1,7 @@
 var should = require('chai').should();
 var Sensors = require('../../src/systems/sensors.js');
 var InputError = require('../../src/inputError.js');
-
+const EventEmitter = require('events');
 
 describe('sensors', function () {
   var sensors;
@@ -189,6 +189,23 @@ describe('sensors', function () {
       Math.round(contactB.position.x).should.equal(200);
       Math.round(contactB.position.y).should.equal(-50);
       contactB.destinations.should.deep.equal([]);
+    });
+  });
+
+  describe('setEventBus', function () {
+    var bus;
+
+    beforeEach(function () {
+      bus = new EventEmitter();
+      sensors.setEventBus(bus);
+    });
+
+    it('should set the event bus', function () {
+      sensors.eventBus.should.equal(bus);
+    });
+
+    it('should register for the pulse event', function () {
+      bus.listeners('pulse').length.should.equal(1);
     });
   });
 });

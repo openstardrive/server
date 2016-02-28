@@ -70,6 +70,14 @@ class Sensors extends System {
       }
     });
   }
+
+  setEventBus(emitter) {
+    super.setEventBus(emitter);
+    var self = this;
+    this.eventBus.on('pulse', function (millisecondsSinceLastPulse) {
+      self.moveContacts(millisecondsSinceLastPulse);
+    });
+  }
 }
 
 module.exports = Sensors;
