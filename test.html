@@ -15,6 +15,9 @@
           if (system.id.indexOf("engines") >= 0) {
             updateEngines(system);
           }
+          if (system.id.indexOf("sensors") >= 0) {
+            updateSensors(system);
+          }
         }
       }
 
@@ -27,6 +30,10 @@
           overheat = ' <strong> overheat in ' + min + ' minutes, ' + sec + ' seconds </strong>';
         }
         $('#' + system.id + '-heat').html(system.heat.current + ' / ' + system.heat.max + overheat);
+      }
+
+      function updateSensors(system) {
+        $('#contacts').html(JSON.stringify(system.contacts, null, 2));
       }
 
       function poll() {
@@ -97,6 +104,12 @@
         <br/>
         Heat: <span id="sublight-engines-heat"></span><br/>
       </div>
+    </div>
+
+    <br/>
+    <div>
+      <strong>Sensors</strong>
+      Contacts: <pre id="contacts"></pre>
     </div>
   </body>
 </html>
