@@ -26,4 +26,5 @@ exports.registerRoutes = function (app, config) {
 
   require('./engineRoutes.js').registerRoutes(app, config);
   require('./thrusterRoutes.js').registerRoutes(app, config);
+  require('./sensorRoutes.js').registerRoutes(app, config);
 };
