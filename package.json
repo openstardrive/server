@@ -24,7 +24,7 @@
     "url": "git+ssh://git@bitbucket.org/allan_stewart/node-osd-server.git"
   },
   "author": "Allan Stewart",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "homepage": "https://bitbucket.org/allan_stewart/node-osd-server#readme",
   "private": true
 }
