@@ -23,8 +23,8 @@
     "type": "git",
     "url": "git+ssh://git@github.com:openstardrive/server.git"
   },
-  "author": "Allan Stewart",
-  "license": "Apache 2.0",
+  "author": "OpenStardrive Team",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/openstardrive/server",
   "private": true
 }
