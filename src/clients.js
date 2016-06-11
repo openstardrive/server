@@ -15,6 +15,10 @@ class Clients {
     return list
   }
 
+  get(clientId) {
+    return this.clients[clientId]
+  }
+
   set(clientData) {
     if (typeof clientData.id !== 'string') {
       throw new InputError('Invalid client id')
@@ -46,7 +50,7 @@ class Clients {
 
   visited(clientId) {
     if (typeof clientId !== 'string') return
-    
+
     if (!this.clients[clientId]) {
       this.clients[clientId] = {
         id: clientId,

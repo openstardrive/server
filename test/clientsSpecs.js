@@ -27,15 +27,30 @@ describe('clients', () => {
     })
   })
 
+  describe('get', () => {
+    it('should return a client by id', () => {
+      let client = { id: '1', name: 'Engineering', features: [
+        { name: 'Engines', enabled: true }
+      ], lastSeen: null}
+      clients.set(client)
+      clients.get(client.id).should.deep.equal(client)
+    })
+
+    it('should return undefined if no such client exists', () => {
+      should.not.exist(clients.get('some-id'))
+    })
+  })
+
   describe('set', () => {
     it('should add a new client', () => {
       let client = { id: '1', name: 'Engineering', features: [
         { name: 'Engines', enabled: true }
       ]}
       clients.set(client)
-      let result = clients.getAll()
-      result[0].id.should.equal(client.id)
-      result[0].name.should.equal(client.name)
+      let result = clients.get(client.id)
+      should.exist(result)
+      result.id.should.equal(client.id)
+      result.name.should.equal(client.name)
     })
 
     it('should update an existing client', () => {
@@ -90,8 +105,8 @@ describe('clients', () => {
     it('should ignore extra data', () => {
       let client = { id: '1', name: 'Engineering', other: 'data', x: 123, lastSeen: 456}
       clients.set(client)
-      let result = clients.getAll()
-      result[0].should.deep.equal({ id: '1', name: 'Engineering', features: [], lastSeen: null })
+      let result = clients.get(client.id)
+      result.should.deep.equal({ id: '1', name: 'Engineering', features: [], lastSeen: null })
     })
 
     it('should not update the lastSeen timestamp', () => {
@@ -101,7 +116,7 @@ describe('clients', () => {
       let oldLastSeen = clients.getAll()[0].lastSeen
       client.lastSeen = 12345
       clients.set(client)
-      let result = clients.getAll()[0]
+      let result = clients.get(client.id)
       result.lastSeen.should.equal(oldLastSeen)
     })
   })
@@ -113,9 +128,9 @@ describe('clients', () => {
       clients.set(client)
       clients.visited(client.id)
       let after = new Date().valueOf()
-      let result = clients.getAll()
-      result[0].lastSeen.should.be.least(before)
-      result[0].lastSeen.should.be.most(after)
+      let result = clients.get(client.id)
+      result.lastSeen.should.be.least(before)
+      result.lastSeen.should.be.most(after)
     })
 
     it('should create an Unknown client if the id does not match', () => {
