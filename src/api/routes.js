@@ -4,6 +4,13 @@ var Clients = require('../clients.js');
 var clients = new Clients();
 
 exports.registerRoutes = function (app, config) {
+  app.use(function (request, response, next) {
+    if (request.headers['client-id']) {
+      clients.visited(request.headers['client-id'])
+    }
+    next()
+  })
+
   app.get('/api', function (request, response) {
     response.send({name: 'OpenStardrive server', version: config.serverVersion});
   });
