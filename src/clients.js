@@ -25,12 +25,16 @@ class Clients {
     if (clientData.features) {
       clientData.features.forEach(this.validateFeature)
     }
+
+    let existing = this.clients[clientData.id] || {}
+
     this.clients[clientData.id] = {
       id: clientData.id,
       name: clientData.name,
       features: clientData.features
         ? clientData.features.map(x => {return { name: x.name, enabled: x.enabled }})
-        : []
+        : [],
+      lastSeen: existing.lastSeen || null
     }
   }
 
@@ -38,6 +42,18 @@ class Clients {
     if (typeof feature.name !== 'string' || typeof feature.enabled !== 'boolean') {
       throw new InputError('Invalid feature')
     }
+  }
+
+  visited(clientId) {
+    if (typeof clientId !== 'string') return
+    
+    if (!this.clients[clientId]) {
+      this.clients[clientId] = {
+        id: clientId,
+        name: 'Unknown'
+      }
+    }
+    this.clients[clientId].lastSeen = new Date().valueOf()
   }
 }
 

@@ -16,8 +16,8 @@ describe('clients', () => {
     })
 
     it('should return all the clients', () => {
-      let clientA = { id: '1', name: 'Engineering', features: [] }
-      let clientB = { id: '2', name: 'Flight Control', features: []}
+      let clientA = { id: '1', name: 'Engineering', features: [], lastSeen: null }
+      let clientB = { id: '2', name: 'Flight Control', features: [], lastSeen: null}
       clients.set(clientA)
       clients.set(clientB)
       let result = clients.getAll()
@@ -44,9 +44,11 @@ describe('clients', () => {
       ]}
       clients.set(client)
       let updatedClient = { id: '1', name: 'Flight Control', features: [
-        { name: 'Feature A', enabled: false },
-        { name: 'Feature B', enabled: true }
-      ]}
+          { name: 'Feature A', enabled: false },
+          { name: 'Feature B', enabled: true }
+        ],
+        lastSeen: null
+      }
       clients.set(updatedClient)
       let result = clients.getAll()
       result.length.should.equal(1)
@@ -86,10 +88,48 @@ describe('clients', () => {
     })
 
     it('should ignore extra data', () => {
-      let client = { id: '1', name: 'Engineering', other: 'data', x: 123 }
+      let client = { id: '1', name: 'Engineering', other: 'data', x: 123, lastSeen: 456}
       clients.set(client)
       let result = clients.getAll()
-      result[0].should.deep.equal({ id: '1', name: 'Engineering', features: [] })
+      result[0].should.deep.equal({ id: '1', name: 'Engineering', features: [], lastSeen: null })
+    })
+
+    it('should not update the lastSeen timestamp', () => {
+      let client = { id: '1', name: 'Engineering' }
+      clients.set(client)
+      clients.visited(client.id)
+      let oldLastSeen = clients.getAll()[0].lastSeen
+      client.lastSeen = 12345
+      clients.set(client)
+      let result = clients.getAll()[0]
+      result.lastSeen.should.equal(oldLastSeen)
+    })
+  })
+
+  describe('visited', () => {
+    it('should update the lastSeen timestamp', () => {
+      let client = { id: '1', name: 'Engineering', features: [] }
+      let before = new Date().valueOf()
+      clients.set(client)
+      clients.visited(client.id)
+      let after = new Date().valueOf()
+      let result = clients.getAll()
+      result[0].lastSeen.should.be.least(before)
+      result[0].lastSeen.should.be.most(after)
+    })
+
+    it('should create an Unknown client if the id does not match', () => {
+      let id = 'id-3'
+      clients.visited(id)
+      let result = clients.getAll()
+      result[0].id.should.equal(id)
+      result[0].name.should.equal('Unknown')
+      result[0].should.have.property('lastSeen')
+    })
+
+    it('should ignore non-string ids', () => {
+      clients.visited(123)
+      clients.getAll().length.should.equal(0)
     })
   })
 })
