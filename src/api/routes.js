@@ -5,9 +5,7 @@ var clients = new Clients();
 
 exports.registerRoutes = function (app, config) {
   app.use(function (request, response, next) {
-    if (request.headers['client-id']) {
-      clients.visited(request.headers['client-id'])
-    }
+    clients.visited(request.headers['client-id'] || '')
     next()
   })
 
