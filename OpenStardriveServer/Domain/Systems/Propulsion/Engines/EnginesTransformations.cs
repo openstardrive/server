@@ -7,6 +7,11 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
     {
         public TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload)
         {
+            if (state.CurrentSpeed == payload.Speed)
+            {
+                return TransformResult<EnginesState>.NoChange();
+            }
+
             return IfFunctional(state, () => CloneThen(state, x =>
             {
                 x.CurrentSpeed = payload.Speed;
@@ -16,7 +21,6 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
         public TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload)
         {
             var newHeat = CalculateNewHeat(state, payload);
-
             if (newHeat != state.CurrentHeat)
             {
                 return TransformResult<EnginesState>.StateChanged(CloneThen(state, x =>
@@ -31,6 +35,11 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
         private int CalculateNewHeat(EnginesState state, ChronometerPayload payload)
         {
             var targetHeat = GetTargetHeat(state);
+            if (state.CurrentHeat == targetHeat)
+            {
+                return state.CurrentHeat;
+            }
+
             var rate = targetHeat > state.CurrentHeat
                 ? GetHeatingRateInMilliseconds(state)
                 : GetCoolingRateInMilliseconds(state);

@@ -25,6 +25,18 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         }
 
         [Test]
+        public void When_setting_speed_and_it_is_already_at_that_speed()
+        {
+            var state = EnginesStateDefaults.Ftl;
+            state.CurrentSpeed = 2;
+            var payload = new SetSpeedPayload { Speed = 2 };
+            
+            var result = classUnderTest.SetSpeed(state, payload);
+            
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+        }
+
+        [Test]
         public void When_setting_speed_but_insufficient_power()
         {
             var state = EnginesStateDefaults.Sublight;
