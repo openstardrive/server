@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.90" />
-    <PackageReference Include="Scrutor" Version="3.3.0" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Scrutor" Version="4.2.0" />
     <PackageReference Include="System.Data.Sqlite" Version="1.0.115.0" />
   </ItemGroup>
 
