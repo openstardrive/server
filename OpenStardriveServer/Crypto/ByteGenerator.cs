@@ -11,12 +11,12 @@ namespace OpenStardriveServer.Crypto
     
     public class ByteGenerator : IByteGenerator
     {
-        private static readonly RNGCryptoServiceProvider byteGenerator = new RNGCryptoServiceProvider();
+        private static readonly RandomNumberGenerator generator = RandomNumberGenerator.Create();
 
         public byte[] Generate(int numberOfBytes)
         {
             var bytes = new byte[numberOfBytes];
-            byteGenerator.GetBytes(bytes);
+            generator.GetBytes(bytes);
             return bytes;
         }
 

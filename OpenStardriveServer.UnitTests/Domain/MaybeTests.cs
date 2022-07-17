@@ -26,7 +26,7 @@ namespace OpenStardriveServer.UnitTests.Domain
         [Test]
         public void The_default_maybe_is_none()
         {
-            Maybe<int> maybe;
+            Maybe<int> maybe = default;
             Assert.That(maybe.HasValue, Is.False);
         }
 
