@@ -2,8 +2,8 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
 {
     public record ThrustersState : SystemBaseState
     {
-        public ThrustersAttitude Attitude { get; init; }
-        public ThrusterVelocity Velocity { get; init; }
+        public ThrustersAttitude Attitude { get; init; } = new();
+        public ThrusterVelocity Velocity { get; init; } = new();
     }
 
     public record ThrustersAttitude

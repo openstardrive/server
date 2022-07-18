@@ -9,9 +9,13 @@ namespace OpenStardriveServer.Domain.Systems
         public bool Disabled { get; init; }
         public bool Damaged { get; init; }
 
-        public Maybe<string> HasInsufficientPower() => (CurrentPower < RequiredPower).MaybeIf("insufficient power");
-        public Maybe<string> IsDisabled() => Disabled.MaybeIf("system disabled");
-        public Maybe<string> IsDamaged() => Damaged.MaybeIf("system damaged");
+        public const string InsufficientPowerError = "insufficient power"; 
+        public const string DisabledError = "system disabled"; 
+        public const string DamagedError = "system damaged"; 
+
+        public Maybe<string> HasInsufficientPower() => (CurrentPower < RequiredPower).MaybeIf(InsufficientPowerError);
+        public Maybe<string> IsDisabled() => Disabled.MaybeIf(DisabledError);
+        public Maybe<string> IsDamaged() => Damaged.MaybeIf(DamagedError);
         
         public TransformResult<T> IfFunctional<T>(Func<T> stateChange)
         {

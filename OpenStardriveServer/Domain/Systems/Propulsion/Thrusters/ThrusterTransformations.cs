@@ -17,11 +17,17 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
             {
                 Attitude = new ThrustersAttitude
                 {
-                    Pitch = payload.Pitch,
-                    Yaw = payload.Yaw,
-                    Roll = payload.Roll
+                    Pitch = LimitTo360Degrees(payload.Pitch),
+                    Yaw = LimitTo360Degrees(payload.Yaw),
+                    Roll = LimitTo360Degrees(payload.Roll)
                 }
             });
+        }
+
+        private int LimitTo360Degrees(int input)
+        {
+            var normalized = input < 0 ? 360 + (input % 360) : input;
+            return normalized % 360;
         }
 
         public TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload)
@@ -35,11 +41,5 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
                 }
             });
         }
-    }
-
-    public class ThrusterConfigurationPayload
-    {
-        public bool Disabled { get; set; }
-        public bool Damaged { get; set; }
     }
 }
