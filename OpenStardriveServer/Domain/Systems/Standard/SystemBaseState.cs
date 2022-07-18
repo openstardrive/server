@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenStardriveServer.Domain.Systems
+namespace OpenStardriveServer.Domain.Systems.Standard
 {
     public record SystemBaseState
     {

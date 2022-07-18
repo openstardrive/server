@@ -1,3 +1,5 @@
+using OpenStardriveServer.Domain.Systems.Standard;
+
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
 {
     public record ThrustersState : SystemBaseState

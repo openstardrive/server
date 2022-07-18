@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
+using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Thrusters;
 
@@ -8,16 +9,10 @@ public class ThrusterTransformationsTests
 {
     private readonly ThrusterTransformations classUnderTest = new();
 
-    [TestCase(true, true)]
-    [TestCase(true, false)]
-    [TestCase(false, true)]
-    [TestCase(false, false)]
-    public void When_configuring_thrusters(bool disabled, bool damaged)
+    [Test]
+    public void When_configuring_thrusters()
     {
-        var payload = new ThrusterConfigurationPayload
-        {
-            RequiredPower = 555
-        };
+        var payload = new ThrusterConfigurationPayload { RequiredPower = 555 };
         var expected = new ThrustersState { RequiredPower = 555 };
 
         var result = classUnderTest.Configure(new ThrustersState(), payload);
