@@ -7,14 +7,14 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
     public class EnginesSystem : ISystem
     {
         public string SystemName { get; }
-        public Dictionary<string, Func<Command, CommandResult>> CommandProcessors => new Dictionary<string, Func<Command, CommandResult>>
+        public Dictionary<string, Func<Command, CommandResult>> CommandProcessors => new()
         {
-            ["chronometer"] = c => Update(c, transformations.UpdateHeat(state, Json.Deserialize<ChronometerPayload>(c.Payload))),
+            [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, Json.Deserialize<ChronometerPayload>(c.Payload))),
             [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, Json.Deserialize<SetSpeedPayload>(c.Payload)))
         };
 
         private EnginesState state;
-        private EnginesTransformations transformations = new EnginesTransformations();
+        private EnginesTransformations transformations = new();
 
         public EnginesSystem(string name, EnginesState initialState)
         {

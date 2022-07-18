@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Chronometer;
@@ -8,7 +9,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Chronometer
     public class IncrementChronometerCommandTests : WithAnAutomocked<IncrementChronometerCommand>
     {
         [Test]
-        public void When_incrementing()
+        public async Task When_incrementing()
         {
             Command savedCommand = null;
             GetMock<ICommandRepository>()
@@ -16,7 +17,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Chronometer
                 .Callback<Command>(x => savedCommand = x);
             
             ClassUnderTest.SetLastTimeForTesting(DateTimeOffset.UtcNow.AddSeconds(-1));
-            ClassUnderTest.Increment();
+            await ClassUnderTest.Increment();
 
             Assert.That(savedCommand, Is.Not.Null);
             Assert.That(savedCommand.Type, Is.EqualTo(ChronometerCommand.Type));

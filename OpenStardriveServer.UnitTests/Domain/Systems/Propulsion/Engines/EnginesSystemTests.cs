@@ -7,7 +7,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
 {
     public class EnginesSystemTests : SystemsTest<EnginesSystem>
     {
-        protected override EnginesSystem CreateClassUnderTest() => new EnginesSystem("ftl", EnginesStateDefaults.Ftl);
+        protected override EnginesSystem CreateClassUnderTest() => new("ftl", EnginesStateDefaults.Ftl);
         
         [Test]
         public void When_setting_speed()
@@ -38,7 +38,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
                 .UpdateHeat(EnginesStateDefaults.Ftl, payload)
                 .ToCommandResult(command, ClassUnderTest.SystemName);
 
-            var result = ClassUnderTest.CommandProcessors["chronometer"](command);
+            var result = ClassUnderTest.CommandProcessors[ChronometerCommand.Type](command);
             
             AssertCommandResult(result, expected);
         }

@@ -36,9 +36,4 @@ namespace OpenStardriveServer.Domain.Chronometer
             lastTime = value;
         }
     }
-
-    public static class ChronometerCommand
-    {
-        public static string Type = "chronometer";
-    }
 }
