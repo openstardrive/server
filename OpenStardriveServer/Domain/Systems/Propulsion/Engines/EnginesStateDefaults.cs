@@ -17,6 +17,14 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 MaxHeat = 10_000,
                 MinutesAtMaxSpeed = 5,
                 MinutesToCoolDown = 12
+            },
+            RequiredPower = 10,
+            SpeedPowerRequirements = new []
+            {
+                new SpeedPowerRequirement { Speed = 7, PowerNeeded = 12 },
+                new SpeedPowerRequirement { Speed = 8, PowerNeeded = 15 },
+                new SpeedPowerRequirement { Speed = 9, PowerNeeded = 18 },
+                new SpeedPowerRequirement { Speed = 10, PowerNeeded = 20 }
             }
         };
         
@@ -35,6 +43,11 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 MaxHeat = 5_000,
                 MinutesAtMaxSpeed = 10,
                 MinutesToCoolDown = 20
+            },
+            RequiredPower = 5,
+            SpeedPowerRequirements = new []
+            {
+                new SpeedPowerRequirement { Speed = 5, PowerNeeded = 8 }
             }
         };
         

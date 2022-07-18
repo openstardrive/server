@@ -1,3 +1,5 @@
+using System;
+
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
 {
     public record EnginesState : SystemBaseState
@@ -6,6 +8,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
         public EngineSpeedConfig SpeedConfig { get; init; }
         public int CurrentHeat { get; init; }
         public EngineHeatConfig HeatConfig { get; init; }
+        public SpeedPowerRequirement[] SpeedPowerRequirements = Array.Empty<SpeedPowerRequirement>();
     }
 
     public record EngineSpeedConfig
@@ -21,5 +24,11 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
         public int MaxHeat { get; init; }
         public int MinutesAtMaxSpeed { get; init; }
         public int MinutesToCoolDown { get; init; }
+    }
+
+    public record SpeedPowerRequirement
+    {
+        public int Speed { get; init; }
+        public int PowerNeeded { get; init; }
     }
 }

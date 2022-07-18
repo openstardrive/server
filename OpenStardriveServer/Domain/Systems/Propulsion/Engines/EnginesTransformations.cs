@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using OpenStardriveServer.Domain.Chronometer;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
@@ -12,7 +13,16 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 return TransformResult<EnginesState>.NoChange();
             }
 
-            return state.IfFunctional(() => state with { CurrentSpeed = payload.Speed });
+            return state.IfFunctional(() =>
+            {
+                var powerRequirement = state.SpeedPowerRequirements.FirstOrDefault(x => x.Speed == payload.Speed);
+                if (powerRequirement is not null && powerRequirement.PowerNeeded > state.CurrentPower)
+                {
+                    return TransformResult<EnginesState>.Error(SystemBaseState.InsufficientPowerError);
+                }
+
+                return TransformResult<EnginesState>.StateChanged(state with { CurrentSpeed = payload.Speed });
+            });
         }
 
         public TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload)

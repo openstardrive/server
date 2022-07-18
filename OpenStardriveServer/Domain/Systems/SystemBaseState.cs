@@ -23,5 +23,12 @@ namespace OpenStardriveServer.Domain.Systems
                 some: TransformResult<T>.Error,
                 none: () => TransformResult<T>.StateChanged(stateChange()));
         }
+        
+        public TransformResult<T> IfFunctional<T>(Func<TransformResult<T>> next)
+        {
+            return IsDisabled().OrElse(IsDamaged).OrElse(HasInsufficientPower).Case(
+                some: TransformResult<T>.Error,
+                none: next);
+        }
     }
 }

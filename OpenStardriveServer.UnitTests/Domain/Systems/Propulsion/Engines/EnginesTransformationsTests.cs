@@ -18,7 +18,6 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(EnginesStateDefaults.Testing, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
-            Assert.That(result.NewState.Value.CurrentSpeed, Is.EqualTo(payload.Speed));
             Assert.That(result.NewState.Value, Is.EqualTo(expected));
         }
 
@@ -43,7 +42,49 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-            Assert.That(result.ErrorMessage, Is.EqualTo(state.HasInsufficientPower().Value));
+            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.InsufficientPowerError));
+        }
+        
+        [Test]
+        public void When_setting_speed_but_insufficient_power_for_that_speed()
+        {
+            var state = EnginesStateDefaults.Testing with
+            {
+                CurrentPower = 1,
+                RequiredPower = 1,
+                SpeedPowerRequirements = new[]
+                {
+                    new SpeedPowerRequirement { Speed = 2, PowerNeeded = 2 }
+                }
+            };
+
+            var payload = new SetSpeedPayload { Speed = 2 };
+
+            var result = classUnderTest.SetSpeed(state, payload);
+            
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
+            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.InsufficientPowerError));
+        }
+        
+        [Test]
+        public void When_setting_speed_with_enough_power_for_that_speed()
+        {
+            var state = EnginesStateDefaults.Testing with
+            {
+                CurrentPower = 2,
+                RequiredPower = 1,
+                SpeedPowerRequirements = new[]
+                {
+                    new SpeedPowerRequirement { Speed = 2, PowerNeeded = 2 }
+                }
+            };
+            var payload = new SetSpeedPayload { Speed = 2 };
+            var expected = state with { CurrentSpeed = payload.Speed};
+
+            var result = classUnderTest.SetSpeed(state, payload);
+            
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));
         }
         
         [Test]
@@ -56,7 +97,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-            Assert.That(result.ErrorMessage, Is.EqualTo(state.IsDamaged().Value));
+            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DamagedError));
         }
 
         [Test]
@@ -69,7 +110,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-            Assert.That(result.ErrorMessage, Is.EqualTo(state.IsDisabled().Value));
+            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DisabledError));
         }
 
         [TestCase(0, 10, 300_000, 10_000)]
