@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Chronometer;
 using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
@@ -14,21 +13,19 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         public void When_setting_speed_successfully()
         {
             var payload = new SetSpeedPayload { Speed = 3 };
-            var expected = EnginesStateDefaults.Testing;
-            expected.CurrentSpeed = 3;
-            
+            var expected = EnginesStateDefaults.Testing with { CurrentSpeed = 3 };
+
             var result = classUnderTest.SetSpeed(EnginesStateDefaults.Testing, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
             Assert.That(result.NewState.Value.CurrentSpeed, Is.EqualTo(payload.Speed));
-            AssertJsonMatch(result.NewState.Value, expected);
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));
         }
 
         [Test]
         public void When_setting_speed_and_it_is_already_at_that_speed()
         {
-            var state = EnginesStateDefaults.Testing;
-            state.CurrentSpeed = 2;
+            var state = EnginesStateDefaults.Testing with { CurrentSpeed = 2 };
             var payload = new SetSpeedPayload { Speed = 2 };
             
             var result = classUnderTest.SetSpeed(state, payload);
@@ -39,10 +36,8 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         [Test]
         public void When_setting_speed_but_insufficient_power()
         {
-            var state = EnginesStateDefaults.Testing;
-            state.CurrentPower = 0;
-            state.RequiredPower = 1;
-            
+            var state = EnginesStateDefaults.Testing with { CurrentPower = 0, RequiredPower = 1 };
+
             var payload = new SetSpeedPayload { Speed = 3 };
 
             var result = classUnderTest.SetSpeed(state, payload);
@@ -54,8 +49,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         [Test]
         public void When_setting_speed_but_system_is_damaged()
         {
-            var state = EnginesStateDefaults.Testing;
-            state.Damaged = true;
+            var state = EnginesStateDefaults.Testing with { Damaged = true };
 
             var payload = new SetSpeedPayload { Speed = 3 };
 
@@ -68,8 +62,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         [Test]
         public void When_setting_speed_but_system_is_disabled()
         {
-            var state = EnginesStateDefaults.Testing;
-            state.Disabled = true;
+            var state = EnginesStateDefaults.Testing with { Disabled = true };
 
             var payload = new SetSpeedPayload { Speed = 3 };
 
@@ -102,9 +95,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         [TestCase(0, 2, 360_000, 2_333)]
         public void When_heating_up(int currentHeat, int currentSpeed, int elapsedMilliseconds, int expectedHeat)
         {
-            var state = EnginesStateDefaults.Testing;
-            state.CurrentHeat = currentHeat;
-            state.CurrentSpeed = currentSpeed;
+            var state = EnginesStateDefaults.Testing with { CurrentHeat = currentHeat, CurrentSpeed = currentSpeed };
             var payload = new ChronometerPayload {ElapsedMilliseconds = elapsedMilliseconds};
 
             var result = classUnderTest.UpdateHeat(state, payload);
@@ -118,11 +109,13 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         [TestCase(10_000, 6, 60_000, 9_667, true)]
         public void When_cooling_down(int currentHeat, int currentSpeed, int elapsedMilliseconds, int expectedHeat, bool isPowered)
         {
-            var state = EnginesStateDefaults.Testing;
-            state.CurrentHeat = currentHeat;
-            state.CurrentSpeed = currentSpeed;
-            state.RequiredPower = 1;
-            state.CurrentPower = isPowered ? 1 : 0;
+            var state = EnginesStateDefaults.Testing with
+            {
+                CurrentHeat = currentHeat,
+                CurrentSpeed = currentSpeed,
+                RequiredPower = 1,
+                CurrentPower = isPowered ? 1 : 0
+            };
             var payload = new ChronometerPayload {ElapsedMilliseconds = elapsedMilliseconds};
 
             var result = classUnderTest.UpdateHeat(state, payload);
@@ -133,19 +126,16 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         [Test]
         public void When_calculating_heat_and_there_is_no_change()
         {
-            var state = EnginesStateDefaults.Testing;
-            state.CurrentHeat = state.HeatConfig.PoweredHeat;
+            var state = EnginesStateDefaults.Testing with
+            {
+                CurrentHeat = EnginesStateDefaults.Testing.HeatConfig.PoweredHeat
+            };
 
             var payload = new ChronometerPayload {ElapsedMilliseconds = 1000};
 
             var result = classUnderTest.UpdateHeat(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
-        }
-
-        private void AssertJsonMatch(object actual, object expected)
-        {
-            Assert.That(Json.Serialize(actual), Is.EqualTo(Json.Serialize(expected)));
         }
     }
 }

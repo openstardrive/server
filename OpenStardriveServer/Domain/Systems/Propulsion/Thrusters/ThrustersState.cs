@@ -1,22 +1,22 @@
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
 {
-    public class ThrustersState : SystemBaseState
+    public record ThrustersState : SystemBaseState
     {
-        public ThrustersAttitude Attitude { get; set; }
-        public ThrusterVelocity Velocity { get; set; }
+        public ThrustersAttitude Attitude { get; init; }
+        public ThrusterVelocity Velocity { get; init; }
     }
 
-    public class ThrustersAttitude
+    public record ThrustersAttitude
     {
-        public int Yaw { get; set; }
-        public int Pitch { get; set; }
-        public int Roll { get; set; }
+        public int Yaw { get; init; }
+        public int Pitch { get; init; }
+        public int Roll { get; init; }
     }
 
-    public class ThrusterVelocity
+    public record ThrusterVelocity
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
+        public int X { get; init; }
+        public int Y { get; init; }
+        public int Z { get; init; }
     }
 }

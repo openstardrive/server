@@ -1,25 +1,25 @@
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
 {
-    public class EnginesState : SystemBaseState
+    public record EnginesState : SystemBaseState
     {
-        public int CurrentSpeed { get; set; }
-        public EngineSpeedConfig SpeedConfig { get; set; }
-        public int CurrentHeat { get; set; }
-        public EngineHeatConfig HeatConfig { get; set; }
+        public int CurrentSpeed { get; init; }
+        public EngineSpeedConfig SpeedConfig { get; init; }
+        public int CurrentHeat { get; init; }
+        public EngineHeatConfig HeatConfig { get; init; }
     }
 
-    public class EngineSpeedConfig
+    public record EngineSpeedConfig
     {
-        public int MaxSpeed { get; set; }
-        public int CruisingSpeed { get; set; }
+        public int MaxSpeed { get; init; }
+        public int CruisingSpeed { get; init; }
     }
 
-    public class EngineHeatConfig
+    public record EngineHeatConfig
     {
-        public int PoweredHeat { get; set; }
-        public int CruisingHeat { get; set; }
-        public int MaxHeat { get; set; }
-        public int MinutesAtMaxSpeed { get; set; }
-        public int MinutesToCoolDown { get; set; }
+        public int PoweredHeat { get; init; }
+        public int CruisingHeat { get; init; }
+        public int MaxHeat { get; init; }
+        public int MinutesAtMaxSpeed { get; init; }
+        public int MinutesToCoolDown { get; init; }
     }
 }

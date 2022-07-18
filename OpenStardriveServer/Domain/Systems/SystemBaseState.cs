@@ -2,12 +2,12 @@ using System;
 
 namespace OpenStardriveServer.Domain.Systems
 {
-    public abstract class SystemBaseState
+    public abstract record SystemBaseState
     {
-        public int CurrentPower { get; set; }
-        public int RequiredPower { get; set; }
-        public bool Disabled { get; set; }
-        public bool Damaged { get; set; }
+        public int CurrentPower { get; init; }
+        public int RequiredPower { get; init; }
+        public bool Disabled { get; init; }
+        public bool Damaged { get; init; }
 
         public Maybe<string> HasInsufficientPower() => (CurrentPower < RequiredPower).MaybeIf("insufficient power");
         public Maybe<string> IsDisabled() => Disabled.MaybeIf("system disabled");

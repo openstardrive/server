@@ -12,10 +12,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 return TransformResult<EnginesState>.NoChange();
             }
 
-            return state.IfFunctional(() => CloneThen(state, x =>
-            {
-                x.CurrentSpeed = payload.Speed;
-            }));
+            return state.IfFunctional(() => state with { CurrentSpeed = payload.Speed });
         }
 
         public TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload)
@@ -23,10 +20,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
             var newHeat = CalculateNewHeat(state, payload);
             if (newHeat != state.CurrentHeat)
             {
-                return TransformResult<EnginesState>.StateChanged(CloneThen(state, x =>
-                {
-                    x.CurrentHeat = newHeat;
-                }));
+                return TransformResult<EnginesState>.StateChanged(state with { CurrentHeat = newHeat });
             }
             
             return TransformResult<EnginesState>.NoChange();
@@ -96,20 +90,5 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
             var totalMilliseconds = TimeSpan.FromMinutes(state.HeatConfig.MinutesToCoolDown).TotalMilliseconds;
             return -1 * (state.HeatConfig.MaxHeat / totalMilliseconds) * ratio;
         }
-        
-        private EnginesState CloneThen(EnginesState original, Action<EnginesState> then)
-        {
-            var clone = new EnginesState
-            {
-                Disabled = original.Disabled,
-                Damaged = original.Damaged,
-                CurrentSpeed = original.CurrentSpeed,
-                SpeedConfig = original.SpeedConfig,
-                CurrentHeat = original.CurrentHeat,
-                HeatConfig = original.HeatConfig
-            };
-            then(clone);
-            return clone;
-        } 
     }
 }
