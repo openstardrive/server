@@ -24,12 +24,13 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
         [Test]
         public void When_setting_speed_and_it_is_already_at_that_speed()
         {
-            var state = EnginesStateDefaults.Testing with { CurrentSpeed = 2 };
+            var originalState = EnginesStateDefaults.Testing with { CurrentSpeed = 2 };
             var payload = new SetSpeedPayload { Speed = 2 };
+
+            var result = classUnderTest.SetSpeed(originalState, payload);
             
-            var result = classUnderTest.SetSpeed(state, payload);
-            
-            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
+            Assert.That(result.NewState.Value, Is.EqualTo(originalState));
         }
 
         [Test]

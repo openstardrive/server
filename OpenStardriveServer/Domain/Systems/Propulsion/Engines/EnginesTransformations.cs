@@ -8,11 +8,6 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
     {
         public TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload)
         {
-            if (state.CurrentSpeed == payload.Speed)
-            {
-                return TransformResult<EnginesState>.NoChange();
-            }
-
             return state.IfFunctional(() =>
             {
                 var powerRequirement = state.SpeedPowerRequirements.FirstOrDefault(x => x.Speed == payload.Speed);
