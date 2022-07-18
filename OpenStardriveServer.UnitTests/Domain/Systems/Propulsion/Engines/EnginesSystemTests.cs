@@ -7,7 +7,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
 {
     public class EnginesSystemTests : SystemsTest<EnginesSystem>
     {
-        protected override EnginesSystem CreateClassUnderTest() => new("ftl", EnginesStateDefaults.Ftl);
+        protected override EnginesSystem CreateClassUnderTest() => new("testing", EnginesStateDefaults.Testing);
         
         [Test]
         public void When_setting_speed()
@@ -18,10 +18,10 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
                 Payload = Json.Serialize(payload)
             };
             var expected = new EnginesTransformations()
-                .SetSpeed(EnginesStateDefaults.Ftl, payload)
+                .SetSpeed(EnginesStateDefaults.Testing, payload)
                 .ToCommandResult(command, ClassUnderTest.SystemName);
             
-            var result = ClassUnderTest.CommandProcessors["set-ftl-speed"](command);
+            var result = ClassUnderTest.CommandProcessors["set-testing-speed"](command);
             
             AssertCommandResult(result, expected);
         }
@@ -35,7 +35,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
                 Payload = Json.Serialize(payload)
             };
             var expected = new EnginesTransformations()
-                .UpdateHeat(EnginesStateDefaults.Ftl, payload)
+                .UpdateHeat(EnginesStateDefaults.Testing, payload)
                 .ToCommandResult(command, ClassUnderTest.SystemName);
 
             var result = ClassUnderTest.CommandProcessors[ChronometerCommand.Type](command);

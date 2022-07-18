@@ -2,7 +2,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
 {
     public static class EnginesStateDefaults
     {
-        public static EnginesState Ftl => new EnginesState
+        public static EnginesState Ftl => new()
         {
             CurrentHeat = 1_500,
             SpeedConfig = new EngineSpeedConfig
@@ -20,7 +20,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
             }
         };
         
-        public static EnginesState Sublight => new EnginesState
+        public static EnginesState Sublight => new()
         {
             CurrentHeat = 700,
             SpeedConfig = new EngineSpeedConfig
@@ -38,7 +38,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
             }
         };
         
-        public static EnginesState Testing => new EnginesState
+        public static EnginesState Testing => new()
         {
             CurrentHeat = 0,
             SpeedConfig = new EngineSpeedConfig
