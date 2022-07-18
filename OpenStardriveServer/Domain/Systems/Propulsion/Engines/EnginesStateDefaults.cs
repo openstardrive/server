@@ -37,5 +37,23 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 MinutesToCoolDown = 20
             }
         };
+        
+        public static EnginesState Testing => new EnginesState
+        {
+            CurrentHeat = 0,
+            SpeedConfig = new EngineSpeedConfig
+            {
+                CruisingSpeed = 6,
+                MaxSpeed = 10
+            },
+            HeatConfig = new EngineHeatConfig
+            {
+                PoweredHeat = 2_000,
+                CruisingHeat = 7_000,
+                MaxHeat = 10_000,
+                MinutesAtMaxSpeed = 5,
+                MinutesToCoolDown = 12
+            }
+        };
     }
 }

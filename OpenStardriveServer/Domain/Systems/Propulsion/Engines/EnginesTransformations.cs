@@ -40,12 +40,15 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 return state.CurrentHeat;
             }
 
-            var rate = targetHeat > state.CurrentHeat
+            var isHeating = targetHeat > state.CurrentHeat;
+            var rate = isHeating
                 ? GetHeatingRateInMilliseconds(state)
                 : GetCoolingRateInMilliseconds(state);
             
             var heatChange = (int) (rate * payload.ElapsedMilliseconds);
-            return state.CurrentHeat + heatChange;
+            return isHeating
+                ? Math.Min(targetHeat, state.CurrentHeat + heatChange)
+                : Math.Max(targetHeat, state.CurrentHeat + heatChange);
         }
 
         private double MaxSpeedRatio(EnginesState state)
@@ -67,7 +70,9 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
 
             if (state.CurrentSpeed > 0)
             {
-                return (int) (state.HeatConfig.CruisingHeat * CrusingSpeedRatio(state));
+                return Math.Max(
+                    (int) (state.HeatConfig.CruisingHeat * CrusingSpeedRatio(state)),
+                    state.HeatConfig.PoweredHeat);
             }
 
             if (state.CurrentPower >= state.RequiredPower)
