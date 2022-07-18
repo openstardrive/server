@@ -50,7 +50,7 @@ public class ThrusterTransformationsTests
         var result = classUnderTest.SetAttitude(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-        Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DisabledError));
+        Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
     }
     
     [Test]
@@ -62,7 +62,7 @@ public class ThrusterTransformationsTests
         var result = classUnderTest.SetAttitude(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-        Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DamagedError));
+        Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
     }
     
     [Test]
@@ -89,7 +89,7 @@ public class ThrusterTransformationsTests
         var result = classUnderTest.SetVelocity(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-        Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DisabledError));
+        Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
     }
     
     [Test]
@@ -101,6 +101,6 @@ public class ThrusterTransformationsTests
         var result = classUnderTest.SetVelocity(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-        Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DamagedError));
+        Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
     }
 }

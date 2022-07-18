@@ -10,7 +10,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [TestCase(2, false)]
         public void When_checking_for_insufficient_power(int power, bool insufficient)
         {
-            var state = new SystemBaseState
+            var state = new StandardSystemBaseState
             {
                 RequiredPower = 1,
                 CurrentPower = power
@@ -26,7 +26,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [TestCase(false)]
         public void When_checking_if_disabled(bool disabled)
         {
-            var state = new SystemBaseState
+            var state = new StandardSystemBaseState
             {
                 Disabled = disabled
             };
@@ -41,7 +41,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [TestCase(false)]
         public void When_checking_if_damaged(bool damaged)
         {
-            var state = new SystemBaseState
+            var state = new StandardSystemBaseState
             {
                 Damaged = damaged
             };

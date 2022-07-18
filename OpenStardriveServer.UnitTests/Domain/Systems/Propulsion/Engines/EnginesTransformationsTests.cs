@@ -44,7 +44,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.InsufficientPowerError));
+            Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.InsufficientPowerError));
         }
         
         [Test]
@@ -65,7 +65,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.InsufficientPowerError));
+            Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.InsufficientPowerError));
         }
         
         [Test]
@@ -99,7 +99,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DamagedError));
+            Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             var result = classUnderTest.SetSpeed(state, payload);
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-            Assert.That(result.ErrorMessage, Is.EqualTo(SystemBaseState.DisabledError));
+            Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
         }
 
         [TestCase(0, 10, 300_000, 10_000)]

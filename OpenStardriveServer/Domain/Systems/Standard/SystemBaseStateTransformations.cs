@@ -1,6 +1,6 @@
 namespace OpenStardriveServer.Domain.Systems.Standard;
 
-public class StandardSystemBaseStateTransformations<T> where T : SystemBaseState
+public class StandardSystemBaseStateTransformations<T> where T : StandardSystemBaseState
 {
     public TransformResult<T> SetCurrentPower(T state, SystemPowerPayload payload)
     {

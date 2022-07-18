@@ -3,7 +3,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
 {
-    public record EnginesState : SystemBaseState
+    public record EnginesState : StandardSystemBaseState
     {
         public int CurrentSpeed { get; init; }
         public EngineSpeedConfig SpeedConfig { get; init; }

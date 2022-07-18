@@ -14,7 +14,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 var powerRequirement = state.SpeedPowerRequirements.FirstOrDefault(x => x.Speed == payload.Speed);
                 if (powerRequirement is not null && powerRequirement.PowerNeeded > state.CurrentPower)
                 {
-                    return TransformResult<EnginesState>.Error(SystemBaseState.InsufficientPowerError);
+                    return TransformResult<EnginesState>.Error(StandardSystemBaseState.InsufficientPowerError);
                 }
 
                 return TransformResult<EnginesState>.StateChanged(state with { CurrentSpeed = payload.Speed });

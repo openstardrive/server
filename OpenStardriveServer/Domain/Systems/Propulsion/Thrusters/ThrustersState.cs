@@ -2,7 +2,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
 {
-    public record ThrustersState : SystemBaseState
+    public record ThrustersState : StandardSystemBaseState
     {
         public ThrustersAttitude Attitude { get; init; } = new();
         public ThrusterVelocity Velocity { get; init; } = new();
