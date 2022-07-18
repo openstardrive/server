@@ -1,7 +1,7 @@
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
 {
-    public class SetSpeedPayload
+    public record SetSpeedPayload
     {
-        public int Speed { get; set; }
+        public int Speed { get; init; }
     }
 }

@@ -29,9 +29,9 @@ namespace OpenStardriveServer.Domain.Workflows
         }
     }
 
-    public class GetCommandsResult
+    public record GetCommandsResult
     {
-        public List<CommandResult> Results { get; set; }
-        public long NextCursor { get; set; }
+        public List<CommandResult> Results { get; init; }
+        public long NextCursor { get; init; }
     }
 }

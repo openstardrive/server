@@ -1,9 +1,9 @@
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
 {
-    public class ThrusterVelocityPayload
+    public record ThrusterVelocityPayload
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
+        public int X { get; init; }
+        public int Y { get; init; }
+        public int Z { get; init; }
     }
 }

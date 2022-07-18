@@ -4,18 +4,18 @@ using System.Text.Json.Serialization;
 
 namespace OpenStardriveServer.Domain.Systems.Clients
 {
-    public class ClientsState
+    public record ClientsState
     {
-        public List<Client> Clients { get; set; } = new List<Client>();
+        public List<Client> Clients { get; init; } = new();
     }
 
-    public class Client
+    public record Client
     {
-        public Guid ClientId { get; set; }
+        public Guid ClientId { get; init; }
         
         [JsonIgnore]
-        public string ClientSecret { get; set; }
+        public string ClientSecret { get; init; }
         
-        public string Name { get; set; }
+        public string Name { get; init; }
     }
 }

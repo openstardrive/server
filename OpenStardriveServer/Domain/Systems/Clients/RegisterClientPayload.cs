@@ -2,12 +2,12 @@ using System;
 
 namespace OpenStardriveServer.Domain.Systems.Clients
 {
-    public class RegisterClientPayload
+    public record RegisterClientPayload
     {
-        public Guid ClientId { get; set; }
+        public Guid ClientId { get; init; }
         
-        public string ClientSecret { get; set; }
+        public string ClientSecret { get; init; }
         
-        public string Name { get; set; }
+        public string Name { get; init; }
     }
 }
