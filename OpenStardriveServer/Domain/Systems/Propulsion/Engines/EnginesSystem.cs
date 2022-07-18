@@ -15,7 +15,8 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
             CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
             {
                 [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, Json.Deserialize<ChronometerPayload>(c.Payload))),
-                [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, Json.Deserialize<SetSpeedPayload>(c.Payload)))
+                [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, Json.Deserialize<SetSpeedPayload>(c.Payload))),
+                [$"configure-{SystemName}-engines"] = c => Update(c, transformations.Configure(state, Json.Deserialize<EnginesConfigurationPayload>(c.Payload)))
             };
         }
     }

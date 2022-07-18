@@ -179,5 +179,43 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
         }
+
+        [Test]
+        public void When_configuring_engines()
+        {
+            var payload = new EnginesConfigurationPayload
+            {
+                HeatConfig = new EngineHeatConfig
+                {
+                    PoweredHeat = 9,
+                    CruisingHeat = 99,
+                    MaxHeat = 999,
+                    MinutesAtMaxSpeed = 9,
+                    MinutesToCoolDown = 99
+                },
+                SpeedConfig = new EngineSpeedConfig
+                {
+                    CruisingSpeed = 72,
+                    MaxSpeed = 103
+                },
+                RequiredPower = 2,
+                SpeedPowerRequirements = new[]
+                {
+                    new SpeedPowerRequirement { Speed = 23, PowerNeeded = 5 },
+                    new SpeedPowerRequirement { Speed = 62, PowerNeeded = 7 }
+                }
+            };
+            var expected = EnginesStateDefaults.Testing with
+            {
+                HeatConfig = payload.HeatConfig,
+                SpeedConfig = payload.SpeedConfig,
+                RequiredPower = payload.RequiredPower,
+                SpeedPowerRequirements = payload.SpeedPowerRequirements
+            };
+            
+            var result = classUnderTest.Configure(EnginesStateDefaults.Testing, payload);
+            
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        }
     }
 }

@@ -95,5 +95,16 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
             var totalMilliseconds = TimeSpan.FromMinutes(state.HeatConfig.MinutesToCoolDown).TotalMilliseconds;
             return -1 * (state.HeatConfig.MaxHeat / totalMilliseconds) * ratio;
         }
+
+        public TransformResult<EnginesState> Configure(EnginesState state, EnginesConfigurationPayload payload)
+        {
+            return TransformResult<EnginesState>.StateChanged(state with
+            {
+                HeatConfig = payload.HeatConfig,
+                SpeedConfig = payload.SpeedConfig,
+                RequiredPower = payload.RequiredPower,
+                SpeedPowerRequirements = payload.SpeedPowerRequirements
+            });
+        }
     }
 }

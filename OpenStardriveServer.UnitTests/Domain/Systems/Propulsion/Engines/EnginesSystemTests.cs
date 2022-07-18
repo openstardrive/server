@@ -25,5 +25,13 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
             TestCommand(ChronometerCommand.Type, payload,
                 transformations.UpdateHeat(EnginesStateDefaults.Testing, payload));
         }
+        
+        [Test]
+        public void When_configuring()
+        {
+            var payload = new EnginesConfigurationPayload();
+            TestCommand("configure-testing-engines", payload,
+                transformations.Configure(EnginesStateDefaults.Testing, payload));
+        }
     }
 }
