@@ -24,7 +24,7 @@ namespace OpenStardriveServer.Domain.Workflows
         public async Task<PostCommandResult> PostCommand(string clientSecret, string commandType, string payload)
         {
             var client = systemsRegistry.GetSystemByName(ClientsSystem.Name)
-                .Map(system => (system as ClientsSystem).FindClientBySecret(clientSecret));
+                .Map(system => (system as ClientsSystem)!.FindClientBySecret(clientSecret));
 
             if (!client.HasValue)
             {
