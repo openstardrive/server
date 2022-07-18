@@ -18,17 +18,8 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients
                 ClientSecret = "secret",
                 Name = "test client"
             };
-            var command = new Command
-            {
-                Payload = Json.Serialize(payload)
-            };
-            var expectedResult = new ClientsTransformations()
-                .RegisterClient(new ClientsState(), payload)
-                .ToCommandResult(command, ClassUnderTest.SystemName);
-            
-            var result = ClassUnderTest.CommandProcessors["register-client"](command);
-            
-            AssertCommandResult(result, expectedResult);
+            TestCommand("register-client", payload,
+                new ClientsTransformations().RegisterClient(new ClientsState(), payload));
         }
 
         [Test]
@@ -40,15 +31,15 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients
                 ClientSecret = "secret",
                 Name = "test client"
             };
-            var command = new Command
+            ClassUnderTest.CommandProcessors["register-client"](new Command
             {
                 Payload = Json.Serialize(payload)
-            };
-            ClassUnderTest.CommandProcessors["register-client"](command);
+            });
 
             var result = ClassUnderTest.FindClientBySecret(payload.ClientSecret);
             
             Assert.That(result.Value.ClientId, Is.EqualTo(payload.ClientId));
+            Assert.That(result.Value.Name, Is.EqualTo(payload.Name));
         }
     }
 }

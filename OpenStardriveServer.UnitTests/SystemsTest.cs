@@ -16,27 +16,6 @@ namespace OpenStardriveServer.UnitTests
 
         protected abstract T CreateClassUnderTest();
 
-        protected Command CommandWithPayload(object payload)
-        {
-            return new Command
-            {
-                Payload = Json.Serialize(payload)
-            };
-        }
-
-        protected CommandResult ExpectedCommandResult<U>(Command command, TransformResult<U> expected)
-        {
-            return expected.ToCommandResult(command, ClassUnderTest.SystemName);
-        }
-
-        protected void AssertCommandResult(CommandResult actual, CommandResult expected)
-        {
-            Assert.That(actual.CommandId, Is.EqualTo(expected.CommandId));
-            Assert.That(actual.Type, Is.EqualTo(expected.Type));
-            Assert.That(actual.System, Is.EqualTo(expected.System));
-            Assert.That(actual.Payload, Is.EqualTo(expected.Payload));
-        }
-
         protected void TestCommand<U>(string commandName, object payload, TransformResult<U> expected)
         {
             if (!ClassUnderTest.CommandProcessors.ContainsKey(commandName))
@@ -44,12 +23,15 @@ namespace OpenStardriveServer.UnitTests
                 Assert.Fail($"There is no configured processor for command: {commandName}");
             }
             
-            var command = CommandWithPayload(payload);
+            var command = new Command { Payload = Json.Serialize(payload) };
             var expectedCommandResult = expected.ToCommandResult(command, ClassUnderTest.SystemName);
 
             var result = ClassUnderTest.CommandProcessors[commandName](command);
-        
-            AssertCommandResult(result, expectedCommandResult);
+
+            Assert.That(result.CommandId, Is.EqualTo(expectedCommandResult.CommandId));
+            Assert.That(result.Type, Is.EqualTo(expectedCommandResult.Type));
+            Assert.That(result.System, Is.EqualTo(expectedCommandResult.System));
+            Assert.That(result.Payload, Is.EqualTo(expectedCommandResult.Payload));
         }
     }
 }
