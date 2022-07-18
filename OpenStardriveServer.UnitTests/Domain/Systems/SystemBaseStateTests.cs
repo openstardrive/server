@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using OpenStardriveServer.Domain.Systems;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems
 {
@@ -9,7 +10,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [TestCase(2, false)]
         public void When_checking_for_insufficient_power(int power, bool insufficient)
         {
-            var state = new SystemBaseStateForTesting
+            var state = new SystemBaseState
             {
                 RequiredPower = 1,
                 CurrentPower = power
@@ -25,7 +26,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [TestCase(false)]
         public void When_checking_if_disabled(bool disabled)
         {
-            var state = new SystemBaseStateForTesting
+            var state = new SystemBaseState
             {
                 Disabled = disabled
             };
@@ -40,7 +41,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [TestCase(false)]
         public void When_checking_if_damaged(bool damaged)
         {
-            var state = new SystemBaseStateForTesting
+            var state = new SystemBaseState
             {
                 Damaged = damaged
             };

@@ -2,7 +2,7 @@ using System;
 
 namespace OpenStardriveServer.Domain.Systems
 {
-    public abstract record SystemBaseState
+    public record SystemBaseState
     {
         public int CurrentPower { get; init; }
         public int RequiredPower { get; init; }

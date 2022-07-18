@@ -9,8 +9,8 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [Test]
         public void When_creating_a_state_change()
         {
-            var newState = new SystemBaseStateForTesting();
-            var result = TransformResult<SystemBaseStateForTesting>.StateChanged(newState);
+            var newState = new SystemBaseState();
+            var result = TransformResult<SystemBaseState>.StateChanged(newState);
 
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
             Assert.That(result.NewState.Value, Is.SameAs(newState));
@@ -20,7 +20,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         [Test]
         public void When_creating_no_change()
         {
-            var result = TransformResult<SystemBaseStateForTesting>.NoChange();
+            var result = TransformResult<SystemBaseState>.NoChange();
 
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
             Assert.That(result.NewState.HasValue, Is.False);
@@ -31,7 +31,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         public void When_creating_an_error()
         {
             var message = "Error message";
-            var result = TransformResult<SystemBaseStateForTesting>.Error(message);
+            var result = TransformResult<SystemBaseState>.Error(message);
 
             Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
             Assert.That(result.NewState.HasValue, Is.False);
@@ -43,8 +43,8 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         {
             var command = new Command();
             var systemName = "test-system";
-            var newState = new SystemBaseStateForTesting();
-            var result = TransformResult<SystemBaseStateForTesting>
+            var newState = new SystemBaseState();
+            var result = TransformResult<SystemBaseState>
                 .StateChanged(newState)
                 .ToCommandResult(command, systemName);
             var expected = CommandResult.StateChanged(command, systemName, newState);
@@ -60,7 +60,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
         {
             var command = new Command();
             var systemName = "test-system";
-            var result = TransformResult<SystemBaseStateForTesting>
+            var result = TransformResult<SystemBaseState>
                 .NoChange()
                 .ToCommandResult(command, systemName);
             var expected = CommandResult.NoChange(command, systemName);
@@ -77,7 +77,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems
             var command = new Command();
             var systemName = "test-system";
             var message = "Error message";
-            var result = TransformResult<SystemBaseStateForTesting>
+            var result = TransformResult<SystemBaseState>
                 .Error(message)
                 .ToCommandResult(command, systemName);
             var expected = CommandResult.Error(command, systemName, message);
