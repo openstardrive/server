@@ -4,25 +4,21 @@ using System.Linq;
 
 namespace OpenStardriveServer.Domain.Systems.Clients
 {
-    public class ClientsSystem : ISystem
+    public class ClientsSystem : SystemBase<ClientsState>
     {
         public static string Name = "clients";
         
-        private ClientsState state = new ClientsState();
-        private readonly ClientsTransformations transformations = new ClientsTransformations();
+        private readonly ClientsTransformations transformations = new();
 
-        public string SystemName => Name;
-
-        public Dictionary<string, Func<Command, CommandResult>> CommandProcessors => new Dictionary<string, Func<Command, CommandResult>>
+        public ClientsSystem()
         {
-            ["register-client"] = (c) =>
+            SystemName = Name;
+            CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
             {
-                var result = transformations.RegisterClient(state, Json.Deserialize<RegisterClientPayload>(c.Payload));
-                result.NewState.IfSome(x => state = x);
-                return result.ToCommandResult(c, SystemName);
-            }
-        };
-
+                ["register-client"] = (c) => Update(c, transformations.RegisterClient(state, Json.Deserialize<RegisterClientPayload>(c.Payload)))
+            };
+        }
+        
         public Maybe<Client> FindClientBySecret(string secret)
         {
             return state.Clients.Where(x => x.ClientSecret == secret).FirstOrNone();
