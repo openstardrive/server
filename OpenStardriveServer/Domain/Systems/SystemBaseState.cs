@@ -1,3 +1,5 @@
+using System;
+
 namespace OpenStardriveServer.Domain.Systems
 {
     public abstract class SystemBaseState
@@ -10,5 +12,12 @@ namespace OpenStardriveServer.Domain.Systems
         public Maybe<string> HasInsufficientPower() => (CurrentPower < RequiredPower).MaybeIf("insufficient power");
         public Maybe<string> IsDisabled() => Disabled.MaybeIf("system disabled");
         public Maybe<string> IsDamaged() => Damaged.MaybeIf("system damaged");
+        
+        public TransformResult<T> IfFunctional<T>(Func<T> stateChange)
+        {
+            return IsDisabled().OrElse(IsDamaged).OrElse(HasInsufficientPower).Case(
+                some: TransformResult<T>.Error,
+                none: () => TransformResult<T>.StateChanged(stateChange()));
+        }
     }
 }

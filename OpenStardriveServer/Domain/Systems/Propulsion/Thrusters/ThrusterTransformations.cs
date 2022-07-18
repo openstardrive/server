@@ -15,7 +15,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
         
         public TransformResult<ThrustersState> SetAttitude(ThrustersState state, ThrusterAttitudePayload payload)
         {
-            return IfFunctional(state, () => CloneThen(state, x =>
+            return state.IfFunctional(() => CloneThen(state, x =>
             {
                 x.Attitude = new ThrustersAttitude
                 {
@@ -26,16 +26,9 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
             }));
         }
 
-        private TransformResult<T> IfFunctional<T>(SystemBaseState state, Func<T> stateChange)
-        {
-            return state.IsDisabled().OrElse(state.IsDamaged).OrElse(state.HasInsufficientPower).Case(
-                some: TransformResult<T>.Error,
-                none: () => TransformResult<T>.StateChanged(stateChange()));
-        }
-
         public TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload)
         {
-            return IfFunctional(state, () => CloneThen(state, x =>
+            return state.IfFunctional(() => CloneThen(state, x =>
             {
                 x.Velocity = new ThrusterVelocity
                 {

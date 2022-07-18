@@ -12,7 +12,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
                 return TransformResult<EnginesState>.NoChange();
             }
 
-            return IfFunctional(state, () => CloneThen(state, x =>
+            return state.IfFunctional(() => CloneThen(state, x =>
             {
                 x.CurrentSpeed = payload.Speed;
             }));
@@ -95,13 +95,6 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
             var ratio = 1 - MaxSpeedRatio(state);
             var totalMilliseconds = TimeSpan.FromMinutes(state.HeatConfig.MinutesToCoolDown).TotalMilliseconds;
             return -1 * (state.HeatConfig.MaxHeat / totalMilliseconds) * ratio;
-        }
-        
-        private TransformResult<T> IfFunctional<T>(SystemBaseState state, Func<T> stateChange)
-        {
-            return state.IsDisabled().OrElse(state.IsDamaged).OrElse(state.HasInsufficientPower).Case(
-                some: TransformResult<T>.Error,
-                none: () => TransformResult<T>.StateChanged(stateChange()));
         }
         
         private EnginesState CloneThen(EnginesState original, Action<EnginesState> then)
