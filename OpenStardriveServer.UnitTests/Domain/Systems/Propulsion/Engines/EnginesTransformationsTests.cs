@@ -7,7 +7,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
 {
     public class EnginesTransformationsTests
     {
-        private readonly EnginesTransformations classUnderTest = new EnginesTransformations();
+        private readonly EnginesTransformations classUnderTest = new();
         
         [Test]
         public void When_setting_speed_successfully()

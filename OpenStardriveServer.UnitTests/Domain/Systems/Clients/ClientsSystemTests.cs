@@ -7,7 +7,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients
 {
     public class ClientsSystemTests : SystemsTest<ClientsSystem>
     {
-        protected override ClientsSystem CreateClassUnderTest() => new ClientsSystem();
+        protected override ClientsSystem CreateClassUnderTest() => new();
 
         [Test]
         public void When_registering_a_client()

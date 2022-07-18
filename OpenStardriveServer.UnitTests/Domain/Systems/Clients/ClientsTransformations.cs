@@ -8,7 +8,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients
 {
     public class ClientsTransformationsTests
     {
-        private ClientsTransformations classUnderTest = new ClientsTransformations();
+        private ClientsTransformations classUnderTest = new();
         
         [Test]
         public void When_registering_a_client()
