@@ -11,16 +11,16 @@ namespace OpenStardriveServer.Domain
         public static string ErrorType = "error";
 
         public static CommandResult UnrecognizedCommand(Command command) =>
-            new CommandResult(command, UnrecognizedCommandType, "", null);
+            new(command, UnrecognizedCommandType, "", null);
 
         public static CommandResult StateChanged(Command command, string system, object newState) =>
-            new CommandResult(command, StateUpdatedType, system, newState);
+            new(command, StateUpdatedType, system, newState);
 
         public static CommandResult NoChange(Command command, string system) =>
-            new CommandResult(command, NoChangeType, system, null);
+            new(command, NoChangeType, system, null);
 
         public static CommandResult Error(Command command, string system, string message) =>
-            new CommandResult(command, ErrorType, system, message);
+            new(command, ErrorType, system, message);
 
         public CommandResult() { }
 

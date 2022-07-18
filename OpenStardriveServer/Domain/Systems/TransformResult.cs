@@ -2,18 +2,18 @@ namespace OpenStardriveServer.Domain.Systems
 {
     public class TransformResult<T>
     {
-        public static TransformResult<T> StateChanged(T newState) => new TransformResult<T>
+        public static TransformResult<T> StateChanged(T newState) => new()
         {
             ResultType = TransformResultType.StateChanged,
             NewState = Maybe<T>.Some(newState)
         };
         
-        public static TransformResult<T> NoChange() => new TransformResult<T>
+        public static TransformResult<T> NoChange() => new()
         {
             ResultType = TransformResultType.NoChange
         };
         
-        public static TransformResult<T> Error(string message) => new TransformResult<T>
+        public static TransformResult<T> Error(string message) => new()
         {
             ResultType = TransformResultType.Error,
             ErrorMessage = message

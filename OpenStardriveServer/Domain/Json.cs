@@ -6,7 +6,7 @@ namespace OpenStardriveServer.Domain
 {
     public static class Json
     {
-        private static JsonSerializerOptions options = new JsonSerializerOptions
+        private static JsonSerializerOptions options = new()
         {
             PropertyNameCaseInsensitive = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase

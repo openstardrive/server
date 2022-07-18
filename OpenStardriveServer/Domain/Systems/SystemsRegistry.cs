@@ -15,7 +15,7 @@ namespace OpenStardriveServer.Domain.Systems
     {
         private Dictionary<string, List<Func<Command, CommandResult>>> allProcessors = null;
 
-        private readonly List<ISystem> allSystems = new List<ISystem>();
+        private readonly List<ISystem> allSystems = new();
 
         public void Register(IEnumerable<ISystem> systems)
         {
