@@ -16,15 +16,14 @@ public class ThrusterTransformationsTests
     {
         var payload = new ThrusterConfigurationPayload
         {
-            Disabled = disabled,
-            Damaged = damaged
+            RequiredPower = 555
         };
+        var expected = new ThrustersState { RequiredPower = 555 };
 
         var result = classUnderTest.Configure(new ThrustersState(), payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
-        Assert.That(result.NewState.Value.Disabled, Is.EqualTo(disabled));
-        Assert.That(result.NewState.Value.Damaged, Is.EqualTo(damaged));
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
     
     [TestCase(1, 2, 3, 1, 2, 3)]

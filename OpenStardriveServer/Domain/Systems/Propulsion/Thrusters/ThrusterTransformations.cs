@@ -6,8 +6,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
         {
             return TransformResult<ThrustersState>.StateChanged(state with
             {
-                Disabled = payload.Disabled,
-                Damaged = payload.Damaged
+                RequiredPower = payload.RequiredPower
             });
         }
         

@@ -11,11 +11,7 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     [Test]
     public void When_configuring_thrusters()
     {
-        var payload = new ThrusterConfigurationPayload
-        {
-            Damaged = true,
-            Disabled = true
-        };
+        var payload = new ThrusterConfigurationPayload { RequiredPower = 7 };
         TestCommand("configure-thrusters", payload,
             transformations.Configure(new ThrustersState(), payload));
     }
