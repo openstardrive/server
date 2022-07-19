@@ -1,7 +1,6 @@
-namespace OpenStardriveServer.Domain.Chronometer
+namespace OpenStardriveServer.Domain.Chronometer;
+
+public record ChronometerPayload
 {
-    public record ChronometerPayload
-    {
-        public long ElapsedMilliseconds { get; init; }
-    }
+    public long ElapsedMilliseconds { get; init; }
 }

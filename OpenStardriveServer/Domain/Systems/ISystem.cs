@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenStardriveServer.Domain.Systems
+namespace OpenStardriveServer.Domain.Systems;
+
+public interface ISystem
 {
-    public interface ISystem
-    {
-        string SystemName { get; }
-        Dictionary<string, Func<Command, CommandResult>> CommandProcessors { get; }
-    }
+    string SystemName { get; }
+    Dictionary<string, Func<Command, CommandResult>> CommandProcessors { get; }
 }

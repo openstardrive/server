@@ -1,28 +1,27 @@
 using System;
 using System.Security.Cryptography;
 
-namespace OpenStardriveServer.Crypto
+namespace OpenStardriveServer.Crypto;
+
+public interface IByteGenerator
 {
-    public interface IByteGenerator
-    {
-        byte[] Generate(int numberOfBytes);
-        string GenerateAsBase64(int numberOfBytes);
-    }
+    byte[] Generate(int numberOfBytes);
+    string GenerateAsBase64(int numberOfBytes);
+}
     
-    public class ByteGenerator : IByteGenerator
+public class ByteGenerator : IByteGenerator
+{
+    private static readonly RandomNumberGenerator generator = RandomNumberGenerator.Create();
+
+    public byte[] Generate(int numberOfBytes)
     {
-        private static readonly RandomNumberGenerator generator = RandomNumberGenerator.Create();
+        var bytes = new byte[numberOfBytes];
+        generator.GetBytes(bytes);
+        return bytes;
+    }
 
-        public byte[] Generate(int numberOfBytes)
-        {
-            var bytes = new byte[numberOfBytes];
-            generator.GetBytes(bytes);
-            return bytes;
-        }
-
-        public string GenerateAsBase64(int numberOfBytes)
-        {
-            return Convert.ToBase64String(Generate(numberOfBytes));
-        }
+    public string GenerateAsBase64(int numberOfBytes)
+    {
+        return Convert.ToBase64String(Generate(numberOfBytes));
     }
 }

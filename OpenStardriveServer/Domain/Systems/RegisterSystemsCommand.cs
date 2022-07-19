@@ -3,31 +3,30 @@ using OpenStardriveServer.Domain.Systems.Clients;
 using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
-namespace OpenStardriveServer.Domain.Systems
+namespace OpenStardriveServer.Domain.Systems;
+
+public interface IRegisterSystemsCommand
 {
-    public interface IRegisterSystemsCommand
+    void Register();
+}
+
+public class RegisterSystemsCommand : IRegisterSystemsCommand
+{
+    private readonly ISystemsRegistry systemsRegistry;
+
+    public RegisterSystemsCommand(ISystemsRegistry systemsRegistry)
     {
-        void Register();
+        this.systemsRegistry = systemsRegistry;
     }
 
-    public class RegisterSystemsCommand : IRegisterSystemsCommand
+    public void Register()
     {
-        private readonly ISystemsRegistry systemsRegistry;
-
-        public RegisterSystemsCommand(ISystemsRegistry systemsRegistry)
+        systemsRegistry.Register(new List<ISystem>
         {
-            this.systemsRegistry = systemsRegistry;
-        }
-
-        public void Register()
-        {
-            systemsRegistry.Register(new List<ISystem>
-            {
-                new ClientsSystem(),
-                new ThrustersSystem(),
-                new EnginesSystem("ftl", EnginesStateDefaults.Ftl),
-                new EnginesSystem("sublight", EnginesStateDefaults.Sublight)
-            });
-        }
+            new ClientsSystem(),
+            new ThrustersSystem(),
+            new EnginesSystem("ftl", EnginesStateDefaults.Ftl),
+            new EnginesSystem("sublight", EnginesStateDefaults.Sublight)
+        });
     }
 }

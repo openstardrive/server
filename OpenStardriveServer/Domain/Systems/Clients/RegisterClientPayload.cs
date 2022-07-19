@@ -1,13 +1,12 @@
 using System;
 
-namespace OpenStardriveServer.Domain.Systems.Clients
+namespace OpenStardriveServer.Domain.Systems.Clients;
+
+public record RegisterClientPayload
 {
-    public record RegisterClientPayload
-    {
-        public Guid ClientId { get; init; }
+    public Guid ClientId { get; init; }
         
-        public string ClientSecret { get; init; }
+    public string ClientSecret { get; init; }
         
-        public string Name { get; init; }
-    }
+    public string Name { get; init; }
 }

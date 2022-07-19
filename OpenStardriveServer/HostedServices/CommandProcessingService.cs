@@ -4,29 +4,28 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenStardriveServer.Domain;
 
-namespace OpenStardriveServer.HostedServices
+namespace OpenStardriveServer.HostedServices;
+
+public class CommandProcessingService : BackgroundService
 {
-    public class CommandProcessingService : BackgroundService
+    private readonly ICommandProcessor commandProcessor;
+    private readonly ILogger<CommandProcessingService> logger;
+
+    public CommandProcessingService(ICommandProcessor commandProcessor, ILogger<CommandProcessingService> logger)
     {
-        private readonly ICommandProcessor commandProcessor;
-        private readonly ILogger<CommandProcessingService> logger;
+        this.commandProcessor = commandProcessor;
+        this.logger = logger;
+    }
 
-        public CommandProcessingService(ICommandProcessor commandProcessor, ILogger<CommandProcessingService> logger)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        logger.LogInformation("Starting command processor...");
+        await Task.Yield();
+        while (!stoppingToken.IsCancellationRequested)
         {
-            this.commandProcessor = commandProcessor;
-            this.logger = logger;
+            await commandProcessor.ProcessBatch();
+            await Task.Delay(200, stoppingToken);
         }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            logger.LogInformation("Starting command processor...");
-            await Task.Yield();
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await commandProcessor.ProcessBatch();
-                await Task.Delay(200, stoppingToken);
-            }
-            logger.LogInformation("Command processor shutdown");
-        }
+        logger.LogInformation("Command processor shutdown");
     }
 }

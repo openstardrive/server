@@ -5,35 +5,34 @@ using Microsoft.Extensions.Hosting;
 using OpenStardriveServer.Domain.Database;
 using OpenStardriveServer.HostedServices;
 
-namespace OpenStardriveServer
+namespace OpenStardriveServer;
+
+public class Startup
 {
-    public class Startup
+    public void ConfigureServices(IServiceCollection services)
     {
-        public void ConfigureServices(IServiceCollection services)
+        DependencyInjectionConfig.ConfigureServices(services);
+        services.AddSingleton(x => new SqliteDatabase
         {
-            DependencyInjectionConfig.ConfigureServices(services);
-            services.AddSingleton(x => new SqliteDatabase
-            {
-                ConnectionString = $"Data Source=openstardrive-server.sqlite"
-            });
+            ConnectionString = $"Data Source=openstardrive-server.sqlite"
+        });
             
-            services.AddControllers();
+        services.AddControllers();
 
-            services.AddHostedService<ServerInitializationService>();
-            services.AddHostedService<CommandProcessingService>();
-            services.AddHostedService<ChronometerService>();
-        }
+        services.AddHostedService<ServerInitializationService>();
+        services.AddHostedService<CommandProcessingService>();
+        services.AddHostedService<ChronometerService>();
+    }
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseDeveloperExceptionPage();
         }
+
+        app.UseRouting();
+
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

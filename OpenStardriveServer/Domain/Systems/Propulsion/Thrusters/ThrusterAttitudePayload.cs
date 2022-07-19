@@ -1,9 +1,8 @@
-namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
+namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
+
+public record ThrusterAttitudePayload
 {
-    public record ThrusterAttitudePayload
-    {
-        public int Yaw { get; init; }
-        public int Pitch { get; init; }
-        public int Roll { get; init; }
-    }
+    public int Yaw { get; init; }
+    public int Pitch { get; init; }
+    public int Roll { get; init; }
 }

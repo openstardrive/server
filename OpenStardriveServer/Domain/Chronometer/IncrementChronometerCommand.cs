@@ -1,39 +1,38 @@
 using System;
 using System.Threading.Tasks;
 
-namespace OpenStardriveServer.Domain.Chronometer
+namespace OpenStardriveServer.Domain.Chronometer;
+
+public interface IIncrementChronometerCommand
 {
-    public interface IIncrementChronometerCommand
+    Task Increment();
+}
+
+public class IncrementChronometerCommand : IIncrementChronometerCommand
+{
+    private DateTimeOffset lastTime = DateTimeOffset.UtcNow;
+
+    private readonly ICommandRepository commandRepository;
+
+    public IncrementChronometerCommand(ICommandRepository commandRepository)
     {
-        Task Increment();
+        this.commandRepository = commandRepository;
     }
 
-    public class IncrementChronometerCommand : IIncrementChronometerCommand
+    public async Task Increment()
     {
-        private DateTimeOffset lastTime = DateTimeOffset.UtcNow;
-
-        private readonly ICommandRepository commandRepository;
-
-        public IncrementChronometerCommand(ICommandRepository commandRepository)
+        var now = DateTimeOffset.UtcNow;
+        var elapsedMilliseconds = (long) (now - lastTime).TotalMilliseconds;
+        await commandRepository.Save(new Command
         {
-            this.commandRepository = commandRepository;
-        }
+            Type = ChronometerCommand.Type,
+            Payload = Json.Serialize(new { elapsedMilliseconds })
+        });
+        lastTime = now;
+    }
 
-        public async Task Increment()
-        {
-            var now = DateTimeOffset.UtcNow;
-            var elapsedMilliseconds = (long) (now - lastTime).TotalMilliseconds;
-            await commandRepository.Save(new Command
-            {
-                Type = ChronometerCommand.Type,
-                Payload = Json.Serialize(new { elapsedMilliseconds })
-            });
-            lastTime = now;
-        }
-
-        public void SetLastTimeForTesting(DateTimeOffset value)
-        {
-            lastTime = value;
-        }
+    public void SetLastTimeForTesting(DateTimeOffset value)
+    {
+        lastTime = value;
     }
 }

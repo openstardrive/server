@@ -1,7 +1,6 @@
-namespace OpenStardriveServer.Domain.Database
+namespace OpenStardriveServer.Domain.Database;
+
+public class SqliteDatabase
 {
-    public class SqliteDatabase
-    {
-        public string ConnectionString { get; set; }
-    }
+    public string ConnectionString { get; set; }
 }
