@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using OpenStardriveServer.Domain.Chronometer;
 using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 using OpenStardriveServer.Domain.Systems.Standard;

@@ -1,5 +1,4 @@
 using System;
-using NUnit.Framework;
 using OpenStardriveServer.Domain;
 
 namespace OpenStardriveServer.UnitTests.Domain

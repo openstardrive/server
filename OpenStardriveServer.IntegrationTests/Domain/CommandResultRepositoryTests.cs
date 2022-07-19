@@ -1,10 +1,7 @@
 using System;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using OpenStardriveServer.Domain;
-using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
 namespace OpenStardriveServer.IntegrationTests.Domain
 {

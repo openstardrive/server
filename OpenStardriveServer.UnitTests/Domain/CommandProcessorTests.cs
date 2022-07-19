@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
-using NUnit.Framework;
 using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Systems;
 
@@ -17,7 +16,7 @@ namespace OpenStardriveServer.UnitTests.Domain
             var command = new Command { Type = "test-command" };
             var processors = new Dictionary<string, List<Func<Command, CommandResult>>>
             {
-                ["test-command"] = new List<Func<Command, CommandResult>>
+                ["test-command"] = new()
                 {
                     c => CommandResult.NoChange(c, "system-a"),
                     c => throw new Exception("test exception"),
@@ -61,7 +60,7 @@ namespace OpenStardriveServer.UnitTests.Domain
             }).ToList();
             var processors = new Dictionary<string, List<Func<Command, CommandResult>>>
             {
-                ["test-command-2"] = new List<Func<Command, CommandResult>>
+                ["test-command-2"] = new()
                 {
                     c => CommandResult.NoChange(c, "system-a"),
                     c => CommandResult.StateChanged(c, "system", "example-state"),

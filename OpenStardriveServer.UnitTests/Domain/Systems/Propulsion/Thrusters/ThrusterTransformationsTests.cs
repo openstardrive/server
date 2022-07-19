@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 using OpenStardriveServer.Domain.Systems.Standard;
