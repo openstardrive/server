@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using OpenStardriveServer.Domain.Chronometer;
 using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
+using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
 {
@@ -8,13 +9,35 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines
     {
         protected override EnginesSystem CreateClassUnderTest() => new("testing", EnginesStateDefaults.Testing);
 
-        private readonly EnginesTransformations transformations = new(); 
+        private readonly StandardSystemBaseStateTransformations<EnginesState> standardTransformations = new();
+        private readonly EnginesTransformations transformations = new();
+        
+        [Test]
+        public void When_setting_power()
+        {
+            var payload = new SystemPowerPayload { CurrentPower = 3 };
+            TestCommand("set-testing-engines-power", payload, standardTransformations.SetCurrentPower(EnginesStateDefaults.Testing, payload));
+        }
+    
+        [Test]
+        public void When_setting_damaged()
+        {
+            var payload = new SystemDamagePayload { Damaged = true };
+            TestCommand("set-testing-engines-damaged", payload, standardTransformations.SetDamage(EnginesStateDefaults.Testing, payload));
+        }
+    
+        [Test]
+        public void When_setting_disabled()
+        {
+            var payload = new SystemDisabledPayload { Disabled = true };
+            TestCommand("set-testing-engines-disabled", payload, standardTransformations.SetDisabled(EnginesStateDefaults.Testing, payload));
+        }
         
         [Test]
         public void When_setting_speed()
         {
             var payload = new SetSpeedPayload { Speed = 3 };
-            TestCommand("set-testing-speed", payload,
+            TestCommand("set-testing-engines-speed", payload,
                 transformations.SetSpeed(EnginesStateDefaults.Testing, payload));
         }
 

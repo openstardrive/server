@@ -9,15 +9,15 @@ curl -i -X POST -H 'content-type: application/json' -d '{"name":"Curl Client"}' 
 }
 ```
 
-curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-thruster-attitude", "payload": {"yaw": 1, "pitch": 2, "roll": 3}}' http://localhost:5000/command ; echo
+curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-thrusters-attitude", "payload": {"yaw": 1, "pitch": 2, "roll": 3}}' http://localhost:5000/command ; echo
 
-curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-thruster-attitude", "payload": "turtles"}' http://localhost:5000/command ; echo
+curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-thrusters-attitude", "payload": "turtles"}' http://localhost:5000/command ; echo
 
-curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-thruster-velocity", "payload": {"x": 123, "y": 234, "z": "345"}}' http://localhost:5000/command ; echo
+curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-thrusters-velocity", "payload": {"x": 123, "y": 234, "z": "345"}}' http://localhost:5000/command ; echo
 
 curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"chronometer", "payload": {"elapsedMilliseconds": 1000}}' http://localhost:5000/command ; echo
 
-curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-ftl-speed", "payload": {"speed": 4}}' http://localhost:5000/command ; echo
+curl -i -X POST -H 'content-type: application/json' -d '{"clientSecret": "OZPokmaTog8+k4jKVAVhJ6rVh3EEL7Ev4xvuQu4p5Rk=", "type":"set-ftl-engines-speed", "payload": {"speed": 4}}' http://localhost:5000/command ; echo
 
 
 
