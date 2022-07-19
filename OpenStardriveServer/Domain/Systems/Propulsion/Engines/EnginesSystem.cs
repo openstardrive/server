@@ -7,7 +7,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
 {
     public class EnginesSystem : StandardSystemBase<EnginesState>
     {
-        private EnginesTransformations transformations = new();
+        private readonly EnginesTransformations transformations = new();
 
         public EnginesSystem(string name, EnginesState initialState)
         {

@@ -2,7 +2,7 @@ namespace OpenStardriveServer.Domain.Systems.Standard;
 
 public class StandardSystemBase<T> : SystemBase<T> where T : StandardSystemBaseState, new()
 {
-    private StandardSystemBaseStateTransformations<T> standardTransformations = new();
+    private readonly StandardSystemBaseStateTransformations<T> standardTransformations = new();
     
     protected void AddStandardTransforms()
     {

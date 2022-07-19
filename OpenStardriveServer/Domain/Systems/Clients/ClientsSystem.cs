@@ -6,8 +6,8 @@ namespace OpenStardriveServer.Domain.Systems.Clients
 {
     public class ClientsSystem : SystemBase<ClientsState>
     {
-        public static string Name = "clients";
-        
+        public const string Name = "clients";
+
         private readonly ClientsTransformations transformations = new();
 
         public ClientsSystem()
