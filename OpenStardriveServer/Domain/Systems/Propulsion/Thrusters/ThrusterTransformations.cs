@@ -1,3 +1,5 @@
+using OpenStardriveServer.Domain.Systems.Standard;
+
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
 {
     public class ThrusterTransformations
@@ -39,6 +41,21 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters
                     Z = payload.Z,
                 }
             });
+        }
+        
+        public TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, SystemPowerPayload payload)
+        {
+            return TransformResult<ThrustersState>.StateChanged(state with { CurrentPower = payload.CurrentPower });
+        }
+    
+        public TransformResult<ThrustersState> SetDamage(ThrustersState state, SystemDamagePayload payload)
+        {
+            return TransformResult<ThrustersState>.StateChanged(state with { Damaged = payload.Damaged });
+        }
+    
+        public TransformResult<ThrustersState> SetDisabled(ThrustersState state, SystemDisabledPayload payload)
+        {
+            return TransformResult<ThrustersState>.StateChanged(state with { Disabled = payload.Disabled });
         }
     }
 }

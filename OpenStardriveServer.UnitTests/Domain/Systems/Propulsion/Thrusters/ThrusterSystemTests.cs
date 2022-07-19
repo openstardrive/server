@@ -6,28 +6,27 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Thrusters;
 public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
 {
     protected override ThrustersSystem CreateClassUnderTest() => new();
-    private StandardSystemBaseStateTransformations<ThrustersState> standardTransformations = new();
     private ThrusterTransformations transformations = new();
 
     [Test]
     public void When_setting_power()
     {
         var payload = new SystemPowerPayload { CurrentPower = 3 };
-        TestCommand("set-thrusters-power", payload, standardTransformations.SetCurrentPower(new ThrustersState(), payload));
+        TestCommand("set-thrusters-power", payload, transformations.SetCurrentPower(new ThrustersState(), payload));
     }
     
     [Test]
     public void When_setting_damaged()
     {
         var payload = new SystemDamagePayload { Damaged = true };
-        TestCommand("set-thrusters-damaged", payload, standardTransformations.SetDamage(new ThrustersState(), payload));
+        TestCommand("set-thrusters-damaged", payload, transformations.SetDamage(new ThrustersState(), payload));
     }
     
     [Test]
     public void When_setting_disabled()
     {
         var payload = new SystemDisabledPayload { Disabled = true };
-        TestCommand("set-thrusters-disabled", payload, standardTransformations.SetDisabled(new ThrustersState(), payload));
+        TestCommand("set-thrusters-disabled", payload, transformations.SetDisabled(new ThrustersState(), payload));
     }
 
     [Test]

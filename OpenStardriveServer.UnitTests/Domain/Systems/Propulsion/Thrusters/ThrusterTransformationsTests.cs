@@ -102,4 +102,44 @@ public class ThrusterTransformationsTests
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
     }
+    
+    [TestCase(0)]
+    [TestCase(2)]
+    [TestCase(4)]
+    public void When_setting_current_power(int currentPower)
+    {
+        var payload = new SystemPowerPayload { CurrentPower = currentPower };
+        var expected = new ThrustersState { CurrentPower = currentPower };
+
+        var result = classUnderTest.SetCurrentPower(new ThrustersState(), payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [TestCase(true)]
+    [TestCase(false)]
+    public void When_setting_damage(bool damaged)
+    {
+        var payload = new SystemDamagePayload { Damaged = damaged };
+        var expected = new ThrustersState { Damaged = damaged };
+
+        var result = classUnderTest.SetDamage(new ThrustersState { Damaged = !damaged }, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [TestCase(true)]
+    [TestCase(false)]
+    public void When_setting_disabled(bool disabled)
+    {
+        var payload = new SystemDisabledPayload { Disabled = disabled };
+        var expected = new ThrustersState { Disabled = disabled };
+
+        var result = classUnderTest.SetDisabled(new ThrustersState { Disabled = !disabled }, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
 }
