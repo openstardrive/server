@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenStardriveServer.Domain.Chronometer;
 using OpenStardriveServer.Domain.Systems.Standard;
@@ -9,15 +10,61 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines
     {
         public TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload)
         {
+            if (payload.Speed < 0 || payload.Speed > state.SpeedConfig.MaxSpeed)
+            {
+                return TransformResult<EnginesState>.Error("invalid speed");
+            }
             return state.IfFunctional(() =>
             {
-                var powerRequirement = state.SpeedPowerRequirements.FirstOrDefault(x => x.Speed == payload.Speed);
-                if (powerRequirement is not null && powerRequirement.PowerNeeded > state.CurrentPower)
+                var powerRequired = CalculatePowerRequirements(state).Find(x => x.speed == payload.Speed).powerRequired;
+                if (powerRequired > state.CurrentPower)
                 {
                     return TransformResult<EnginesState>.Error(StandardSystemBaseState.InsufficientPowerError);
                 }
 
                 return TransformResult<EnginesState>.StateChanged(state with { CurrentSpeed = payload.Speed });
+            });
+        }
+
+        private List<(int speed, int powerRequired)> CalculatePowerRequirements(EnginesState state)
+        {
+            var result = new List<(int speed, int powerRequired)> { (0, 0) };
+            var lastRequirement = state.RequiredPower;
+            for (var speed = 1; speed <= state.SpeedConfig.MaxSpeed; speed++)
+            {
+                var defaultRequirement = new SpeedPowerRequirement { PowerNeeded = lastRequirement };
+                var required = state.SpeedPowerRequirements.FirstOrDefault(x => x.Speed == speed, defaultRequirement).PowerNeeded;
+                lastRequirement = required;
+                result.Add((speed, lastRequirement));
+            }
+            return result;
+        }
+
+        public TransformResult<EnginesState> SetDamage(EnginesState state, SystemDamagePayload payload)
+        {
+            var newSpeed = payload.Damaged ? 0 : state.CurrentSpeed;
+            return TransformResult<EnginesState>.StateChanged(state with { Damaged = payload.Damaged, CurrentSpeed = newSpeed });
+        }
+        
+        public TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload)
+        {
+            var newSpeed = payload.Disabled ? 0 : state.CurrentSpeed;
+            return TransformResult<EnginesState>.StateChanged(state with { Disabled = payload.Disabled, CurrentSpeed = newSpeed });
+        }
+        
+        public TransformResult<EnginesState> SetCurrentPower(EnginesState state, SystemPowerPayload payload)
+        {
+            var newSpeed = state.CurrentSpeed;
+            if (state.CurrentSpeed > 0)
+            {
+                newSpeed = CalculatePowerRequirements(state)
+                    .Where(x => x.speed <= state.CurrentSpeed && x.powerRequired <= payload.CurrentPower)
+                    .LastOrDefault((speed: 0, powerRequired: 0)).speed;
+            }
+            return TransformResult<EnginesState>.StateChanged(state with
+            {
+                CurrentPower = payload.CurrentPower,
+                CurrentSpeed = newSpeed
             });
         }
 
