@@ -13,7 +13,7 @@ namespace OpenStardriveServer.IntegrationTests.Domain
             var command = new Command
             {
                 CommandId = Guid.NewGuid(),
-                Type = "set-thruster-attitude",
+                Type = "set-thrusters-attitude",
                 Payload = @"{""yaw"": 1, ""pitch"": 20, ""roll"": 300}",
             };
             var result = ClassUnderTest.Process(command).ToList();
