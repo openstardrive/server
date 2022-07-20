@@ -7,16 +7,13 @@ public record ShieldsState : StandardSystemBaseState
     public bool Raised { get; init; }
     public double ModulationFrequency { get; init; }
 
-    public ShieldSectionStrength[] SectionStrengths { get; init; } = {
-        new() { Section = "Forward", PercentStrength = 1 },
-        new() { Section = "Aft", PercentStrength = 1 },
-        new() { Section = "Port", PercentStrength = 1 },
-        new() { Section = "Starboard", PercentStrength = 1 }
-    };
+    public ShieldSectionStrengths SectionStrengths { get; init; } = new();
 }
 
-public record ShieldSectionStrength
+public record ShieldSectionStrengths
 {
-    public string Section { get; init; }
-    public decimal PercentStrength { get; init; }
+    public double ForwardPercent { get; init; } = 1;
+    public double AftPercent { get; init; } = 1;
+    public double PortPercent { get; init; } = 1;
+    public double StarboardPercent { get; init; } = 1;
 }

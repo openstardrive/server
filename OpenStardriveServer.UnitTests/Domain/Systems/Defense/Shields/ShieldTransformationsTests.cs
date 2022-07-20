@@ -120,4 +120,33 @@ public class ShieldTransformationsTests
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
+
+    [TestCase(.3, .4, .5, .6, .3, .4, .5, .6)]
+    [TestCase(-.3, -.4, -.5, -.6, 0, 0, 0, 0)]
+    [TestCase(1.3, 1.4, 1.5, 1.6, 1, 1, 1, 1)]
+    [TestCase(0, 0, 0, 0, 0, 0, 0, 0)]
+    [TestCase(1, 1, 1, 1, 1, 1, 1, 1)]
+    public void When_setting_shield_section_strengths(double forward, double aft, double port, double starboard,
+        double expectedForward, double expectedAft, double expectedPort, double expectedStarboard)
+    {
+        var state = new ShieldsState();
+        var payload = new ShieldStrengthPayload { SectionStrengths = new ShieldSectionStrengths
+        {
+            ForwardPercent = forward,
+            AftPercent = aft,
+            PortPercent = port,
+            StarboardPercent = starboard
+        }};
+        var expected = state with { SectionStrengths = new ShieldSectionStrengths
+        {
+            ForwardPercent = expectedForward,
+            AftPercent = expectedAft,
+            PortPercent = expectedPort,
+            StarboardPercent = expectedStarboard
+        } };
+
+        var result = classUnderTest.SetSectionStrengths(state, payload);
+        
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
 }

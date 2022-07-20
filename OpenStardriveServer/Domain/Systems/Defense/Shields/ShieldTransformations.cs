@@ -1,3 +1,4 @@
+using System;
 using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.Shields;
@@ -34,5 +35,16 @@ public class ShieldTransformations
     public TransformResult<ShieldsState> SetDisabled(ShieldsState state, SystemDisabledPayload payload)
     {
         return TransformResult<ShieldsState>.StateChanged(state with { Disabled = payload.Disabled });
+    }
+
+    public TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload)
+    {
+        return TransformResult<ShieldsState>.StateChanged(state with { SectionStrengths = new ShieldSectionStrengths
+        {
+            ForwardPercent = Math.Clamp(payload.SectionStrengths.ForwardPercent, 0, 1),
+            AftPercent = Math.Clamp(payload.SectionStrengths.AftPercent, 0, 1),
+            PortPercent = Math.Clamp(payload.SectionStrengths.PortPercent, 0, 1),
+            StarboardPercent = Math.Clamp(payload.SectionStrengths.StarboardPercent, 0, 1)
+        }});
     }
 }
