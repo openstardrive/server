@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using OpenStardriveServer.Domain.Systems.Clients;
+using OpenStardriveServer.Domain.Systems.Defense.Shields;
 using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
@@ -26,7 +27,8 @@ public class RegisterSystemsCommand : IRegisterSystemsCommand
             new ClientsSystem(),
             new ThrustersSystem(),
             new EnginesSystem("ftl", EnginesStateDefaults.Ftl),
-            new EnginesSystem("sublight", EnginesStateDefaults.Sublight)
+            new EnginesSystem("sublight", EnginesStateDefaults.Sublight),
+            new ShieldsSystem()
         });
     }
 }
