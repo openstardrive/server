@@ -6,7 +6,17 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 
-public class EnginesTransformations
+public interface IEnginesTransformations
+{
+    TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload);
+    TransformResult<EnginesState> SetDamage(EnginesState state, SystemDamagePayload payload);
+    TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload);
+    TransformResult<EnginesState> SetCurrentPower(EnginesState state, SystemPowerPayload payload);
+    TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload);
+    TransformResult<EnginesState> Configure(EnginesState state, EnginesConfigurationPayload payload);
+}
+
+public class EnginesTransformations : IEnginesTransformations
 {
     public TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload)
     {

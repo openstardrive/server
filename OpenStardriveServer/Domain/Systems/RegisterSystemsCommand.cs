@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using OpenStardriveServer.Domain.Systems.Clients;
-using OpenStardriveServer.Domain.Systems.Defense.Shields;
-using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
-using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
+using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OpenStardriveServer.Domain.Systems;
 
@@ -14,21 +11,16 @@ public interface IRegisterSystemsCommand
 public class RegisterSystemsCommand : IRegisterSystemsCommand
 {
     private readonly ISystemsRegistry systemsRegistry;
+    private readonly IServiceProvider serviceProvider;
 
-    public RegisterSystemsCommand(ISystemsRegistry systemsRegistry)
+    public RegisterSystemsCommand(ISystemsRegistry systemsRegistry, IServiceProvider serviceProvider)
     {
         this.systemsRegistry = systemsRegistry;
+        this.serviceProvider = serviceProvider;
     }
 
     public void Register()
     {
-        systemsRegistry.Register(new List<ISystem>
-        {
-            new ClientsSystem(),
-            new ThrustersSystem(),
-            new EnginesSystem("ftl", EnginesStateDefaults.Ftl),
-            new EnginesSystem("sublight", EnginesStateDefaults.Sublight),
-            new ShieldsSystem()
-        });
+        systemsRegistry.Register(serviceProvider.GetServices<ISystem>());
     }
 }

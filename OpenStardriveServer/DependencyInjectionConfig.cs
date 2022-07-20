@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using OpenStardriveServer.Domain.Systems;
 
@@ -12,6 +13,10 @@ public static class DependencyInjectionConfig
             scan.FromAssemblyOf<Startup>()
                 .AddClasses()
                 .AsMatchingInterface()
+                .WithTransientLifetime();
+            scan.FromAssemblyOf<Startup>()
+                .AddClasses(x => x.Where(y => y.GetInterfaces().Contains(typeof(ISystem))))
+                .AsImplementedInterfaces()
                 .WithTransientLifetime();
         });
 

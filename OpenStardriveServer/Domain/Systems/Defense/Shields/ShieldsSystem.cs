@@ -6,11 +6,9 @@ namespace OpenStardriveServer.Domain.Systems.Defense.Shields;
 
 public class ShieldsSystem : SystemBase<ShieldsState>
 {
-    private readonly ShieldTransformations transformations = new();
-
-    public ShieldsSystem()
+    public ShieldsSystem(IShieldTransformations transformations)
     {
-        SystemName = $"shields";
+        SystemName = "shields";
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
             ["set-shields-power"] = (c) => Update(c, transformations.SetPower(state, Json.Deserialize<SystemPowerPayload>(c.Payload))),

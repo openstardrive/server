@@ -8,9 +8,7 @@ public class ClientsSystem : SystemBase<ClientsState>
 {
     public const string Name = "clients";
 
-    private readonly ClientsTransformations transformations = new();
-
-    public ClientsSystem()
+    public ClientsSystem(IClientsTransformations transformations)
     {
         SystemName = Name;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>

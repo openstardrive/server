@@ -3,7 +3,18 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.Shields;
 
-public class ShieldTransformations
+public interface IShieldTransformations
+{
+    TransformResult<ShieldsState> RaiseShields(ShieldsState state);
+    TransformResult<ShieldsState> LowerShields(ShieldsState state);
+    TransformResult<ShieldsState> SetModulationFrequency(ShieldsState state, ShieldModulationPayload payload);
+    TransformResult<ShieldsState> SetPower(ShieldsState state, SystemPowerPayload payload);
+    TransformResult<ShieldsState> SetDamaged(ShieldsState state, SystemDamagePayload payload);
+    TransformResult<ShieldsState> SetDisabled(ShieldsState state, SystemDisabledPayload payload);
+    TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload);
+}
+
+public class ShieldTransformations : IShieldTransformations
 {
     public TransformResult<ShieldsState> RaiseShields(ShieldsState state)
     {

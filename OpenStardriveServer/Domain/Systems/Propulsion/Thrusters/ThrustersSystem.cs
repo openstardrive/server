@@ -6,9 +6,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
 public class ThrustersSystem : SystemBase<ThrustersState>
 {
-    private readonly ThrusterTransformations transformations = new();
-
-    public ThrustersSystem()
+    public ThrustersSystem(IThrusterTransformations transformations)
     {
         SystemName = "thrusters";
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>

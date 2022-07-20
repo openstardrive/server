@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OpenStardriveServer.Domain.Systems;
 
-public class SystemBase<T> : ISystem where T : new()
+public abstract class SystemBase<T> : ISystem where T : new()
 {
     public string SystemName { get; protected init; }
     public Dictionary<string, Func<Command, CommandResult>> CommandProcessors { get; protected init; }

@@ -3,7 +3,12 @@ using System.Collections.Generic;
 
 namespace OpenStardriveServer.Domain.Systems.Clients;
 
-public class ClientsTransformations
+public interface IClientsTransformations
+{
+    TransformResult<ClientsState> RegisterClient(ClientsState state, RegisterClientPayload payload);
+}
+
+public class ClientsTransformations : IClientsTransformations
 {
     public TransformResult<ClientsState> RegisterClient(ClientsState state, RegisterClientPayload payload)
     {

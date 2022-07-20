@@ -5,13 +5,11 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 
-public class EnginesSystem : SystemBase<EnginesState>
+public abstract class EnginesSystem : SystemBase<EnginesState>
 {
-    private readonly EnginesTransformations transformations = new();
-
-    public EnginesSystem(string name, EnginesState initialState)
+    protected EnginesSystem(string systemName, EnginesState initialState, IEnginesTransformations transformations)
     {
-        SystemName = $"{name}-engines";
+        SystemName = systemName;
         state = initialState;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
@@ -23,4 +21,18 @@ public class EnginesSystem : SystemBase<EnginesState>
             [$"set-{SystemName}-disabled"] = (c) => Update(c, transformations.SetDisabled(state, Json.Deserialize<SystemDisabledPayload>(c.Payload)))
         };
     }
+}
+
+public class FtlEnginesSystem : EnginesSystem
+{
+    public FtlEnginesSystem(IEnginesTransformations transformations)
+        : base("ftl-engines", EnginesStateDefaults.Ftl, transformations)
+    { }
+}
+
+public class SublightEnginesSystem : EnginesSystem
+{
+    public SublightEnginesSystem(IEnginesTransformations transformations)
+        : base("sublight-engines", EnginesStateDefaults.Sublight, transformations)
+    { }
 }

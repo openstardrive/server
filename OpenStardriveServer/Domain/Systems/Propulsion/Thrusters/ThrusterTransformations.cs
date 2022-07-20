@@ -2,7 +2,17 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
-public class ThrusterTransformations
+public interface IThrusterTransformations
+{
+    TransformResult<ThrustersState> Configure(ThrustersState state, ThrusterConfigurationPayload payload);
+    TransformResult<ThrustersState> SetAttitude(ThrustersState state, ThrusterAttitudePayload payload);
+    TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload);
+    TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, SystemPowerPayload payload);
+    TransformResult<ThrustersState> SetDamage(ThrustersState state, SystemDamagePayload payload);
+    TransformResult<ThrustersState> SetDisabled(ThrustersState state, SystemDisabledPayload payload);
+}
+
+public class ThrusterTransformations : IThrusterTransformations
 {
     public TransformResult<ThrustersState> Configure(ThrustersState state, ThrusterConfigurationPayload payload)
     {
