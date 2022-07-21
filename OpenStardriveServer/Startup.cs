@@ -32,7 +32,7 @@ public class Startup
         }
 
         app.UseRouting();
-
+        app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().Build());
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }
