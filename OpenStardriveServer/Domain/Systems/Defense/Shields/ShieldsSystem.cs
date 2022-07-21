@@ -16,7 +16,8 @@ public class ShieldsSystem : SystemBase<ShieldsState>
             ["set-shields-disabled"] = (c) => Update(c, transformations.SetDisabled(state, Json.Deserialize<SystemDisabledPayload>(c.Payload))),
             ["raise-shields"] = (c) => Update(c, transformations.RaiseShields(state)),
             ["lower-shields"] = (c) => Update(c, transformations.LowerShields(state)),
-            ["modulate-shields"] = (c) => Update(c, transformations.SetModulationFrequency(state, Json.Deserialize<ShieldModulationPayload>(c.Payload)))
+            ["modulate-shields"] = (c) => Update(c, transformations.SetModulationFrequency(state, Json.Deserialize<ShieldModulationPayload>(c.Payload))),
+            ["set-shield-strengths"] = (c) => Update(c, transformations.SetSectionStrengths(state, Json.Deserialize<ShieldStrengthPayload>(c.Payload)))
         };
     }
 }

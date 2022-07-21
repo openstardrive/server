@@ -54,4 +54,12 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
         GetMock<IShieldTransformations>().Setup(x => x.SetModulationFrequency(Any<ShieldsState>(), payload)).Returns(expected);
         TestCommand("modulate-shields", payload, expected);
     }
+
+    [Test]
+    public void When_setting_section_strengths()
+    {
+        var payload = new ShieldStrengthPayload();
+        GetMock<IShieldTransformations>().Setup(x => x.SetSectionStrengths(Any<ShieldsState>(), payload)).Returns(expected);
+        TestCommand("set-shield-strengths", payload, expected);
+    }
 }
