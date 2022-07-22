@@ -11,6 +11,7 @@ public class ThrustersSystem : SystemBase<ThrustersState>
         SystemName = "thrusters";
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
+            ["report-state"] = (c) => Update(c, TransformResult<ThrustersState>.StateChanged(state)),
             ["configure-thrusters"] = (c) => Update(c, transformations.Configure(state, Json.Deserialize<ThrusterConfigurationPayload>(c.Payload))),
             ["set-thrusters-attitude"] = (c) => Update(c, transformations.SetAttitude(state, Json.Deserialize<ThrusterAttitudePayload>(c.Payload))),
             ["set-thrusters-velocity"] = (c) => Update(c, transformations.SetVelocity(state, Json.Deserialize<ThrusterVelocityPayload>(c.Payload))),

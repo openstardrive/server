@@ -13,10 +13,11 @@ public class ClientsSystem : SystemBase<ClientsState>
         SystemName = Name;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
+            ["report-state"] = (c) => Update(c, TransformResult<ClientsState>.StateChanged(state)),
             ["register-client"] = (c) => Update(c, transformations.RegisterClient(state, Json.Deserialize<RegisterClientPayload>(c.Payload)))
         };
     }
-        
+    
     public Maybe<Client> FindClientBySecret(string secret)
     {
         return state.Clients.Where(x => x.ClientSecret == secret).FirstOrNone();

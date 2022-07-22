@@ -1,11 +1,18 @@
 using System;
 using OpenStardriveServer.Domain;
+using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Clients;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients;
 
 public class ClientsSystemTests : SystemsTest<ClientsSystem>
 {
+    [Test]
+    public void When_reporting_state()
+    {
+        TestCommand("report-state", null, TransformResult<ClientsState>.StateChanged(new ClientsState()));    
+    }
+    
     [Test]
     public void When_registering_a_client()
     {

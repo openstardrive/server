@@ -8,6 +8,12 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
 {
     private readonly TransformResult<ShieldsState> expected =
         TransformResult<ShieldsState>.StateChanged(new ShieldsState());
+
+    [Test]
+    public void When_reporting_state()
+    {
+        TestCommand("report-state", null, TransformResult<ShieldsState>.StateChanged(new ShieldsState()));    
+    }
     
     [Test]
     public void When_setting_power()

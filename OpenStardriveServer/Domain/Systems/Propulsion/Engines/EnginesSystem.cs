@@ -13,6 +13,7 @@ public abstract class EnginesSystem : SystemBase<EnginesState>
         state = initialState;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
+            ["report-state"] = (c) => Update(c, TransformResult<EnginesState>.StateChanged(state)),
             [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, Json.Deserialize<SetSpeedPayload>(c.Payload))),
             [$"configure-{SystemName}"] = c => Update(c, transformations.Configure(state, Json.Deserialize<EnginesConfigurationPayload>(c.Payload))),
             [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, Json.Deserialize<ChronometerPayload>(c.Payload))),

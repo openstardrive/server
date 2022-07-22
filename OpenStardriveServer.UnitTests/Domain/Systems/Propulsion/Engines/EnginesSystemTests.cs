@@ -11,6 +11,12 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
         TransformResult<EnginesState>.StateChanged(new EnginesState());
 
     [Test]
+    public void When_reporting_state()
+    {
+        TestCommand("report-state", null, TransformResult<EnginesState>.StateChanged(EnginesStateDefaults.Testing));    
+    }
+    
+    [Test]
     public void When_setting_power()
     {
         var payload = new SystemPowerPayload { CurrentPower = 3 };

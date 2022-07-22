@@ -11,6 +11,7 @@ public class ShieldsSystem : SystemBase<ShieldsState>
         SystemName = "shields";
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
+            ["report-state"] = (c) => Update(c, TransformResult<ShieldsState>.StateChanged(state)),
             ["set-shields-power"] = (c) => Update(c, transformations.SetPower(state, Json.Deserialize<SystemPowerPayload>(c.Payload))),
             ["set-shields-damaged"] = (c) => Update(c, transformations.SetDamaged(state, Json.Deserialize<SystemDamagePayload>(c.Payload))),
             ["set-shields-disabled"] = (c) => Update(c, transformations.SetDisabled(state, Json.Deserialize<SystemDisabledPayload>(c.Payload))),

@@ -10,6 +10,12 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
         TransformResult<ThrustersState>.StateChanged(new ThrustersState());
 
     [Test]
+    public void When_reporting_state()
+    {
+        TestCommand("report-state", null, TransformResult<ThrustersState>.StateChanged(new ThrustersState()));    
+    }
+    
+    [Test]
     public void When_setting_power()
     {
         var payload = new SystemPowerPayload { CurrentPower = 3 };
