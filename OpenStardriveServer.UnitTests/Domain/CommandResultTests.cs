@@ -5,9 +5,10 @@ namespace OpenStardriveServer.UnitTests.Domain;
 
 public class CommandResultTests
 {
-    private Command testCommand = new Command
+    private Command testCommand = new()
     {
-        ClientId = Guid.NewGuid()
+        ClientId = Guid.NewGuid(),
+        TimeStamp = DateTimeOffset.Now.AddSeconds(-5)
     };
 
     private string testSystem = "test-system";
@@ -22,6 +23,7 @@ public class CommandResultTests
         Assert.That(result.Type, Is.EqualTo(CommandResult.UnrecognizedCommandType));
         Assert.That(result.System, Is.EqualTo(""));
         Assert.That(result.Payload, Is.EqualTo("null"));
+        Assert.That(result.Timestamp, Is.EqualTo(testCommand.TimeStamp));
     }
         
     [Test]
@@ -34,6 +36,7 @@ public class CommandResultTests
         Assert.That(result.Type, Is.EqualTo(CommandResult.StateUpdatedType));
         Assert.That(result.System, Is.EqualTo(testSystem));
         Assert.That(result.Payload, Is.EqualTo("{\"data\":123}"));
+        Assert.That(result.Timestamp, Is.EqualTo(testCommand.TimeStamp));
     }
         
     [Test]
@@ -46,8 +49,9 @@ public class CommandResultTests
         Assert.That(result.Type, Is.EqualTo(CommandResult.NoChangeType));
         Assert.That(result.System, Is.EqualTo(testSystem));
         Assert.That(result.Payload, Is.EqualTo("null"));
+        Assert.That(result.Timestamp, Is.EqualTo(testCommand.TimeStamp));
     }
-        
+    
     [Test]
     public void When_creating_an_error_command_result()
     {
@@ -58,5 +62,6 @@ public class CommandResultTests
         Assert.That(result.Type, Is.EqualTo(CommandResult.ErrorType));
         Assert.That(result.System, Is.EqualTo(testSystem));
         Assert.That(result.Payload, Is.EqualTo("\"test error\""));
+        Assert.That(result.Timestamp, Is.EqualTo(testCommand.TimeStamp));
     }
 }
