@@ -1,7 +1,7 @@
 # OpenStardrive Server
 
 This is the server component for the OpenStardrive simulation software.
-It runs on the [Node.js](https://nodejs.org/) platform.
+It runs on [.NET Core 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 
 
 ## Running the Server
@@ -9,8 +9,8 @@ It runs on the [Node.js](https://nodejs.org/) platform.
 To run the server locally:
 
 ```
-npm install
-npm start
+cd OpenStardriveServer
+dotnet run
 ```
 
 
