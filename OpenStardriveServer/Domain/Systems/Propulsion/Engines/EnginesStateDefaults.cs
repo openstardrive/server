@@ -18,6 +18,7 @@ public static class EnginesStateDefaults
             MinutesAtMaxSpeed = 5,
             MinutesToCoolDown = 12
         },
+        CurrentPower = 10,
         RequiredPower = 10,
         SpeedPowerRequirements = new []
         {
@@ -44,6 +45,7 @@ public static class EnginesStateDefaults
             MinutesAtMaxSpeed = 10,
             MinutesToCoolDown = 20
         },
+        CurrentPower = 5,
         RequiredPower = 5,
         SpeedPowerRequirements = new []
         {
