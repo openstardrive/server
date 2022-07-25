@@ -145,10 +145,20 @@ public static class MaybeExtensions
     {
         return self.FirstOrDefault().ToMaybe();
     }
+    
+    public static Maybe<T> FirstOrNone<T>(this IEnumerable<T> self, Func<T, bool> predicate) where T : class
+    {
+        return self.FirstOrDefault(predicate).ToMaybe();
+    }
 
     public static Maybe<T> FirstOrNone<T>(this IEnumerable<T?> self) where T : struct
     {
         return self.FirstOrDefault().ToMaybe();
+    }
+    
+    public static Maybe<T> FirstOrNone<T>(this IEnumerable<T?> self, Func<T?, bool> predicate) where T : struct
+    {
+        return self.FirstOrDefault(predicate).ToMaybe();
     }
 
     public static Maybe<T> MaybeIf<T>(this bool self, T valueIfTrue)

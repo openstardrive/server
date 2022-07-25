@@ -245,6 +245,27 @@ public class MaybeExtensionsTests
         var result = new string[0].FirstOrNone();
         Assert.That(result.HasValue, Is.False);
     }
+    
+    [Test]
+    public void When_calling_first_or_none_on_a_class_with_a_predicate_and_there_are_values()
+    {
+        var result = new[] {"a", "b", "c"}.FirstOrNone(x => x == "b");
+        Assert.That(result.Value, Is.EqualTo("b"));
+    }
+        
+    [Test]
+    public void When_calling_first_or_none_on_a_class_with_a_predicate_and_there_are_values_and_none_match_the_predicate()
+    {
+        var result = new[] {"a", "b", "c"}.FirstOrNone(x => x == "z");
+        Assert.That(result.HasValue, Is.False);
+    }
+        
+    [Test]
+    public void When_calling_first_or_none_on_a_class_with_a_predicate_and_there_are_no_values()
+    {
+        var result = new string[0].FirstOrNone(x => x == "q");
+        Assert.That(result.HasValue, Is.False);
+    }
 
     [Test]
     public void When_calling_first_or_none_on_a_struct_and_there_are_values()
@@ -266,6 +287,29 @@ public class MaybeExtensionsTests
     public void When_calling_first_or_none_on_a_struct_and_there_are_no_values()
     {
         var result = new DateTimeOffset?[0].FirstOrNone();
+        Assert.That(result.HasValue, Is.False);
+    }
+    
+    [Test]
+    public void When_calling_first_or_none_on_a_struct_with_a_predicate_and_there_are_values()
+    {
+        var now = DateTimeOffset.UtcNow;
+        var result = new DateTimeOffset?[] {now.AddSeconds(-2), now, now.AddSeconds(2)}.FirstOrNone(x => x == now);
+        Assert.That(result.Value, Is.EqualTo(now));
+    }
+        
+    [Test]
+    public void When_calling_first_or_none_on_a_struct_with_a_predicate_and_there_are_values_and_none_match_the_predicate()
+    {
+        var now = DateTimeOffset.UtcNow;
+        var result = new DateTimeOffset?[] {null, now, now.AddSeconds(2)}.FirstOrNone(x => x == DateTimeOffset.UtcNow.AddDays(1));
+        Assert.That(result.HasValue, Is.False);
+    }
+        
+    [Test]
+    public void When_calling_first_or_none_on_a_struct_with_a_predicate_and_there_are_no_values()
+    {
+        var result = new DateTimeOffset?[0].FirstOrNone(x => x == DateTimeOffset.UtcNow);
         Assert.That(result.HasValue, Is.False);
     }
 
