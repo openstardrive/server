@@ -4,17 +4,15 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Thrusters;
 
-public class ThrusterTransformationsTests
+public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformations>
 {
-    private readonly ThrusterTransformations classUnderTest = new();
-
     [Test]
     public void When_configuring_thrusters()
     {
         var payload = new ThrusterConfigurationPayload { RequiredPower = 555 };
         var expected = new ThrustersState { RequiredPower = 555 };
 
-        var result = classUnderTest.Configure(new ThrustersState(), payload);
+        var result = ClassUnderTest.Configure(new ThrustersState(), payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -34,7 +32,7 @@ public class ThrusterTransformationsTests
             Attitude = new ThrustersAttitude { Yaw = expectedYaw, Pitch = expectedPitch, Roll = expectedRoll }
         };
 
-        var result = classUnderTest.SetAttitude(new ThrustersState(), payload);
+        var result = ClassUnderTest.SetAttitude(new ThrustersState(), payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -46,7 +44,7 @@ public class ThrusterTransformationsTests
         var payload = new ThrusterAttitudePayload { Yaw = 1, Pitch = 2, Roll = 3 };
         var existingState = new ThrustersState { Disabled = true };
         
-        var result = classUnderTest.SetAttitude(existingState, payload);
+        var result = ClassUnderTest.SetAttitude(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
@@ -58,7 +56,7 @@ public class ThrusterTransformationsTests
         var payload = new ThrusterAttitudePayload { Yaw = 1, Pitch = 2, Roll = 3 };
         var existingState = new ThrustersState { Damaged = true };
         
-        var result = classUnderTest.SetAttitude(existingState, payload);
+        var result = ClassUnderTest.SetAttitude(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
@@ -73,7 +71,7 @@ public class ThrusterTransformationsTests
             Velocity = new ThrusterVelocity { X = 11, Y = 22, Z = 33 }
         };
 
-        var result = classUnderTest.SetVelocity(new ThrustersState(), payload);
+        var result = ClassUnderTest.SetVelocity(new ThrustersState(), payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -85,7 +83,7 @@ public class ThrusterTransformationsTests
         var payload = new ThrusterVelocityPayload { X = 11, Y = 22, Z = 33 };
         var existingState = new ThrustersState { Disabled = true };
         
-        var result = classUnderTest.SetVelocity(existingState, payload);
+        var result = ClassUnderTest.SetVelocity(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
@@ -97,7 +95,7 @@ public class ThrusterTransformationsTests
         var payload = new ThrusterVelocityPayload { X = 11, Y = 22, Z = 33 };
         var existingState = new ThrustersState { Damaged = true };
         
-        var result = classUnderTest.SetVelocity(existingState, payload);
+        var result = ClassUnderTest.SetVelocity(existingState, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
@@ -111,7 +109,7 @@ public class ThrusterTransformationsTests
         var payload = new SystemPowerPayload { CurrentPower = currentPower };
         var expected = new ThrustersState { CurrentPower = currentPower };
 
-        var result = classUnderTest.SetCurrentPower(new ThrustersState(), payload);
+        var result = ClassUnderTest.SetCurrentPower(new ThrustersState(), payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -124,7 +122,7 @@ public class ThrusterTransformationsTests
         var payload = new SystemDamagePayload { Damaged = damaged };
         var expected = new ThrustersState { Damaged = damaged };
 
-        var result = classUnderTest.SetDamage(new ThrustersState { Damaged = !damaged }, payload);
+        var result = ClassUnderTest.SetDamage(new ThrustersState { Damaged = !damaged }, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -137,7 +135,7 @@ public class ThrusterTransformationsTests
         var payload = new SystemDisabledPayload { Disabled = disabled };
         var expected = new ThrustersState { Disabled = disabled };
 
-        var result = classUnderTest.SetDisabled(new ThrustersState { Disabled = !disabled }, payload);
+        var result = ClassUnderTest.SetDisabled(new ThrustersState { Disabled = !disabled }, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));

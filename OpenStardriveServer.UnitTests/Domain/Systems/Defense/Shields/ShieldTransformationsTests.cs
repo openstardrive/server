@@ -3,17 +3,15 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Defense.Shields;
 
-public class ShieldTransformationsTests
+public class ShieldTransformationsTests : WithAnAutomocked<ShieldTransformations>
 {
-    private readonly ShieldTransformations classUnderTest = new();
-
     [Test]
     public void When_raising_shields_successfully()
     {
         var state = new ShieldsState();
         var expected = state with { Raised = true };
         
-        var result = classUnderTest.RaiseShields(state);
+        var result = ClassUnderTest.RaiseShields(state);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -23,7 +21,7 @@ public class ShieldTransformationsTests
     {
         var state = new ShieldsState { Disabled = true };
         
-        var result = classUnderTest.RaiseShields(state);
+        var result = ClassUnderTest.RaiseShields(state);
         
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
     }
@@ -33,7 +31,7 @@ public class ShieldTransformationsTests
     {
         var state = new ShieldsState { Damaged = true };
         
-        var result = classUnderTest.RaiseShields(state);
+        var result = ClassUnderTest.RaiseShields(state);
         
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
     }
@@ -43,7 +41,7 @@ public class ShieldTransformationsTests
     {
         var state = new ShieldsState { CurrentPower = 0, RequiredPower = 10 };
         
-        var result = classUnderTest.RaiseShields(state);
+        var result = ClassUnderTest.RaiseShields(state);
         
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.InsufficientPowerError));
     }
@@ -54,7 +52,7 @@ public class ShieldTransformationsTests
         var state = new ShieldsState { Raised = true };
         var expected = state with { Raised = false };
         
-        var result = classUnderTest.LowerShields(state);
+        var result = ClassUnderTest.LowerShields(state);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -66,7 +64,7 @@ public class ShieldTransformationsTests
         var payload = new ShieldModulationPayload { Frequency = 123.45 };
         var expected = state with { ModulationFrequency = payload.Frequency };
 
-        var result = classUnderTest.SetModulationFrequency(state, payload);
+        var result = ClassUnderTest.SetModulationFrequency(state, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -88,7 +86,7 @@ public class ShieldTransformationsTests
         var payload = new SystemPowerPayload { CurrentPower = newPower };
         var expected = state with { CurrentPower = newPower, Raised = expectedRaised };
         
-        var result = classUnderTest.SetPower(state, payload);
+        var result = ClassUnderTest.SetPower(state, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -103,7 +101,7 @@ public class ShieldTransformationsTests
         var payload = new SystemDamagePayload { Damaged = newDamaged };
         var expected = state with { Damaged = newDamaged, Raised = expectedRaised };
         
-        var result = classUnderTest.SetDamaged(state, payload);
+        var result = ClassUnderTest.SetDamaged(state, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -116,7 +114,7 @@ public class ShieldTransformationsTests
         var payload = new SystemDisabledPayload { Disabled = newDisabled };
         var expected = state with { Disabled = newDisabled };
         
-        var result = classUnderTest.SetDisabled(state, payload);
+        var result = ClassUnderTest.SetDisabled(state, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -145,7 +143,7 @@ public class ShieldTransformationsTests
             StarboardPercent = expectedStarboard
         } };
 
-        var result = classUnderTest.SetSectionStrengths(state, payload);
+        var result = ClassUnderTest.SetSectionStrengths(state, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }

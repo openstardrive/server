@@ -5,17 +5,15 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines;
 
-public class EnginesTransformationsTests
+public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformations>
 {
-    private readonly EnginesTransformations classUnderTest = new();
-        
     [Test]
     public void When_setting_speed_successfully()
     {
         var payload = new SetSpeedPayload { Speed = 3 };
         var expected = EnginesStateDefaults.Testing with { CurrentSpeed = 3 };
 
-        var result = classUnderTest.SetSpeed(EnginesStateDefaults.Testing, payload);
+        var result = ClassUnderTest.SetSpeed(EnginesStateDefaults.Testing, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -27,7 +25,7 @@ public class EnginesTransformationsTests
         var originalState = EnginesStateDefaults.Testing with { CurrentSpeed = 2 };
         var payload = new SetSpeedPayload { Speed = 2 };
 
-        var result = classUnderTest.SetSpeed(originalState, payload);
+        var result = ClassUnderTest.SetSpeed(originalState, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(originalState));
@@ -39,7 +37,7 @@ public class EnginesTransformationsTests
     {
         var payload = new SetSpeedPayload { Speed = invalidSpeed };
 
-        var result = classUnderTest.SetSpeed(EnginesStateDefaults.Testing, payload);
+        var result = ClassUnderTest.SetSpeed(EnginesStateDefaults.Testing, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo("invalid speed"));
@@ -52,7 +50,7 @@ public class EnginesTransformationsTests
 
         var payload = new SetSpeedPayload { Speed = 3 };
 
-        var result = classUnderTest.SetSpeed(state, payload);
+        var result = ClassUnderTest.SetSpeed(state, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.InsufficientPowerError));
@@ -73,7 +71,7 @@ public class EnginesTransformationsTests
 
         var payload = new SetSpeedPayload { Speed = 2 };
 
-        var result = classUnderTest.SetSpeed(state, payload);
+        var result = ClassUnderTest.SetSpeed(state, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.InsufficientPowerError));
@@ -94,7 +92,7 @@ public class EnginesTransformationsTests
         var payload = new SetSpeedPayload { Speed = 2 };
         var expected = state with { CurrentSpeed = payload.Speed};
 
-        var result = classUnderTest.SetSpeed(state, payload);
+        var result = ClassUnderTest.SetSpeed(state, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -107,7 +105,7 @@ public class EnginesTransformationsTests
 
         var payload = new SetSpeedPayload { Speed = 3 };
 
-        var result = classUnderTest.SetSpeed(state, payload);
+        var result = ClassUnderTest.SetSpeed(state, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DamagedError));
@@ -119,7 +117,7 @@ public class EnginesTransformationsTests
         var state = EnginesStateDefaults.Testing with { Disabled = true };
         var payload = new SetSpeedPayload { Speed = 3 };
 
-        var result = classUnderTest.SetSpeed(state, payload);
+        var result = ClassUnderTest.SetSpeed(state, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
@@ -133,7 +131,7 @@ public class EnginesTransformationsTests
         var expected = EnginesStateDefaults.Testing with { Damaged = isDamaged };
         var payload = new SystemDamagePayload { Damaged = isDamaged };
 
-        var result = classUnderTest.SetDamage(state, payload);
+        var result = ClassUnderTest.SetDamage(state, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -145,7 +143,7 @@ public class EnginesTransformationsTests
         var expected = EnginesStateDefaults.Testing with { CurrentSpeed = 0, Damaged = true };
         var payload = new SystemDamagePayload { Damaged = true };
 
-        var result = classUnderTest.SetDamage(state, payload);
+        var result = ClassUnderTest.SetDamage(state, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -159,7 +157,7 @@ public class EnginesTransformationsTests
         var expected = EnginesStateDefaults.Testing with { CurrentPower = newPower };
         var payload = new SystemPowerPayload { CurrentPower = newPower };
 
-        var result = classUnderTest.SetCurrentPower(state, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -186,7 +184,7 @@ public class EnginesTransformationsTests
         var expected = state with { CurrentPower = newPower, CurrentSpeed = expectedSpeed};
         var payload = new SystemPowerPayload { CurrentPower = newPower };
 
-        var result = classUnderTest.SetCurrentPower(state, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, payload);
             
         Assert.That(result.NewState.Value.CurrentSpeed, Is.EqualTo(expectedSpeed));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
@@ -200,7 +198,7 @@ public class EnginesTransformationsTests
         var expected = EnginesStateDefaults.Testing with { Disabled = isDisabled };
         var payload = new SystemDisabledPayload { Disabled = isDisabled };
 
-        var result = classUnderTest.SetDisabled(state, payload);
+        var result = ClassUnderTest.SetDisabled(state, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -231,7 +229,7 @@ public class EnginesTransformationsTests
         var state = EnginesStateDefaults.Testing with { CurrentHeat = currentHeat, CurrentSpeed = currentSpeed };
         var payload = new ChronometerPayload {ElapsedMilliseconds = elapsedMilliseconds};
 
-        var result = classUnderTest.UpdateHeat(state, payload);
+        var result = ClassUnderTest.UpdateHeat(state, payload);
             
         Assert.That(result.NewState.Value.CurrentHeat, Is.EqualTo(expectedHeat));
     }
@@ -251,7 +249,7 @@ public class EnginesTransformationsTests
         };
         var payload = new ChronometerPayload {ElapsedMilliseconds = elapsedMilliseconds};
 
-        var result = classUnderTest.UpdateHeat(state, payload);
+        var result = ClassUnderTest.UpdateHeat(state, payload);
             
         Assert.That(result.NewState.Value.CurrentHeat, Is.EqualTo(expectedHeat));
     }
@@ -266,7 +264,7 @@ public class EnginesTransformationsTests
 
         var payload = new ChronometerPayload {ElapsedMilliseconds = 1000};
 
-        var result = classUnderTest.UpdateHeat(state, payload);
+        var result = ClassUnderTest.UpdateHeat(state, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
@@ -304,7 +302,7 @@ public class EnginesTransformationsTests
             SpeedPowerRequirements = payload.SpeedPowerRequirements
         };
             
-        var result = classUnderTest.Configure(EnginesStateDefaults.Testing, payload);
+        var result = ClassUnderTest.Configure(EnginesStateDefaults.Testing, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }

@@ -5,10 +5,8 @@ using OpenStardriveServer.Domain.Systems.Clients;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients;
 
-public class ClientsTransformationsTests
+ public class ClientsTransformationsTests : WithAnAutomocked<ClientsTransformations>
 {
-    private ClientsTransformations classUnderTest = new();
-        
     [Test]
     public void When_registering_a_client()
     {
@@ -27,7 +25,7 @@ public class ClientsTransformationsTests
             Name = "Test Client"
         };
 
-        var result = classUnderTest.RegisterClient(priorState, payload);
+        var result = ClassUnderTest.RegisterClient(priorState, payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.Not.SameAs(priorState));
@@ -49,7 +47,7 @@ public class ClientsTransformationsTests
             Name = "Test Client"
         };
 
-        var result = classUnderTest.RegisterClient(new ClientsState(), payload);
+        var result = ClassUnderTest.RegisterClient(new ClientsState(), payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo("Invalid clientId"));
@@ -66,7 +64,7 @@ public class ClientsTransformationsTests
             Name = "Test Client"
         };
 
-        var result = classUnderTest.RegisterClient(new ClientsState(), payload);
+        var result = ClassUnderTest.RegisterClient(new ClientsState(), payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo("Invalid clientSecret"));
@@ -83,7 +81,7 @@ public class ClientsTransformationsTests
             Name = name
         };
 
-        var result = classUnderTest.RegisterClient(new ClientsState(), payload);
+        var result = ClassUnderTest.RegisterClient(new ClientsState(), payload);
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo("Invalid name"));
