@@ -8,13 +8,13 @@ public class ClientsSystem : SystemBase<ClientsState>
 {
     public const string Name = "clients";
 
-    public ClientsSystem(IClientsTransformations transformations, IJson json)
+    public ClientsSystem(IClientsTransformations transformations, IJson json) : base(json)
     {
         SystemName = Name;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
             ["report-state"] = (c) => Update(c, TransformResult<ClientsState>.StateChanged(state)),
-            ["register-client"] = (c) => Update(c, transformations.RegisterClient(state, json.Deserialize<RegisterClientPayload>(c.Payload)))
+            ["register-client"] = (c) => Update(c, transformations.RegisterClient(state, Payload<RegisterClientPayload>(c)))
         };
     }
     

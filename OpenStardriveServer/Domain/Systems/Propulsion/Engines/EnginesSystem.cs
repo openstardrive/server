@@ -7,19 +7,19 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 
 public abstract class EnginesSystem : SystemBase<EnginesState>
 {
-    protected EnginesSystem(string systemName, EnginesState initialState, IEnginesTransformations transformations, IJson json)
+    protected EnginesSystem(string systemName, EnginesState initialState, IEnginesTransformations transformations, IJson json) : base (json)
     {
         SystemName = systemName;
         state = initialState;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
             ["report-state"] = (c) => Update(c, TransformResult<EnginesState>.StateChanged(state)),
-            [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, json.Deserialize<SetSpeedPayload>(c.Payload))),
-            [$"configure-{SystemName}"] = c => Update(c, transformations.Configure(state, json.Deserialize<EnginesConfigurationPayload>(c.Payload))),
-            [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, json.Deserialize<ChronometerPayload>(c.Payload))),
-            [$"set-{SystemName}-power"] = (c) => Update(c, transformations.SetCurrentPower(state, json.Deserialize<SystemPowerPayload>(c.Payload))),
-            [$"set-{SystemName}-damaged"] = (c) => Update(c, transformations.SetDamage(state, json.Deserialize<SystemDamagePayload>(c.Payload))),
-            [$"set-{SystemName}-disabled"] = (c) => Update(c, transformations.SetDisabled(state, json.Deserialize<SystemDisabledPayload>(c.Payload)))
+            [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, Payload<SetSpeedPayload>(c))),
+            [$"configure-{SystemName}"] = c => Update(c, transformations.Configure(state, Payload<EnginesConfigurationPayload>(c))),
+            [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, Payload<ChronometerPayload>(c))),
+            [$"set-{SystemName}-power"] = (c) => Update(c, transformations.SetCurrentPower(state, Payload<SystemPowerPayload>(c))),
+            [$"set-{SystemName}-damaged"] = (c) => Update(c, transformations.SetDamage(state, Payload<SystemDamagePayload>(c))),
+            [$"set-{SystemName}-disabled"] = (c) => Update(c, transformations.SetDisabled(state, Payload<SystemDisabledPayload>(c)))
         };
     }
 }
