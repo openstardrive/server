@@ -28,7 +28,7 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     public void When_setting_damaged()
     {
         var payload = new SystemDamagePayload { Damaged = true };
-        GetMock<IEnginesTransformations>().Setup(x => x.SetDamage(Any<EnginesState>(), Any<SystemDamagePayload>())).Returns(expected);
+        GetMock<IEnginesTransformations>().Setup(x => x.SetDamage(Any<EnginesState>(), payload)).Returns(expected);
         TestCommandWithPayload("set-testing-engines-damaged", payload, expected);
     }
     
@@ -36,7 +36,7 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     public void When_setting_disabled()
     {
         var payload = new SystemDisabledPayload { Disabled = true };
-        GetMock<IEnginesTransformations>().Setup(x => x.SetDisabled(Any<EnginesState>(), Any<SystemDisabledPayload>())).Returns(expected);
+        GetMock<IEnginesTransformations>().Setup(x => x.SetDisabled(Any<EnginesState>(), payload)).Returns(expected);
         TestCommandWithPayload("set-testing-engines-disabled", payload, expected);
     }
         
@@ -44,7 +44,7 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     public void When_setting_speed()
     {
         var payload = new SetSpeedPayload { Speed = 3 };
-        GetMock<IEnginesTransformations>().Setup(x => x.SetSpeed(Any<EnginesState>(), Any<SetSpeedPayload>())).Returns(expected);
+        GetMock<IEnginesTransformations>().Setup(x => x.SetSpeed(Any<EnginesState>(), payload)).Returns(expected);
         TestCommandWithPayload("set-testing-engines-speed", payload, expected);
     }
 
@@ -52,7 +52,7 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     public void When_the_chronometer()
     {
         var payload = new ChronometerPayload { ElapsedMilliseconds = 1000 };
-        GetMock<IEnginesTransformations>().Setup(x => x.UpdateHeat(Any<EnginesState>(), Any<ChronometerPayload>())).Returns(expected);
+        GetMock<IEnginesTransformations>().Setup(x => x.UpdateHeat(Any<EnginesState>(), payload)).Returns(expected);
         TestCommandWithPayload(ChronometerCommand.Type, payload, expected);
     }
         
@@ -60,7 +60,7 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     public void When_configuring()
     {
         var payload = new EnginesConfigurationPayload();
-        GetMock<IEnginesTransformations>().Setup(x => x.Configure(Any<EnginesState>(), Any<EnginesConfigurationPayload>())).Returns(expected);
+        GetMock<IEnginesTransformations>().Setup(x => x.Configure(Any<EnginesState>(), payload)).Returns(expected);
         TestCommandWithPayload("configure-testing-engines", payload, expected);
     }
 }

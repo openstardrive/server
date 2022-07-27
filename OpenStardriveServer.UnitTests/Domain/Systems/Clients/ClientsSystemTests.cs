@@ -23,7 +23,7 @@ public class ClientsSystemTests : SystemsTest<ClientsSystem>
             Name = "test client"
         };
         var expected = new ClientsTransformations().RegisterClient(new ClientsState(), payload);
-        GetMock<IClientsTransformations>().Setup(x => x.RegisterClient(Any<ClientsState>(), Any<RegisterClientPayload>()))
+        GetMock<IClientsTransformations>().Setup(x => x.RegisterClient(Any<ClientsState>(), payload))
             .Returns(expected);
         
         TestCommandWithPayload("register-client", payload, expected);
