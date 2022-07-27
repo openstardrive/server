@@ -13,11 +13,13 @@ public class RegisterClientWorkflow : IRegisterClientWorkflow
 {
     private readonly ICommandRepository commandRepository;
     private readonly IByteGenerator byteGenerator;
+    private readonly IJson json;
 
-    public RegisterClientWorkflow(ICommandRepository commandRepository, IByteGenerator byteGenerator)
+    public RegisterClientWorkflow(ICommandRepository commandRepository, IByteGenerator byteGenerator, IJson json)
     {
         this.commandRepository = commandRepository;
         this.byteGenerator = byteGenerator;
+        this.json = json;
     }
         
     public async Task<RegisterClientResult> Register(string name)
@@ -37,7 +39,7 @@ public class RegisterClientWorkflow : IRegisterClientWorkflow
         {
             ClientId = clientId,
             Type = "register-client",
-            Payload = Json.Serialize(new
+            Payload = json.Serialize(new
             {
                 clientId,
                 clientSecret,

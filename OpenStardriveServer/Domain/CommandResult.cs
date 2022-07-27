@@ -30,7 +30,7 @@ public class CommandResult
         ClientId = command.ClientId;
         Type = type;
         System = system;
-        Payload = Json.Serialize(payload);
+        Payload = Json.Instance.Serialize(payload);
         Timestamp = command.TimeStamp;
     }
 

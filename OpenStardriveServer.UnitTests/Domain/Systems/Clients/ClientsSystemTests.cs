@@ -10,7 +10,7 @@ public class ClientsSystemTests : SystemsTest<ClientsSystem>
     [Test]
     public void When_reporting_state()
     {
-        TestCommand("report-state", null, TransformResult<ClientsState>.StateChanged(new ClientsState()));    
+        TestCommand("report-state", TransformResult<ClientsState>.StateChanged(new ClientsState()));    
     }
     
     [Test]
@@ -26,7 +26,7 @@ public class ClientsSystemTests : SystemsTest<ClientsSystem>
         GetMock<IClientsTransformations>().Setup(x => x.RegisterClient(Any<ClientsState>(), Any<RegisterClientPayload>()))
             .Returns(expected);
         
-        TestCommand("register-client", payload, expected);
+        TestCommandWithPayload("register-client", payload, expected);
     }
 
     [Test]
@@ -38,13 +38,14 @@ public class ClientsSystemTests : SystemsTest<ClientsSystem>
             ClientSecret = "secret",
             Name = "test client"
         };
+        GetMock<IJson>().Setup(x => x.Deserialize<RegisterClientPayload>(Any<string>())).Returns(payload);
         GetMock<IClientsTransformations>()
-            .Setup(x => x.RegisterClient(Any<ClientsState>(), Any<RegisterClientPayload>()))
+            .Setup(x => x.RegisterClient(Any<ClientsState>(), payload))
             .Returns(new ClientsTransformations().RegisterClient(new ClientsState(), payload));
         
         ClassUnderTest.CommandProcessors["register-client"](new Command
         {
-            Payload = Json.Serialize(payload)
+            Payload = "serialized-payload"
         });
         var result = ClassUnderTest.FindClientBySecret(payload.ClientSecret);
             

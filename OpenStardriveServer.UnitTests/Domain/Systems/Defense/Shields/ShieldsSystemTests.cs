@@ -12,7 +12,7 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     [Test]
     public void When_reporting_state()
     {
-        TestCommand("report-state", null, TransformResult<ShieldsState>.StateChanged(new ShieldsState()));    
+        TestCommand("report-state", TransformResult<ShieldsState>.StateChanged(new ShieldsState()));    
     }
     
     [Test]
@@ -20,7 +20,7 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     {
         var payload = new SystemPowerPayload { CurrentPower = 3 };
         GetMock<IShieldTransformations>().Setup(x => x.SetPower(Any<ShieldsState>(), payload)).Returns(expected);
-        TestCommand("set-shields-power", payload, expected);
+        TestCommandWithPayload("set-shields-power", payload, expected);
     }
     
     [Test]
@@ -28,7 +28,7 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     {
         var payload = new SystemDamagePayload { Damaged = true };
         GetMock<IShieldTransformations>().Setup(x => x.SetDamaged(Any<ShieldsState>(), payload)).Returns(expected);
-        TestCommand("set-shields-damaged", payload, expected);
+        TestCommandWithPayload("set-shields-damaged", payload, expected);
     }
     
     [Test]
@@ -36,21 +36,21 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     {
         var payload = new SystemDisabledPayload { Disabled = true };
         GetMock<IShieldTransformations>().Setup(x => x.SetDisabled(Any<ShieldsState>(), payload)).Returns(expected);
-        TestCommand("set-shields-disabled", payload, expected);
+        TestCommandWithPayload("set-shields-disabled", payload, expected);
     }
     
     [Test]
     public void When_raising_shields()
     {
         GetMock<IShieldTransformations>().Setup(x => x.RaiseShields(Any<ShieldsState>())).Returns(expected);
-        TestCommand("raise-shields", null, expected);
+        TestCommand("raise-shields", expected);
     }
 
     [Test]
     public void When_lowering_shields()
     {
         GetMock<IShieldTransformations>().Setup(x => x.LowerShields(Any<ShieldsState>())).Returns(expected);
-        TestCommand("lower-shields", null, expected);
+        TestCommand("lower-shields", expected);
     }
     
     [Test]
@@ -58,7 +58,7 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     {
         var payload = new ShieldModulationPayload { Frequency = 543.2 };
         GetMock<IShieldTransformations>().Setup(x => x.SetModulationFrequency(Any<ShieldsState>(), payload)).Returns(expected);
-        TestCommand("modulate-shields", payload, expected);
+        TestCommandWithPayload("modulate-shields", payload, expected);
     }
 
     [Test]
@@ -66,6 +66,6 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     {
         var payload = new ShieldStrengthPayload();
         GetMock<IShieldTransformations>().Setup(x => x.SetSectionStrengths(Any<ShieldsState>(), payload)).Returns(expected);
-        TestCommand("set-shield-strengths", payload, expected);
+        TestCommandWithPayload("set-shield-strengths", payload, expected);
     }
 }

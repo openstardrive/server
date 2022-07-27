@@ -13,10 +13,12 @@ public class IncrementChronometerCommand : IIncrementChronometerCommand
     private DateTimeOffset lastTime = DateTimeOffset.UtcNow;
 
     private readonly ICommandRepository commandRepository;
+    private readonly IJson json;
 
-    public IncrementChronometerCommand(ICommandRepository commandRepository)
+    public IncrementChronometerCommand(ICommandRepository commandRepository, IJson json)
     {
         this.commandRepository = commandRepository;
+        this.json = json;
     }
 
     public async Task Increment()
@@ -26,7 +28,7 @@ public class IncrementChronometerCommand : IIncrementChronometerCommand
         await commandRepository.Save(new Command
         {
             Type = ChronometerCommand.Type,
-            Payload = Json.Serialize(new { elapsedMilliseconds })
+            Payload = json.Serialize(new IncrementChronometerPayload(elapsedMilliseconds))
         });
         lastTime = now;
     }
@@ -36,3 +38,5 @@ public class IncrementChronometerCommand : IIncrementChronometerCommand
         lastTime = value;
     }
 }
+
+public record IncrementChronometerPayload(long ElapsedMilliseconds);

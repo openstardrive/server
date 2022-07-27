@@ -12,7 +12,7 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     [Test]
     public void When_reporting_state()
     {
-        TestCommand("report-state", null, TransformResult<ThrustersState>.StateChanged(new ThrustersState()));    
+        TestCommand("report-state", TransformResult<ThrustersState>.StateChanged(new ThrustersState()));    
     }
     
     [Test]
@@ -20,7 +20,7 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     {
         var payload = new SystemPowerPayload { CurrentPower = 3 };
         GetMock<IThrusterTransformations>().Setup(x => x.SetCurrentPower(Any<ThrustersState>(), Any<SystemPowerPayload>())).Returns(expected);
-        TestCommand("set-thrusters-power", payload, expected);
+        TestCommandWithPayload("set-thrusters-power", payload, expected);
     }
     
     [Test]
@@ -28,7 +28,7 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     {
         var payload = new SystemDamagePayload { Damaged = true };
         GetMock<IThrusterTransformations>().Setup(x => x.SetDamage(Any<ThrustersState>(), Any<SystemDamagePayload>())).Returns(expected);
-        TestCommand("set-thrusters-damaged", payload, expected);
+        TestCommandWithPayload("set-thrusters-damaged", payload, expected);
     }
     
     [Test]
@@ -36,7 +36,7 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     {
         var payload = new SystemDisabledPayload { Disabled = true };
         GetMock<IThrusterTransformations>().Setup(x => x.SetDisabled(Any<ThrustersState>(), Any<SystemDisabledPayload>())).Returns(expected);
-        TestCommand("set-thrusters-disabled", payload, expected);
+        TestCommandWithPayload("set-thrusters-disabled", payload, expected);
     }
 
     [Test]
@@ -44,7 +44,7 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     {
         var payload = new ThrusterConfigurationPayload { RequiredPower = 7 };
         GetMock<IThrusterTransformations>().Setup(x => x.Configure(Any<ThrustersState>(), Any<ThrusterConfigurationPayload>())).Returns(expected);
-        TestCommand("configure-thrusters", payload, expected);
+        TestCommandWithPayload("configure-thrusters", payload, expected);
     }
 
     [Test]
@@ -52,7 +52,7 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     {
         var payload = new ThrusterAttitudePayload { Yaw = 1, Pitch = 2, Roll = 3 };
         GetMock<IThrusterTransformations>().Setup(x => x.SetAttitude(Any<ThrustersState>(), Any<ThrusterAttitudePayload>())).Returns(expected);
-        TestCommand("set-thrusters-attitude", payload, expected);
+        TestCommandWithPayload("set-thrusters-attitude", payload, expected);
     }
     
     [Test]
@@ -60,6 +60,6 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     {
         var payload = new ThrusterVelocityPayload { X = 1, Y = 2, Z = 3 };
         GetMock<IThrusterTransformations>().Setup(x => x.SetVelocity(Any<ThrustersState>(), Any<ThrusterVelocityPayload>())).Returns(expected);
-        TestCommand("set-thrusters-velocity", payload, expected);
+        TestCommandWithPayload("set-thrusters-velocity", payload, expected);
     }
 }

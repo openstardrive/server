@@ -11,9 +11,13 @@ public class IncrementChronometerCommandTests : WithAnAutomocked<IncrementChrono
     public async Task When_incrementing()
     {
         Command savedCommand = null;
+        IncrementChronometerPayload serializedData = null;
         GetMock<ICommandRepository>()
             .Setup(x => x.Save(Any<Command>()))
             .Callback<Command>(x => savedCommand = x);
+        GetMock<IJson>().Setup(x => x.Serialize(Any<object>()))
+            .Callback<object>(x => serializedData = x as IncrementChronometerPayload)
+            .Returns("test-json");
             
         ClassUnderTest.SetLastTimeForTesting(DateTimeOffset.UtcNow.AddSeconds(-1));
         await ClassUnderTest.Increment();
@@ -21,8 +25,8 @@ public class IncrementChronometerCommandTests : WithAnAutomocked<IncrementChrono
         Assert.That(savedCommand, Is.Not.Null);
         Assert.That(savedCommand.Type, Is.EqualTo(ChronometerCommand.Type));
         Assert.That(savedCommand.TimeStamp, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
+        Assert.That(savedCommand.Payload, Is.EqualTo("test-json"));
 
-        var payload = Json.Deserialize<ChronometerPayload>(savedCommand.Payload);
-        Assert.That(payload.ElapsedMilliseconds, Is.EqualTo(1000).Within(500));
+        Assert.That(serializedData.ElapsedMilliseconds, Is.EqualTo(1000).Within(500));
     }
 }

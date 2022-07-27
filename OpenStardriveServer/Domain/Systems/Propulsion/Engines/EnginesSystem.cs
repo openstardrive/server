@@ -7,33 +7,33 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 
 public abstract class EnginesSystem : SystemBase<EnginesState>
 {
-    protected EnginesSystem(string systemName, EnginesState initialState, IEnginesTransformations transformations)
+    protected EnginesSystem(string systemName, EnginesState initialState, IEnginesTransformations transformations, IJson json)
     {
         SystemName = systemName;
         state = initialState;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
             ["report-state"] = (c) => Update(c, TransformResult<EnginesState>.StateChanged(state)),
-            [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, Json.Deserialize<SetSpeedPayload>(c.Payload))),
-            [$"configure-{SystemName}"] = c => Update(c, transformations.Configure(state, Json.Deserialize<EnginesConfigurationPayload>(c.Payload))),
-            [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, Json.Deserialize<ChronometerPayload>(c.Payload))),
-            [$"set-{SystemName}-power"] = (c) => Update(c, transformations.SetCurrentPower(state, Json.Deserialize<SystemPowerPayload>(c.Payload))),
-            [$"set-{SystemName}-damaged"] = (c) => Update(c, transformations.SetDamage(state, Json.Deserialize<SystemDamagePayload>(c.Payload))),
-            [$"set-{SystemName}-disabled"] = (c) => Update(c, transformations.SetDisabled(state, Json.Deserialize<SystemDisabledPayload>(c.Payload)))
+            [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, json.Deserialize<SetSpeedPayload>(c.Payload))),
+            [$"configure-{SystemName}"] = c => Update(c, transformations.Configure(state, json.Deserialize<EnginesConfigurationPayload>(c.Payload))),
+            [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, json.Deserialize<ChronometerPayload>(c.Payload))),
+            [$"set-{SystemName}-power"] = (c) => Update(c, transformations.SetCurrentPower(state, json.Deserialize<SystemPowerPayload>(c.Payload))),
+            [$"set-{SystemName}-damaged"] = (c) => Update(c, transformations.SetDamage(state, json.Deserialize<SystemDamagePayload>(c.Payload))),
+            [$"set-{SystemName}-disabled"] = (c) => Update(c, transformations.SetDisabled(state, json.Deserialize<SystemDisabledPayload>(c.Payload)))
         };
     }
 }
 
 public class FtlEnginesSystem : EnginesSystem
 {
-    public FtlEnginesSystem(IEnginesTransformations transformations)
-        : base("ftl-engines", EnginesStateDefaults.Ftl, transformations)
+    public FtlEnginesSystem(IEnginesTransformations transformations, IJson json)
+        : base("ftl-engines", EnginesStateDefaults.Ftl, transformations, json)
     { }
 }
 
 public class SublightEnginesSystem : EnginesSystem
 {
-    public SublightEnginesSystem(IEnginesTransformations transformations)
-        : base("sublight-engines", EnginesStateDefaults.Sublight, transformations)
+    public SublightEnginesSystem(IEnginesTransformations transformations, IJson json)
+        : base("sublight-engines", EnginesStateDefaults.Sublight, transformations, json)
     { }
 }

@@ -23,7 +23,7 @@ public class CommandProcessorTests : WithAServiceLocatedClassUnderTest<CommandPr
         Assert.That(result[0].CommandId, Is.EqualTo(command.CommandId));
         Assert.That(result[0].System, Is.EqualTo("thrusters"));
 
-        var state = Json.Deserialize<ThrustersState>(result[0].Payload);
+        var state = Json.Instance.Deserialize<ThrustersState>(result[0].Payload);
         Assert.That(state.Attitude.Yaw, Is.EqualTo(1));
         Assert.That(state.Attitude.Pitch, Is.EqualTo(20));
         Assert.That(state.Attitude.Roll, Is.EqualTo(300));

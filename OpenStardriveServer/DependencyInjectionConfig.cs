@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Systems;
 
 namespace OpenStardriveServer;
@@ -21,5 +22,6 @@ public static class DependencyInjectionConfig
         });
 
         services.AddSingleton<ISystemsRegistry, SystemsRegistry>();
+        services.AddSingleton<IJson, Json>();
     }
 }
