@@ -8,7 +8,7 @@ public interface IWarheadLauncherTransforms
 {
     TransformResult<WarheadLauncherState> Load(WarheadLauncherState state, LoadWarheadPayload payload);
     TransformResult<WarheadLauncherState> Fire(WarheadLauncherState state, FireWarheadPayload payload, DateTimeOffset commandTimestamp);
-    TransformResult<WarheadLauncherState> SetPower(WarheadLauncherState state, SystemPowerPayload payload);
+    TransformResult<WarheadLauncherState> SetPower(WarheadLauncherState state, string systemName, CurrentPowerPayload payload);
     TransformResult<WarheadLauncherState> SetDamaged(WarheadLauncherState state, SystemDamagePayload payload);
     TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, SystemDisabledPayload payload);
     TransformResult<WarheadLauncherState> SetInventory(WarheadLauncherState state, WarheadInventoryPayload payload);
@@ -67,9 +67,11 @@ public class WarheadLauncherTransforms : IWarheadLauncherTransforms
         });
     }
     
-    public TransformResult<WarheadLauncherState> SetPower(WarheadLauncherState state, SystemPowerPayload payload)
+    public TransformResult<WarheadLauncherState> SetPower(WarheadLauncherState state, string systemName, CurrentPowerPayload payload)
     {
-        return TransformResult<WarheadLauncherState>.StateChanged(state with { CurrentPower = payload.CurrentPower });
+        return payload.ValueOrNone(systemName).Case(
+            some: newPower => TransformResult<WarheadLauncherState>.StateChanged(state with { CurrentPower = newPower }),
+            none: TransformResult<WarheadLauncherState>.NoChange);
     }
     
     public TransformResult<WarheadLauncherState> SetDamaged(WarheadLauncherState state, SystemDamagePayload payload)

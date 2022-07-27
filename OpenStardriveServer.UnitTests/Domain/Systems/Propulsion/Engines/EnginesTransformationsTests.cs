@@ -153,13 +153,29 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
     [TestCase(4)]
     public void When_power_changes(int newPower)
     {
+        var systemName = "engines";
         var state = EnginesStateDefaults.Testing with { CurrentPower = 2 };
         var expected = EnginesStateDefaults.Testing with { CurrentPower = newPower };
-        var payload = new SystemPowerPayload { CurrentPower = newPower };
+        var payload = new CurrentPowerPayload
+        {
+            ["other"] = 11,
+            [systemName] = newPower
+        };
 
-        var result = ClassUnderTest.SetCurrentPower(state, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_power_changes_but_no_matching_system()
+    {
+        var state = EnginesStateDefaults.Testing with { CurrentPower = 2 };
+        var payload = new CurrentPowerPayload { ["other"] = 11 };
+
+        var result = ClassUnderTest.SetCurrentPower(state, "engines", payload);
+            
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
         
     [TestCase(2, 0, 0)]
@@ -182,9 +198,9 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
             }
         };
         var expected = state with { CurrentPower = newPower, CurrentSpeed = expectedSpeed};
-        var payload = new SystemPowerPayload { CurrentPower = newPower };
+        var payload = new CurrentPowerPayload { ["engines"] = newPower };
 
-        var result = ClassUnderTest.SetCurrentPower(state, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, "engines", payload);
             
         Assert.That(result.NewState.Value.CurrentSpeed, Is.EqualTo(expectedSpeed));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));

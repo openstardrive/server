@@ -43,9 +43,9 @@ public class WarheadLauncherSystemTests : SystemsTest<WarheadLauncherSystem>
     [Test]
     public void When_setting_power()
     {
-        var payload = new SystemPowerPayload { CurrentPower = 3 };
-        GetMock<IWarheadLauncherTransforms>().Setup(x => x.SetPower(Any<WarheadLauncherState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-warhead-launcher-power", payload, expected);
+        var payload = new CurrentPowerPayload();
+        GetMock<IWarheadLauncherTransforms>().Setup(x => x.SetPower(Any<WarheadLauncherState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-power", payload, expected);
     }
     
     [Test]

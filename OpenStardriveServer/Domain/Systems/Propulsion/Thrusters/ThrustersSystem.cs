@@ -15,7 +15,7 @@ public class ThrustersSystem : SystemBase<ThrustersState>
             ["configure-thrusters"] = (c) => Update(c, transformations.Configure(state, Payload<ThrusterConfigurationPayload>(c))),
             ["set-thrusters-attitude"] = (c) => Update(c, transformations.SetAttitude(state, Payload<ThrusterAttitudePayload>(c))),
             ["set-thrusters-velocity"] = (c) => Update(c, transformations.SetVelocity(state, Payload<ThrusterVelocityPayload>(c))),
-            ["set-thrusters-power"] = (c) => Update(c, transformations.SetCurrentPower(state, Payload<SystemPowerPayload>(c))),
+            ["set-power"] = (c) => Update(c, transformations.SetCurrentPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
             ["set-thrusters-damaged"] = (c) => Update(c, transformations.SetDamage(state, Payload<SystemDamagePayload>(c))),
             ["set-thrusters-disabled"] = (c) => Update(c, transformations.SetDisabled(state, Payload<SystemDisabledPayload>(c)))
         };

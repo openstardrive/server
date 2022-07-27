@@ -104,15 +104,35 @@ public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformat
     [TestCase(0)]
     [TestCase(2)]
     [TestCase(4)]
-    public void When_setting_current_power(int currentPower)
+    public void When_setting_current_power_for_the_system(int newPower)
     {
-        var payload = new SystemPowerPayload { CurrentPower = currentPower };
-        var expected = new ThrustersState { CurrentPower = currentPower };
+        var systemName = "thrusters";
+        var payload = new CurrentPowerPayload
+        {
+            ["other"] = 11,
+            [systemName] = newPower,
+            ["different"] = 12
+        };
+        var expected = new ThrustersState { CurrentPower = newPower };
 
-        var result = ClassUnderTest.SetCurrentPower(new ThrustersState(), payload);
+        var result = ClassUnderTest.SetCurrentPower(new ThrustersState(), systemName, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_setting_current_power_for_the_system_but_there_is_no_match()
+    {
+        var systemName = "thrusters";
+        var payload = new CurrentPowerPayload
+        {
+            ["other"] = 11,
+            ["different"] = 12
+        };
+        var result = ClassUnderTest.SetCurrentPower(new ThrustersState(), systemName, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
     
     [TestCase(true)]

@@ -7,7 +7,7 @@ public interface IThrusterTransformations
     TransformResult<ThrustersState> Configure(ThrustersState state, ThrusterConfigurationPayload payload);
     TransformResult<ThrustersState> SetAttitude(ThrustersState state, ThrusterAttitudePayload payload);
     TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload);
-    TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, SystemPowerPayload payload);
+    TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, string systemName, CurrentPowerPayload payload);
     TransformResult<ThrustersState> SetDamage(ThrustersState state, SystemDamagePayload payload);
     TransformResult<ThrustersState> SetDisabled(ThrustersState state, SystemDisabledPayload payload);
 }
@@ -52,10 +52,12 @@ public class ThrusterTransformations : IThrusterTransformations
             }
         });
     }
-        
-    public TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, SystemPowerPayload payload)
+
+    public TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, string systemName, CurrentPowerPayload payload)
     {
-        return TransformResult<ThrustersState>.StateChanged(state with { CurrentPower = payload.CurrentPower });
+        return payload.ValueOrNone(systemName).Case(
+            some: x => TransformResult<ThrustersState>.StateChanged(state with { CurrentPower = x }),
+            none: TransformResult<ThrustersState>.NoChange);
     }
     
     public TransformResult<ThrustersState> SetDamage(ThrustersState state, SystemDamagePayload payload)

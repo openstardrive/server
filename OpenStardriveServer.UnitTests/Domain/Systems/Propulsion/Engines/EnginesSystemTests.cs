@@ -19,9 +19,9 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     [Test]
     public void When_setting_power()
     {
-        var payload = new SystemPowerPayload { CurrentPower = 3 };
-        GetMock<IEnginesTransformations>().Setup(x => x.SetCurrentPower(Any<EnginesState>(), Any<SystemPowerPayload>())).Returns(expected);
-        TestCommandWithPayload("set-testing-engines-power", payload, expected);
+        var payload = new CurrentPowerPayload();
+        GetMock<IEnginesTransformations>().Setup(x => x.SetCurrentPower(Any<EnginesState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-power", payload, expected);
     }
     
     [Test]

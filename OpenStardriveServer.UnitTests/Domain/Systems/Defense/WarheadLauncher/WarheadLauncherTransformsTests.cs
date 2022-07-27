@@ -298,13 +298,30 @@ public class WarheadLauncherTransformsTests : WithAnAutomocked<WarheadLauncherTr
     [TestCase(4)]
     public void When_setting_power(int newPower)
     {
+        var systemName = "Warhead Launcher";
         var state = testingState with { CurrentPower = 2 };
-        var payload = new SystemPowerPayload { CurrentPower = newPower };
+        var payload = new CurrentPowerPayload
+        {
+            ["other"] = 11,
+            [systemName] = newPower
+        };
         var expected = state with { CurrentPower = newPower };
         
-        var result = ClassUnderTest.SetPower(state, payload);
+        var result = ClassUnderTest.SetPower(state, systemName, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_setting_power_but_there_is_no_match()
+    {
+        var systemName = "Warhead Launcher";
+        var state = testingState with { CurrentPower = 2 };
+        var payload = new CurrentPowerPayload { ["other"] = 22 };
+        
+        var result = ClassUnderTest.SetPower(state, systemName, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
 
     [TestCase(true)]

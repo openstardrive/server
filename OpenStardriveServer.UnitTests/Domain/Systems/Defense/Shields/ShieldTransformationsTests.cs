@@ -1,3 +1,4 @@
+using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Defense.Shields;
 using OpenStardriveServer.Domain.Systems.Standard;
 
@@ -77,18 +78,35 @@ public class ShieldTransformationsTests : WithAnAutomocked<ShieldTransformations
     [TestCase(6, true, true)]
     public void When_setting_shield_power(int newPower, bool wereRaised, bool expectedRaised)
     {
+        var systemName = "shields";
         var state = new ShieldsState
         {
             CurrentPower = 5,
             RequiredPower = 5,
             Raised = wereRaised
         };
-        var payload = new SystemPowerPayload { CurrentPower = newPower };
+        var payload = new CurrentPowerPayload
+        {
+            ["other"] = 11,
+            [systemName] = newPower
+        };
         var expected = state with { CurrentPower = newPower, Raised = expectedRaised };
         
-        var result = ClassUnderTest.SetPower(state, payload);
+        var result = ClassUnderTest.SetPower(state, systemName, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_setting_shield_power_but_there_is_no_match()
+    {
+        var systemName = "shields";
+        var state = new ShieldsState();
+        var payload = new CurrentPowerPayload { ["other"] = 22 };
+        
+        var result = ClassUnderTest.SetPower(state, systemName, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
 
     [TestCase(true, false, false)]

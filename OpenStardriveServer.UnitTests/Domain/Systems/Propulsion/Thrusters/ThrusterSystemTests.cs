@@ -18,9 +18,9 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     [Test]
     public void When_setting_power()
     {
-        var payload = new SystemPowerPayload { CurrentPower = 3 };
-        GetMock<IThrusterTransformations>().Setup(x => x.SetCurrentPower(Any<ThrustersState>(), Any<SystemPowerPayload>())).Returns(expected);
-        TestCommandWithPayload("set-thrusters-power", payload, expected);
+        var payload = new CurrentPowerPayload();
+        GetMock<IThrusterTransformations>().Setup(x => x.SetCurrentPower(Any<ThrustersState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-power", payload, expected);
     }
     
     [Test]

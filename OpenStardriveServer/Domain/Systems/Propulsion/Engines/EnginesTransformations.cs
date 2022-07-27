@@ -11,7 +11,7 @@ public interface IEnginesTransformations
     TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload);
     TransformResult<EnginesState> SetDamage(EnginesState state, SystemDamagePayload payload);
     TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload);
-    TransformResult<EnginesState> SetCurrentPower(EnginesState state, SystemPowerPayload payload);
+    TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload);
     TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload);
     TransformResult<EnginesState> Configure(EnginesState state, EnginesConfigurationPayload payload);
 }
@@ -62,20 +62,25 @@ public class EnginesTransformations : IEnginesTransformations
         return TransformResult<EnginesState>.StateChanged(state with { Disabled = payload.Disabled, CurrentSpeed = newSpeed });
     }
         
-    public TransformResult<EnginesState> SetCurrentPower(EnginesState state, SystemPowerPayload payload)
+    public TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload)
     {
-        var newSpeed = state.CurrentSpeed;
-        if (state.CurrentSpeed > 0)
-        {
-            newSpeed = CalculatePowerRequirements(state)
-                .Where(x => x.speed <= state.CurrentSpeed && x.powerRequired <= payload.CurrentPower)
-                .LastOrDefault((speed: 0, powerRequired: 0)).speed;
-        }
-        return TransformResult<EnginesState>.StateChanged(state with
-        {
-            CurrentPower = payload.CurrentPower,
-            CurrentSpeed = newSpeed
-        });
+        return payload.ValueOrNone(systemName).Case(
+            some: newPower =>
+            {
+                var newSpeed = state.CurrentSpeed;
+                if (state.CurrentSpeed > 0)
+                {
+                    newSpeed = CalculatePowerRequirements(state)
+                        .Where(x => x.speed <= state.CurrentSpeed && x.powerRequired <= newPower)
+                        .LastOrDefault((speed: 0, powerRequired: 0)).speed;
+                }
+                return TransformResult<EnginesState>.StateChanged(state with
+                {
+                    CurrentPower = newPower,
+                    CurrentSpeed = newSpeed
+                });
+            },
+            none: TransformResult<EnginesState>.NoChange);
     }
 
     public TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload)
