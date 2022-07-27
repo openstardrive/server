@@ -1,3 +1,4 @@
+using System;
 using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Systems;
 
@@ -7,12 +8,18 @@ public abstract class SystemsTest<T> : WithAnAutomocked<T> where T : ISystem
 {
     protected void TestCommand<U>(string commandName, TransformResult<U> expected)
     {
+            TestCommand(commandName, expected, _ => { });
+    }
+    
+    protected void TestCommand<U>(string commandName, TransformResult<U> expected, Action<Command> setups)
+    {
         if (!ClassUnderTest.CommandProcessors.ContainsKey(commandName))
         {
             Assert.Fail($"There is no configured processor for command: {commandName}");
         }
 
         var command = new Command { Type = commandName, Payload = "test-payload" };
+        setups(command);
 
         var result = ClassUnderTest.CommandProcessors[commandName](command);
 
@@ -27,5 +34,11 @@ public abstract class SystemsTest<T> : WithAnAutomocked<T> where T : ISystem
     {
         GetMock<IJson>().Setup(x => x.Deserialize<V>("test-payload")).Returns(payload);
         TestCommand(commandName, expected);
+    }
+    
+    protected void TestCommandWithPayload<U, V>(string commandName, V payload, TransformResult<U> expected, Action<Command> setups)
+    {
+        GetMock<IJson>().Setup(x => x.Deserialize<V>("test-payload")).Returns(payload);
+        TestCommand(commandName, expected, setups);
     }
 }
