@@ -1,11 +1,10 @@
-using System.Linq;
 using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Thrusters;
 
-public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformations>
+public class ThrusterTransformationsTests : StandardTransformsTest<ThrusterTransformations, ThrustersState>
 {
     [TestCase(1, 2, 3, 1, 2, 3)]
     [TestCase(359, 359, 359, 359, 359, 359)]
@@ -184,30 +183,9 @@ public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformat
         }
     }
     
-    [TestCase(true, true)]
-    [TestCase(false, true)]
-    [TestCase(true, false)]
-    [TestCase(false, false)]
-    public void When_setting_disabled(bool newDisabled, bool expectChange)
+    [Test]
+    public void When_setting_disabled()
     {
-        var systemName = "thrusters";
-        var state = new ThrustersState { Disabled = !newDisabled };
-        var payload = new DisabledSystemsPayload();
-        if (expectChange)
-        {
-            payload[systemName] = newDisabled;
-        }
-        
-        var result = ClassUnderTest.SetDisabled(state, systemName, payload);
-
-        if (expectChange)
-        {
-            var expected = state with { Disabled = newDisabled };
-            Assert.That(result.NewState.Value, Is.EqualTo(expected));    
-        }
-        else
-        {
-            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
-        }
+        TestStandardDisabled(new ThrustersState());
     }
 }

@@ -3,7 +3,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.Shields;
 
-public interface IShieldTransformations
+public interface IShieldTransformations : IStandardTransforms<ShieldsState>
 {
     TransformResult<ShieldsState> RaiseShields(ShieldsState state);
     TransformResult<ShieldsState> LowerShields(ShieldsState state);
@@ -11,12 +11,18 @@ public interface IShieldTransformations
     TransformResult<ShieldsState> SetPower(ShieldsState state, string systemName, CurrentPowerPayload payload);
     TransformResult<ShieldsState> SetRequiredPower(ShieldsState state, string systemName, RequiredPowerPayload payload);
     TransformResult<ShieldsState> SetDamaged(ShieldsState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<ShieldsState> SetDisabled(ShieldsState state, string systemName, DisabledSystemsPayload payload);
     TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload);
 }
 
 public class ShieldTransformations : IShieldTransformations
 {
+    private readonly IStandardTransforms<ShieldsState> standardTransforms;
+
+    public ShieldTransformations(IStandardTransforms<ShieldsState> standardTransforms)
+    {
+        this.standardTransforms = standardTransforms;
+    }
+
     public TransformResult<ShieldsState> RaiseShields(ShieldsState state)
     {
         return state.IfFunctional(() => state with { Raised = true });
@@ -68,9 +74,7 @@ public class ShieldTransformations : IShieldTransformations
 
     public TransformResult<ShieldsState> SetDisabled(ShieldsState state, string systemName, DisabledSystemsPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: disabled => TransformResult<ShieldsState>.StateChanged(state with { Disabled = disabled }),
-            none: TransformResult<ShieldsState>.NoChange);
+        return standardTransforms.SetDisabled(state, systemName, payload);
     }
 
     public TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload)

@@ -2,18 +2,24 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
-public interface IThrusterTransformations
+public interface IThrusterTransformations : IStandardTransforms<ThrustersState>
 {
     TransformResult<ThrustersState> SetAttitude(ThrustersState state, ThrusterAttitudePayload payload);
     TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload);
     TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, string systemName, CurrentPowerPayload payload);
     TransformResult<ThrustersState> SetRequiredPower(ThrustersState state, string systemName, RequiredPowerPayload payload);
     TransformResult<ThrustersState> SetDamaged(ThrustersState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<ThrustersState> SetDisabled(ThrustersState state, string systemName, DisabledSystemsPayload payload);
 }
 
 public class ThrusterTransformations : IThrusterTransformations
 {
+    private readonly IStandardTransforms<ThrustersState> standardTransforms;
+
+    public ThrusterTransformations(IStandardTransforms<ThrustersState> standardTransforms)
+    {
+        this.standardTransforms = standardTransforms;
+    }
+    
     public TransformResult<ThrustersState> SetAttitude(ThrustersState state, ThrusterAttitudePayload payload)
     {
         return state.IfFunctional(() => state with
@@ -69,9 +75,6 @@ public class ThrusterTransformations : IThrusterTransformations
 
     public TransformResult<ThrustersState> SetDisabled(ThrustersState state, string systemName, DisabledSystemsPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: disabled => TransformResult<ThrustersState>.StateChanged(state with { Disabled = disabled }),
-            none: TransformResult<ThrustersState>.NoChange
-        );
+        return standardTransforms.SetDisabled(state, systemName, payload);
     }
 }

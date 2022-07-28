@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Defense.Shields;
 
-public class ShieldTransformationsTests : WithAnAutomocked<ShieldTransformations>
+public class ShieldTransformationsTests : StandardTransformsTest<ShieldTransformations, ShieldsState>
 {
     [Test]
     public void When_raising_shields_successfully()
@@ -177,31 +177,10 @@ public class ShieldTransformationsTests : WithAnAutomocked<ShieldTransformations
         }
     }
     
-    [TestCase(true, true)]
-    [TestCase(false, true)]
-    [TestCase(true, false)]
-    [TestCase(false, false)]
-    public void When_setting_disabled(bool newDisabled, bool expectChange)
+    [Test]
+    public void When_setting_disabled()
     {
-        var systemName = "shields";
-        var state = new ShieldsState { Disabled = !newDisabled };
-        var payload = new DisabledSystemsPayload();
-        if (expectChange)
-        {
-            payload[systemName] = newDisabled;
-        }
-        
-        var result = ClassUnderTest.SetDisabled(state, systemName, payload);
-
-        if (expectChange)
-        {
-            var expected = state with { Disabled = newDisabled };
-            Assert.That(result.NewState.Value, Is.EqualTo(expected));    
-        }
-        else
-        {
-            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
-        }
+        TestStandardDisabled(new ShieldsState());
     }
 
     [TestCase(.3, .4, .5, .6, .3, .4, .5, .6)]

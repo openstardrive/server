@@ -6,7 +6,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Defense.WarheadLauncher;
 
-public class WarheadLauncherTransformsTests : WithAnAutomocked<WarheadLauncherTransforms>
+public class WarheadLauncherTransformsTests : StandardTransformsTest<WarheadLauncherTransforms, WarheadLauncherState>
 {
     private readonly WarheadLauncherState testingState = new()
     {
@@ -382,31 +382,10 @@ public class WarheadLauncherTransformsTests : WithAnAutomocked<WarheadLauncherTr
         }
     }
     
-    [TestCase(true, true)]
-    [TestCase(false, true)]
-    [TestCase(true, false)]
-    [TestCase(false, false)]
-    public void When_setting_disabled(bool newDisabled, bool expectChange)
+    [Test]
+    public void When_setting_disabled()
     {
-        var systemName = "warhead-launcher";
-        var state = testingState with { Disabled = !newDisabled };
-        var payload = new DisabledSystemsPayload();
-        if (expectChange)
-        {
-            payload[systemName] = newDisabled;
-        }
-        
-        var result = ClassUnderTest.SetDisabled(state, systemName, payload);
-
-        if (expectChange)
-        {
-            var expected = state with { Disabled = newDisabled };
-            Assert.That(result.NewState.Value, Is.EqualTo(expected));    
-        }
-        else
-        {
-            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
-        }
+        TestStandardDisabled(new WarheadLauncherState());
     }
 
     [Test]

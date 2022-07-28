@@ -5,7 +5,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines;
 
-public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformations>
+public class EnginesTransformationsTests : StandardTransformsTest<EnginesTransformations, EnginesState>
 {
     [Test]
     public void When_setting_speed_successfully()
@@ -275,31 +275,10 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
         
-    [TestCase(true, true)]
-    [TestCase(false, true)]
-    [TestCase(true, false)]
-    [TestCase(false, false)]
-    public void When_setting_disabled(bool newDisabled, bool expectChange)
+    [Test]
+    public void When_setting_disabled()
     {
-        var systemName = "test-engines";
-        var state = EnginesStateDefaults.Testing with { Disabled = !newDisabled };
-        var payload = new DisabledSystemsPayload();
-        if (expectChange)
-        {
-            payload[systemName] = newDisabled;
-        }
-        
-        var result = ClassUnderTest.SetDisabled(state, systemName, payload);
-
-        if (expectChange)
-        {
-            var expected = state with { Disabled = newDisabled };
-            Assert.That(result.NewState.Value, Is.EqualTo(expected));    
-        }
-        else
-        {
-            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
-        }
+        TestStandardDisabled(EnginesStateDefaults.Testing);
     }
 
     [TestCase(0, 10, 300_000, 10_000)]

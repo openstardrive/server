@@ -6,11 +6,10 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 
-public interface IEnginesTransformations
+public interface IEnginesTransformations : IStandardTransforms<EnginesState>
 {
     TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload);
     TransformResult<EnginesState> SetDamaged(EnginesState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<EnginesState> SetDisabled(EnginesState state, string systemName, DisabledSystemsPayload payload);
     TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload);
     TransformResult<EnginesState> SetRequiredPower(EnginesState state, string systemName, RequiredPowerPayload payload);
     TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload);
@@ -19,6 +18,13 @@ public interface IEnginesTransformations
 
 public class EnginesTransformations : IEnginesTransformations
 {
+    private readonly IStandardTransforms<EnginesState> standardTransforms;
+
+    public EnginesTransformations(IStandardTransforms<EnginesState> standardTransforms)
+    {
+        this.standardTransforms = standardTransforms;
+    }
+    
     public TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload)
     {
         if (payload.Speed < 0 || payload.Speed > state.SpeedConfig.MaxSpeed)
@@ -65,10 +71,7 @@ public class EnginesTransformations : IEnginesTransformations
 
     public TransformResult<EnginesState> SetDisabled(EnginesState state, string systemName, DisabledSystemsPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: disabled => TransformResult<EnginesState>.StateChanged(state with { Disabled = disabled }),
-            none: TransformResult<EnginesState>.NoChange 
-        );
+        return standardTransforms.SetDisabled(state, systemName, payload);
     }
         
     public TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload)

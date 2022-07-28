@@ -4,19 +4,25 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.WarheadLauncher;
 
-public interface IWarheadLauncherTransforms
+public interface IWarheadLauncherTransforms : IStandardTransforms<WarheadLauncherState>
 {
     TransformResult<WarheadLauncherState> Load(WarheadLauncherState state, LoadWarheadPayload payload);
     TransformResult<WarheadLauncherState> Fire(WarheadLauncherState state, FireWarheadPayload payload, DateTimeOffset commandTimestamp);
     TransformResult<WarheadLauncherState> SetPower(WarheadLauncherState state, string systemName, CurrentPowerPayload payload);
     TransformResult<WarheadLauncherState> SetRequiredPower(WarheadLauncherState state, string systemName, RequiredPowerPayload payload);
     TransformResult<WarheadLauncherState> SetDamaged(WarheadLauncherState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, string systemName, DisabledSystemsPayload payload);
     TransformResult<WarheadLauncherState> SetInventory(WarheadLauncherState state, WarheadInventoryPayload payload);
 }
 
 public class WarheadLauncherTransforms : IWarheadLauncherTransforms
 {
+    private readonly IStandardTransforms<WarheadLauncherState> standardTransforms;
+    
+    public WarheadLauncherTransforms(IStandardTransforms<WarheadLauncherState> standardTransforms)
+    {
+        this.standardTransforms = standardTransforms;
+    }
+    
     public TransformResult<WarheadLauncherState> Load(WarheadLauncherState state, LoadWarheadPayload payload)
     {
         return state.IfFunctional(() =>
@@ -92,10 +98,7 @@ public class WarheadLauncherTransforms : IWarheadLauncherTransforms
 
     public TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, string systemName, DisabledSystemsPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: disabled => TransformResult<WarheadLauncherState>.StateChanged(state with { Disabled = disabled }),
-            none: TransformResult<WarheadLauncherState>.NoChange
-        );
+        return standardTransforms.SetDisabled(state, systemName, payload);
     }
 
     public TransformResult<WarheadLauncherState> SetInventory(WarheadLauncherState state, WarheadInventoryPayload payload)
