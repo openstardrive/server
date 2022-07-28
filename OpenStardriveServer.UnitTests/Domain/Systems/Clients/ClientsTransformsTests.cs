@@ -5,7 +5,7 @@ using OpenStardriveServer.Domain.Systems.Clients;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients;
 
- public class ClientsTransformationsTests : WithAnAutomocked<ClientsTransformations>
+ public class ClientsTransformsTests : WithAnAutomocked<ClientsTransforms>
 {
     [Test]
     public void When_registering_a_client()
