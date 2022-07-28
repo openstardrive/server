@@ -10,7 +10,7 @@ public interface IEnginesTransformations
 {
     TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload);
     TransformResult<EnginesState> SetDamaged(EnginesState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload);
+    TransformResult<EnginesState> SetDisabled(EnginesState state, string systemName, DisabledSystemsPayload payload);
     TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload);
     TransformResult<EnginesState> SetRequiredPower(EnginesState state, string systemName, RequiredPowerPayload payload);
     TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload);
@@ -63,10 +63,12 @@ public class EnginesTransformations : IEnginesTransformations
         );
     }
 
-    public TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload)
+    public TransformResult<EnginesState> SetDisabled(EnginesState state, string systemName, DisabledSystemsPayload payload)
     {
-        var newSpeed = payload.Disabled ? 0 : state.CurrentSpeed;
-        return TransformResult<EnginesState>.StateChanged(state with { Disabled = payload.Disabled, CurrentSpeed = newSpeed });
+        return payload.ValueOrNone(systemName).Case(
+            some: disabled => TransformResult<EnginesState>.StateChanged(state with { Disabled = disabled }),
+            none: TransformResult<EnginesState>.NoChange 
+        );
     }
         
     public TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload)

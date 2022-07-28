@@ -67,9 +67,9 @@ public class WarheadLauncherSystemTests : SystemsTest<WarheadLauncherSystem>
     [Test]
     public void When_setting_disabled()
     {
-        var payload = new SystemDisabledPayload { Disabled = true };
-        GetMock<IWarheadLauncherTransforms>().Setup(x => x.SetDisabled(Any<WarheadLauncherState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-warhead-launcher-disabled", payload, expected);
+        var payload = new DisabledSystemsPayload();
+        GetMock<IWarheadLauncherTransforms>().Setup(x => x.SetDisabled(Any<WarheadLauncherState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-disabled", payload, expected);
     }
     
     [Test]

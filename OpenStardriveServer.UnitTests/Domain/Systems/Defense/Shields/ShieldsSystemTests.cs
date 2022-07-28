@@ -42,9 +42,9 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     [Test]
     public void When_setting_disabled()
     {
-        var payload = new SystemDisabledPayload { Disabled = true };
-        GetMock<IShieldTransformations>().Setup(x => x.SetDisabled(Any<ShieldsState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-shields-disabled", payload, expected);
+        var payload = new DisabledSystemsPayload();
+        GetMock<IShieldTransformations>().Setup(x => x.SetDisabled(Any<ShieldsState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-disabled", payload, expected);
     }
     
     [Test]

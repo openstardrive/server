@@ -11,7 +11,7 @@ public interface IShieldTransformations
     TransformResult<ShieldsState> SetPower(ShieldsState state, string systemName, CurrentPowerPayload payload);
     TransformResult<ShieldsState> SetRequiredPower(ShieldsState state, string systemName, RequiredPowerPayload payload);
     TransformResult<ShieldsState> SetDamaged(ShieldsState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<ShieldsState> SetDisabled(ShieldsState state, SystemDisabledPayload payload);
+    TransformResult<ShieldsState> SetDisabled(ShieldsState state, string systemName, DisabledSystemsPayload payload);
     TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload);
 }
 
@@ -66,9 +66,11 @@ public class ShieldTransformations : IShieldTransformations
         );
     }
 
-    public TransformResult<ShieldsState> SetDisabled(ShieldsState state, SystemDisabledPayload payload)
+    public TransformResult<ShieldsState> SetDisabled(ShieldsState state, string systemName, DisabledSystemsPayload payload)
     {
-        return TransformResult<ShieldsState>.StateChanged(state with { Disabled = payload.Disabled });
+        return payload.ValueOrNone(systemName).Case(
+            some: disabled => TransformResult<ShieldsState>.StateChanged(state with { Disabled = disabled }),
+            none: TransformResult<ShieldsState>.NoChange);
     }
 
     public TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload)

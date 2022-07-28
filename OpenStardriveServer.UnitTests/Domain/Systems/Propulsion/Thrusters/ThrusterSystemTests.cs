@@ -42,9 +42,9 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     [Test]
     public void When_setting_disabled()
     {
-        var payload = new SystemDisabledPayload { Disabled = true };
-        GetMock<IThrusterTransformations>().Setup(x => x.SetDisabled(Any<ThrustersState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-thrusters-disabled", payload, expected);
+        var payload = new DisabledSystemsPayload();
+        GetMock<IThrusterTransformations>().Setup(x => x.SetDisabled(Any<ThrustersState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-disabled", payload, expected);
     }
 
     [Test]

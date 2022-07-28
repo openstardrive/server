@@ -20,7 +20,7 @@ public abstract class EnginesSystem : SystemBase<EnginesState>
             ["set-power"] = c => Update(c, transformations.SetCurrentPower(state, systemName, Payload<CurrentPowerPayload>(c))),
             ["set-required-power"] = c => Update(c, transformations.SetRequiredPower(state, systemName, Payload<RequiredPowerPayload>(c))),
             ["set-damaged"] = c => Update(c, transformations.SetDamaged(state, systemName, Payload<DamagedSystemsPayload>(c))),
-            [$"set-{SystemName}-disabled"] = c => Update(c, transformations.SetDisabled(state, Payload<SystemDisabledPayload>(c)))
+            ["set-disabled"] = c => Update(c, transformations.SetDisabled(state, SystemName, Payload<DisabledSystemsPayload>(c)))
         };
     }
 }

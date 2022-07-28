@@ -184,16 +184,30 @@ public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformat
         }
     }
     
-    [TestCase(true)]
-    [TestCase(false)]
-    public void When_setting_disabled(bool disabled)
+    [TestCase(true, true)]
+    [TestCase(false, true)]
+    [TestCase(true, false)]
+    [TestCase(false, false)]
+    public void When_setting_disabled(bool newDisabled, bool expectChange)
     {
-        var payload = new SystemDisabledPayload { Disabled = disabled };
-        var expected = new ThrustersState { Disabled = disabled };
-
-        var result = ClassUnderTest.SetDisabled(new ThrustersState { Disabled = !disabled }, payload);
+        var systemName = "thrusters";
+        var state = new ThrustersState { Disabled = !newDisabled };
+        var payload = new DisabledSystemsPayload();
+        if (expectChange)
+        {
+            payload[systemName] = newDisabled;
+        }
         
-        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        var result = ClassUnderTest.SetDisabled(state, systemName, payload);
+
+        if (expectChange)
+        {
+            var expected = state with { Disabled = newDisabled };
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));    
+        }
+        else
+        {
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+        }
     }
 }

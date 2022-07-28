@@ -275,17 +275,31 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
         
-    [TestCase(true)]
-    [TestCase(false)]
-    public void When_system_is_disabled(bool isDisabled)
+    [TestCase(true, true)]
+    [TestCase(false, true)]
+    [TestCase(true, false)]
+    [TestCase(false, false)]
+    public void When_setting_disabled(bool newDisabled, bool expectChange)
     {
-        var state = EnginesStateDefaults.Testing with { Disabled = !isDisabled };
-        var expected = EnginesStateDefaults.Testing with { Disabled = isDisabled };
-        var payload = new SystemDisabledPayload { Disabled = isDisabled };
+        var systemName = "test-engines";
+        var state = EnginesStateDefaults.Testing with { Disabled = !newDisabled };
+        var payload = new DisabledSystemsPayload();
+        if (expectChange)
+        {
+            payload[systemName] = newDisabled;
+        }
+        
+        var result = ClassUnderTest.SetDisabled(state, systemName, payload);
 
-        var result = ClassUnderTest.SetDisabled(state, payload);
-            
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        if (expectChange)
+        {
+            var expected = state with { Disabled = newDisabled };
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));    
+        }
+        else
+        {
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+        }
     }
 
     [TestCase(0, 10, 300_000, 10_000)]

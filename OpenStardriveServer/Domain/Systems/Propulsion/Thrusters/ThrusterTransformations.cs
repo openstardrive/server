@@ -9,7 +9,7 @@ public interface IThrusterTransformations
     TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, string systemName, CurrentPowerPayload payload);
     TransformResult<ThrustersState> SetRequiredPower(ThrustersState state, string systemName, RequiredPowerPayload payload);
     TransformResult<ThrustersState> SetDamaged(ThrustersState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<ThrustersState> SetDisabled(ThrustersState state, SystemDisabledPayload payload);
+    TransformResult<ThrustersState> SetDisabled(ThrustersState state, string systemName, DisabledSystemsPayload payload);
 }
 
 public class ThrusterTransformations : IThrusterTransformations
@@ -67,8 +67,11 @@ public class ThrusterTransformations : IThrusterTransformations
         );
     }
 
-    public TransformResult<ThrustersState> SetDisabled(ThrustersState state, SystemDisabledPayload payload)
+    public TransformResult<ThrustersState> SetDisabled(ThrustersState state, string systemName, DisabledSystemsPayload payload)
     {
-        return TransformResult<ThrustersState>.StateChanged(state with { Disabled = payload.Disabled });
+        return payload.ValueOrNone(systemName).Case(
+            some: disabled => TransformResult<ThrustersState>.StateChanged(state with { Disabled = disabled }),
+            none: TransformResult<ThrustersState>.NoChange
+        );
     }
 }

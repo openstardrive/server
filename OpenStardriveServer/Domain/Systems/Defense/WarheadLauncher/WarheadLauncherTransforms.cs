@@ -11,7 +11,7 @@ public interface IWarheadLauncherTransforms
     TransformResult<WarheadLauncherState> SetPower(WarheadLauncherState state, string systemName, CurrentPowerPayload payload);
     TransformResult<WarheadLauncherState> SetRequiredPower(WarheadLauncherState state, string systemName, RequiredPowerPayload payload);
     TransformResult<WarheadLauncherState> SetDamaged(WarheadLauncherState state, string systemName, DamagedSystemsPayload payload);
-    TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, SystemDisabledPayload payload);
+    TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, string systemName, DisabledSystemsPayload payload);
     TransformResult<WarheadLauncherState> SetInventory(WarheadLauncherState state, WarheadInventoryPayload payload);
 }
 
@@ -90,9 +90,12 @@ public class WarheadLauncherTransforms : IWarheadLauncherTransforms
         );
     }
 
-    public TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, SystemDisabledPayload payload)
+    public TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, string systemName, DisabledSystemsPayload payload)
     {
-        return TransformResult<WarheadLauncherState>.StateChanged(state with { Disabled = payload.Disabled });
+        return payload.ValueOrNone(systemName).Case(
+            some: disabled => TransformResult<WarheadLauncherState>.StateChanged(state with { Disabled = disabled }),
+            none: TransformResult<WarheadLauncherState>.NoChange
+        );
     }
 
     public TransformResult<WarheadLauncherState> SetInventory(WarheadLauncherState state, WarheadInventoryPayload payload)
