@@ -355,31 +355,10 @@ public class WarheadLauncherTransformsTests : StandardTransformsTest<WarheadLaun
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
 
-    [TestCase(true, true)]
-    [TestCase(false, true)]
-    [TestCase(false, false)]
-    [TestCase(true, false)]
-    public void When_setting_damage(bool newDamaged, bool expectChange)
+    [Test]
+    public void When_setting_damaged()
     {
-        var systemName = "warhead-launcher";
-        var payload = new DamagedSystemsPayload { ["other"] = false };
-        if (expectChange)
-        {
-            payload[systemName] = newDamaged;
-        }
-
-        var state = new WarheadLauncherState { Damaged = !newDamaged };
-        var result = ClassUnderTest.SetDamaged(state, systemName, payload);
-
-        if (expectChange)
-        {
-            var expected = state with { Damaged = newDamaged };
-            Assert.That(result.NewState.Value, Is.EqualTo(expected));
-        }
-        else
-        {
-            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));    
-        }
+        TestStandardDamaged(new WarheadLauncherState());
     }
     
     [Test]

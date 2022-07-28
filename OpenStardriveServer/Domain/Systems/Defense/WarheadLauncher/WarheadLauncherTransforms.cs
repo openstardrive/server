@@ -90,10 +90,7 @@ public class WarheadLauncherTransforms : IWarheadLauncherTransforms
     
     public TransformResult<WarheadLauncherState> SetDamaged(WarheadLauncherState state, string systemName, DamagedSystemsPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: damaged => TransformResult<WarheadLauncherState>.StateChanged(state with { Damaged = damaged }),
-            none: TransformResult<WarheadLauncherState>.NoChange
-        );
+        return standardTransforms.SetDamaged(state, systemName, payload);
     }
 
     public TransformResult<WarheadLauncherState> SetDisabled(WarheadLauncherState state, string systemName, DisabledSystemsPayload payload)

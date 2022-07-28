@@ -154,7 +154,7 @@ public class ShieldTransformationsTests : StandardTransformsTest<ShieldTransform
     [TestCase(false, true, false, false)]
     [TestCase(false, false)]
     [TestCase(true, false)]
-    public void When_setting_damage(bool newDamaged, bool expectChange, bool wereRaised = false, bool expectedRaised = false)
+    public void When_setting_damaged(bool newDamaged, bool expectChange, bool wereRaised = false, bool expectedRaised = false)
     {
         var systemName = "shields";
         var payload = new DamagedSystemsPayload { ["other"] = false };

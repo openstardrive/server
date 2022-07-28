@@ -67,10 +67,7 @@ public class ThrusterTransformations : IThrusterTransformations
 
     public TransformResult<ThrustersState> SetDamaged(ThrustersState state, string systemName, DamagedSystemsPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: damaged => TransformResult<ThrustersState>.StateChanged(state with { Damaged = damaged }),
-            none: TransformResult<ThrustersState>.NoChange
-        );
+        return standardTransforms.SetDamaged(state, systemName, payload);
     }
 
     public TransformResult<ThrustersState> SetDisabled(ThrustersState state, string systemName, DisabledSystemsPayload payload)

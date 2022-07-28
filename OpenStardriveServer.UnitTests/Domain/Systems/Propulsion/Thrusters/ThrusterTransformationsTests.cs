@@ -157,30 +157,10 @@ public class ThrusterTransformationsTests : StandardTransformsTest<ThrusterTrans
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
     
-    [TestCase(true, true)]
-    [TestCase(false, true)]
-    [TestCase(false, false)]
-    [TestCase(true, false)]
-    public void When_setting_damage(bool newDamaged, bool expectChange)
+    [Test]
+    public void When_setting_damaged()
     {
-        var systemName = "thrusters";
-        var payload = new DamagedSystemsPayload { ["other"] = false };
-        if (expectChange)
-        {
-            payload[systemName] = newDamaged;
-        }
-
-        var result = ClassUnderTest.SetDamaged(new ThrustersState { Damaged = !newDamaged }, systemName, payload);
-
-        if (expectChange)
-        {
-            var expected = new ThrustersState { Damaged = newDamaged };
-            Assert.That(result.NewState.Value, Is.EqualTo(expected));
-        }
-        else
-        {
-            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));    
-        }
+        TestStandardDamaged(new ThrustersState());
     }
     
     [Test]

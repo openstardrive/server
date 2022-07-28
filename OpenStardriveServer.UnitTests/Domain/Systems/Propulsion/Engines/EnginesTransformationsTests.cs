@@ -127,7 +127,7 @@ public class EnginesTransformationsTests : StandardTransformsTest<EnginesTransfo
     [TestCase(false, true)]
     [TestCase(false, false)]
     [TestCase(true, false)]
-    public void When_setting_damage(bool newDamaged, bool expectChange)
+    public void When_setting_damaged(bool newDamaged, bool expectChange)
     {
         var systemName = "engines";
         var payload = new DamagedSystemsPayload { ["other"] = false };
