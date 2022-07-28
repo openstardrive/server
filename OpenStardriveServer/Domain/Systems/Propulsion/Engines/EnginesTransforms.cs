@@ -9,7 +9,6 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 public interface IEnginesTransforms : IStandardTransforms<EnginesState>
 {
     TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload);
-    TransformResult<EnginesState> SetDamaged(EnginesState state, string systemName, DamagedSystemsPayload payload);
     TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload);
     TransformResult<EnginesState> SetRequiredPower(EnginesState state, string systemName, RequiredPowerPayload payload);
     TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload);
