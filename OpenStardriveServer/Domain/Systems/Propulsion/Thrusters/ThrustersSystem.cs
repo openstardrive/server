@@ -12,7 +12,6 @@ public class ThrustersSystem : SystemBase<ThrustersState>
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
             ["report-state"] = c => Update(c, TransformResult<ThrustersState>.StateChanged(state)),
-            ["configure-thrusters"] = c => Update(c, transformations.Configure(state, Payload<ThrusterConfigurationPayload>(c))),
             ["set-thrusters-attitude"] = c => Update(c, transformations.SetAttitude(state, Payload<ThrusterAttitudePayload>(c))),
             ["set-thrusters-velocity"] = c => Update(c, transformations.SetVelocity(state, Payload<ThrusterVelocityPayload>(c))),
             ["set-power"] = c => Update(c, transformations.SetCurrentPower(state, SystemName, Payload<CurrentPowerPayload>(c))),

@@ -6,18 +6,6 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Thrusters;
 
 public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformations>
 {
-    [Test]
-    public void When_configuring_thrusters()
-    {
-        var payload = new ThrusterConfigurationPayload { RequiredPower = 555 };
-        var expected = new ThrustersState { RequiredPower = 555 };
-
-        var result = ClassUnderTest.Configure(new ThrustersState(), payload);
-        
-        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
-    }
-    
     [TestCase(1, 2, 3, 1, 2, 3)]
     [TestCase(359, 359, 359, 359, 359, 359)]
     [TestCase(360, 361, 362, 0, 1, 2)]

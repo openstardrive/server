@@ -48,14 +48,6 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     }
 
     [Test]
-    public void When_configuring_thrusters()
-    {
-        var payload = new ThrusterConfigurationPayload { RequiredPower = 7 };
-        GetMock<IThrusterTransformations>().Setup(x => x.Configure(Any<ThrustersState>(), payload)).Returns(expected);
-        TestCommandWithPayload("configure-thrusters", payload, expected);
-    }
-
-    [Test]
     public void When_setting_attitude()
     {
         var payload = new ThrusterAttitudePayload { Yaw = 1, Pitch = 2, Roll = 3 };
