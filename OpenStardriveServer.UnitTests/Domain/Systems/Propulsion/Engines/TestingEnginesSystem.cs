@@ -5,7 +5,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines;
 
 public class TestingEnginesSystem : EnginesSystem
 {
-    public TestingEnginesSystem(IEnginesTransformations transformations, IJson json)
-        : base("testing-engines", EnginesStateDefaults.Testing , transformations, json)
+    public TestingEnginesSystem(IEnginesTransforms transforms, IJson json)
+        : base("testing-engines", EnginesStateDefaults.Testing , transforms, json)
     { }
 }

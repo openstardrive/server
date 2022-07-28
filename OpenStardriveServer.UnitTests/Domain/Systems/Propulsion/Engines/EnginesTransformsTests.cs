@@ -5,7 +5,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Engines;
 
-public class EnginesTransformationsTests : StandardTransformsTest<EnginesTransformations, EnginesState>
+public class EnginesTransformsTests : StandardTransformsTest<EnginesTransforms, EnginesState>
 {
     [Test]
     public void When_setting_speed_successfully()
