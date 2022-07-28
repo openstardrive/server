@@ -3,7 +3,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.Shields;
 
-public interface IShieldTransformations : IStandardTransforms<ShieldsState>
+public interface IShieldTransforms : IStandardTransforms<ShieldsState>
 {
     TransformResult<ShieldsState> RaiseShields(ShieldsState state);
     TransformResult<ShieldsState> LowerShields(ShieldsState state);
@@ -14,11 +14,11 @@ public interface IShieldTransformations : IStandardTransforms<ShieldsState>
     TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload);
 }
 
-public class ShieldTransformations : IShieldTransformations
+public class ShieldTransforms : IShieldTransforms
 {
     private readonly IStandardTransforms<ShieldsState> standardTransforms;
 
-    public ShieldTransformations(IStandardTransforms<ShieldsState> standardTransforms)
+    public ShieldTransforms(IStandardTransforms<ShieldsState> standardTransforms)
     {
         this.standardTransforms = standardTransforms;
     }

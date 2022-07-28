@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Defense.Shields;
 
-public class ShieldTransformationsTests : StandardTransformsTest<ShieldTransformations, ShieldsState>
+public class ShieldTransformsTests : StandardTransformsTest<ShieldTransforms, ShieldsState>
 {
     [Test]
     public void When_raising_shields_successfully()
