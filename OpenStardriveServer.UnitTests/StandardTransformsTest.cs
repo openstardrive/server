@@ -30,4 +30,28 @@ public abstract class StandardTransformsTest<T, TState> : WithAnAutomocked<T>
         
         Assert.That(result, Is.SameAs(expected));
     }
+    
+    protected void TestStandardCurrentPower(TState state)
+    {
+        var systemName = "test-system";
+        var payload = new CurrentPowerPayload();
+        var expected = TransformResult<TState>.NoChange();
+        GetMock<IStandardTransforms<TState>>().Setup(x => x.SetCurrentPower(state, systemName, payload)).Returns(expected);
+
+        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
+        
+        Assert.That(result, Is.SameAs(expected));
+    }
+    
+    protected void TestStandardRequiredPower(TState state)
+    {
+        var systemName = "test-system";
+        var payload = new RequiredPowerPayload();
+        var expected = TransformResult<TState>.NoChange();
+        GetMock<IStandardTransforms<TState>>().Setup(x => x.SetRequiredPower(state, systemName, payload)).Returns(expected);
+
+        var result = ClassUnderTest.SetRequiredPower(state, systemName, payload);
+        
+        Assert.That(result, Is.SameAs(expected));
+    }
 }
