@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems.Propulsion.Thrusters;
 
-public class ThrusterTransformationsTests : StandardTransformsTest<ThrusterTransformations, ThrustersState>
+public class ThrusterTransformsTests : StandardTransformsTest<ThrusterTransforms, ThrustersState>
 {
     [TestCase(1, 2, 3, 1, 2, 3)]
     [TestCase(359, 359, 359, 359, 359, 359)]

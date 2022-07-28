@@ -6,18 +6,18 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
 public class ThrustersSystem : SystemBase<ThrustersState>
 {
-    public ThrustersSystem(IThrusterTransformations transformations, IJson json) : base(json)
+    public ThrustersSystem(IThrusterTransforms transforms, IJson json) : base(json)
     {
         SystemName = "thrusters";
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
             ["report-state"] = c => Update(c, TransformResult<ThrustersState>.StateChanged(state)),
-            ["set-thrusters-attitude"] = c => Update(c, transformations.SetAttitude(state, Payload<ThrusterAttitudePayload>(c))),
-            ["set-thrusters-velocity"] = c => Update(c, transformations.SetVelocity(state, Payload<ThrusterVelocityPayload>(c))),
-            ["set-power"] = c => Update(c, transformations.SetCurrentPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
-            ["set-required-power"] = c => Update(c, transformations.SetRequiredPower(state, SystemName, Payload<RequiredPowerPayload>(c))),
-            ["set-damaged"] = c => Update(c, transformations.SetDamaged(state, SystemName, Payload<DamagedSystemsPayload>(c))),
-            ["set-disabled"] = c => Update(c, transformations.SetDisabled(state, SystemName, Payload<DisabledSystemsPayload>(c)))
+            ["set-thrusters-attitude"] = c => Update(c, transforms.SetAttitude(state, Payload<ThrusterAttitudePayload>(c))),
+            ["set-thrusters-velocity"] = c => Update(c, transforms.SetVelocity(state, Payload<ThrusterVelocityPayload>(c))),
+            ["set-power"] = c => Update(c, transforms.SetCurrentPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
+            ["set-required-power"] = c => Update(c, transforms.SetRequiredPower(state, SystemName, Payload<RequiredPowerPayload>(c))),
+            ["set-damaged"] = c => Update(c, transforms.SetDamaged(state, SystemName, Payload<DamagedSystemsPayload>(c))),
+            ["set-disabled"] = c => Update(c, transforms.SetDisabled(state, SystemName, Payload<DisabledSystemsPayload>(c)))
         };
     }
 }

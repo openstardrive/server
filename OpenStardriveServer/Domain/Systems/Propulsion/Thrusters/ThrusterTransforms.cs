@@ -2,7 +2,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
-public interface IThrusterTransformations : IStandardTransforms<ThrustersState>
+public interface IThrusterTransforms : IStandardTransforms<ThrustersState>
 {
     TransformResult<ThrustersState> SetAttitude(ThrustersState state, ThrusterAttitudePayload payload);
     TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload);
@@ -11,11 +11,11 @@ public interface IThrusterTransformations : IStandardTransforms<ThrustersState>
     TransformResult<ThrustersState> SetDamaged(ThrustersState state, string systemName, DamagedSystemsPayload payload);
 }
 
-public class ThrusterTransformations : IThrusterTransformations
+public class ThrusterTransforms : IThrusterTransforms
 {
     private readonly IStandardTransforms<ThrustersState> standardTransforms;
 
-    public ThrusterTransformations(IStandardTransforms<ThrustersState> standardTransforms)
+    public ThrusterTransforms(IStandardTransforms<ThrustersState> standardTransforms)
     {
         this.standardTransforms = standardTransforms;
     }
