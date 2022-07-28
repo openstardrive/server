@@ -68,21 +68,27 @@ public class EnginesTransformations : IEnginesTransformations
         return payload.ValueOrNone(systemName).Case(
             some: newPower =>
             {
-                var newSpeed = state.CurrentSpeed;
-                if (state.CurrentSpeed > 0)
-                {
-                    newSpeed = CalculatePowerRequirements(state)
-                        .Where(x => x.speed <= state.CurrentSpeed && x.powerRequired <= newPower)
-                        .LastOrDefault((speed: 0, powerRequired: 0)).speed;
-                }
-                return TransformResult<EnginesState>.StateChanged(state with
+                var newState = state with { CurrentPower = newPower };
+                return TransformResult<EnginesState>.StateChanged(newState with
                 {
                     CurrentPower = newPower,
-                    CurrentSpeed = newSpeed
+                    CurrentSpeed = CalculateNewSpeed(state, newState)
                 });
             },
             none: TransformResult<EnginesState>.NoChange
         );
+    }
+
+    private int CalculateNewSpeed(EnginesState currentState, EnginesState newState)
+    {
+        if (currentState.CurrentSpeed > 0)
+        {
+            return CalculatePowerRequirements(newState)
+                .Where(x => x.speed <= currentState.CurrentSpeed && x.powerRequired <= newState.CurrentPower)
+                .LastOrDefault((speed: 0, powerRequired: 0)).speed;
+        }
+
+        return 0;
     }
     
     public TransformResult<EnginesState> SetRequiredPower(EnginesState state, string systemName, RequiredPowerPayload payload)
@@ -90,15 +96,11 @@ public class EnginesTransformations : IEnginesTransformations
         return payload.ValueOrNone(systemName).Case(
             some: newRequired =>
             {
-                var newSpeed = state.CurrentSpeed;
                 var newState = state with { RequiredPower = newRequired };
-                if (state.CurrentSpeed > 0)
+                return TransformResult<EnginesState>.StateChanged(newState with
                 {
-                    newSpeed = CalculatePowerRequirements(newState)
-                        .Where(x => x.speed <= state.CurrentSpeed && x.powerRequired <= state.CurrentPower)
-                        .LastOrDefault((speed: 0, powerRequired: 0)).speed;
-                }
-                return TransformResult<EnginesState>.StateChanged(newState with { CurrentSpeed = newSpeed });
+                    CurrentSpeed = CalculateNewSpeed(state, newState)
+                });
             },
             none: TransformResult<EnginesState>.NoChange
         );
@@ -182,12 +184,12 @@ public class EnginesTransformations : IEnginesTransformations
 
     public TransformResult<EnginesState> Configure(EnginesState state, EnginesConfigurationPayload payload)
     {
-        return TransformResult<EnginesState>.StateChanged(state with
+        var newState = state with
         {
             HeatConfig = payload.HeatConfig,
             SpeedConfig = payload.SpeedConfig,
-            RequiredPower = payload.RequiredPower,
             SpeedPowerRequirements = payload.SpeedPowerRequirements
-        });
+        };
+        return TransformResult<EnginesState>.StateChanged(newState with { CurrentSpeed = CalculateNewSpeed(state, newState) });
     }
 }

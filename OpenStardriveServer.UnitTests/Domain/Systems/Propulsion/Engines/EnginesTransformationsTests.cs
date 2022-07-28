@@ -358,7 +358,6 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
                 CruisingSpeed = 72,
                 MaxSpeed = 103
             },
-            RequiredPower = 2,
             SpeedPowerRequirements = new[]
             {
                 new SpeedPowerRequirement { Speed = 23, PowerNeeded = 5 },
@@ -369,11 +368,56 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
         {
             HeatConfig = payload.HeatConfig,
             SpeedConfig = payload.SpeedConfig,
-            RequiredPower = payload.RequiredPower,
             SpeedPowerRequirements = payload.SpeedPowerRequirements
         };
             
         var result = ClassUnderTest.Configure(EnginesStateDefaults.Testing, payload);
+            
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_configuring_engines_and_speed_requirement_is_higher()
+    {
+        var payload = new EnginesConfigurationPayload
+        {
+            HeatConfig = new EngineHeatConfig
+            {
+                PoweredHeat = 9,
+                CruisingHeat = 99,
+                MaxHeat = 999,
+                MinutesAtMaxSpeed = 9,
+                MinutesToCoolDown = 99
+            },
+            SpeedConfig = new EngineSpeedConfig
+            {
+                CruisingSpeed = 72,
+                MaxSpeed = 103
+            },
+            SpeedPowerRequirements = new[]
+            {
+                new SpeedPowerRequirement { Speed = 6, PowerNeeded = 7 }
+            }
+        };
+        var state = EnginesStateDefaults.Testing with
+        {
+            CurrentSpeed = 6,
+            CurrentPower = 5,
+            RequiredPower = 4,
+            SpeedPowerRequirements = new[]
+            {
+                new SpeedPowerRequirement() { Speed = 6, PowerNeeded = 5 }
+            }
+        };
+        var expected = state with
+        {
+            HeatConfig = payload.HeatConfig,
+            SpeedConfig = payload.SpeedConfig,
+            SpeedPowerRequirements = payload.SpeedPowerRequirements,
+            CurrentSpeed = 5
+        };
+            
+        var result = ClassUnderTest.Configure(state, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
