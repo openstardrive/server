@@ -19,7 +19,7 @@ public abstract class EnginesSystem : SystemBase<EnginesState>
             [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, Payload<ChronometerPayload>(c))),
             ["set-power"] = c => Update(c, transformations.SetCurrentPower(state, systemName, Payload<CurrentPowerPayload>(c))),
             ["set-required-power"] = c => Update(c, transformations.SetRequiredPower(state, systemName, Payload<RequiredPowerPayload>(c))),
-            [$"set-{SystemName}-damaged"] = c => Update(c, transformations.SetDamage(state, Payload<SystemDamagePayload>(c))),
+            ["set-damaged"] = c => Update(c, transformations.SetDamaged(state, systemName, Payload<DamagedSystemsPayload>(c))),
             [$"set-{SystemName}-disabled"] = c => Update(c, transformations.SetDisabled(state, Payload<SystemDisabledPayload>(c)))
         };
     }

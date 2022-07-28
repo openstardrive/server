@@ -8,7 +8,7 @@ public interface IThrusterTransformations
     TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload);
     TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, string systemName, CurrentPowerPayload payload);
     TransformResult<ThrustersState> SetRequiredPower(ThrustersState state, string systemName, RequiredPowerPayload payload);
-    TransformResult<ThrustersState> SetDamage(ThrustersState state, SystemDamagePayload payload);
+    TransformResult<ThrustersState> SetDamaged(ThrustersState state, string systemName, DamagedSystemsPayload payload);
     TransformResult<ThrustersState> SetDisabled(ThrustersState state, SystemDisabledPayload payload);
 }
 
@@ -58,12 +58,15 @@ public class ThrusterTransformations : IThrusterTransformations
             some: x => TransformResult<ThrustersState>.StateChanged(state with { RequiredPower = x }),
             none: TransformResult<ThrustersState>.NoChange);
     }
-    
-    public TransformResult<ThrustersState> SetDamage(ThrustersState state, SystemDamagePayload payload)
+
+    public TransformResult<ThrustersState> SetDamaged(ThrustersState state, string systemName, DamagedSystemsPayload payload)
     {
-        return TransformResult<ThrustersState>.StateChanged(state with { Damaged = payload.Damaged });
+        return payload.ValueOrNone(systemName).Case(
+            some: damaged => TransformResult<ThrustersState>.StateChanged(state with { Damaged = damaged }),
+            none: TransformResult<ThrustersState>.NoChange
+        );
     }
-    
+
     public TransformResult<ThrustersState> SetDisabled(ThrustersState state, SystemDisabledPayload payload)
     {
         return TransformResult<ThrustersState>.StateChanged(state with { Disabled = payload.Disabled });

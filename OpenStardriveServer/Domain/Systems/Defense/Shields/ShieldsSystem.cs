@@ -14,7 +14,7 @@ public class ShieldsSystem : SystemBase<ShieldsState>
             ["report-state"] = c => Update(c, TransformResult<ShieldsState>.StateChanged(state)),
             ["set-power"] = c => Update(c, transformations.SetPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
             ["set-required-power"] = c => Update(c, transformations.SetRequiredPower(state, SystemName, Payload<RequiredPowerPayload>(c))),
-            ["set-shields-damaged"] = c => Update(c, transformations.SetDamaged(state, Payload<SystemDamagePayload>(c))),
+            ["set-damaged"] = c => Update(c, transformations.SetDamaged(state, SystemName, Payload<DamagedSystemsPayload>(c))),
             ["set-shields-disabled"] = c => Update(c, transformations.SetDisabled(state, Payload<SystemDisabledPayload>(c))),
             ["raise-shields"] = c => Update(c, transformations.RaiseShields(state)),
             ["lower-shields"] = c => Update(c, transformations.LowerShields(state)),

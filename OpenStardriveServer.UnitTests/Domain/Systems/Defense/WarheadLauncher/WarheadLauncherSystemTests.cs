@@ -59,9 +59,9 @@ public class WarheadLauncherSystemTests : SystemsTest<WarheadLauncherSystem>
     [Test]
     public void When_setting_damaged()
     {
-        var payload = new SystemDamagePayload { Damaged = true };
-        GetMock<IWarheadLauncherTransforms>().Setup(x => x.SetDamaged(Any<WarheadLauncherState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-warhead-launcher-damaged", payload, expected);
+        var payload = new DamagedSystemsPayload();
+        GetMock<IWarheadLauncherTransforms>().Setup(x => x.SetDamaged(Any<WarheadLauncherState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-damaged", payload, expected);
     }
     
     [Test]

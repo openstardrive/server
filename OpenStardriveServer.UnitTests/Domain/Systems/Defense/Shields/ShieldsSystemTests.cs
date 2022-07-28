@@ -34,9 +34,9 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     [Test]
     public void When_setting_damaged()
     {
-        var payload = new SystemDamagePayload { Damaged = true };
-        GetMock<IShieldTransformations>().Setup(x => x.SetDamaged(Any<ShieldsState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-shields-damaged", payload, expected);
+        var payload = new DamagedSystemsPayload();
+        GetMock<IShieldTransformations>().Setup(x => x.SetDamaged(Any<ShieldsState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-damaged", payload, expected);
     }
     
     [Test]

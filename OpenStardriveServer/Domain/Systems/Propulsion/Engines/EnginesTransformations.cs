@@ -9,7 +9,7 @@ namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 public interface IEnginesTransformations
 {
     TransformResult<EnginesState> SetSpeed(EnginesState state, SetSpeedPayload payload);
-    TransformResult<EnginesState> SetDamage(EnginesState state, SystemDamagePayload payload);
+    TransformResult<EnginesState> SetDamaged(EnginesState state, string systemName, DamagedSystemsPayload payload);
     TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload);
     TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload);
     TransformResult<EnginesState> SetRequiredPower(EnginesState state, string systemName, RequiredPowerPayload payload);
@@ -51,12 +51,18 @@ public class EnginesTransformations : IEnginesTransformations
         return result;
     }
 
-    public TransformResult<EnginesState> SetDamage(EnginesState state, SystemDamagePayload payload)
+    public TransformResult<EnginesState> SetDamaged(EnginesState state, string systemName, DamagedSystemsPayload payload)
     {
-        var newSpeed = payload.Damaged ? 0 : state.CurrentSpeed;
-        return TransformResult<EnginesState>.StateChanged(state with { Damaged = payload.Damaged, CurrentSpeed = newSpeed });
+        return payload.ValueOrNone(systemName).Case(
+            some: damaged =>
+            {
+                var newSpeed = damaged ? 0 : state.CurrentSpeed;
+                return TransformResult<EnginesState>.StateChanged(state with { Damaged = damaged, CurrentSpeed = newSpeed });
+            },
+            none: TransformResult<EnginesState>.NoChange
+        );
     }
-        
+
     public TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload)
     {
         var newSpeed = payload.Disabled ? 0 : state.CurrentSpeed;

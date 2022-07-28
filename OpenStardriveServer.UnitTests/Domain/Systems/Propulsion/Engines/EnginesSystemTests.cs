@@ -35,9 +35,9 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     [Test]
     public void When_setting_damaged()
     {
-        var payload = new SystemDamagePayload { Damaged = true };
-        GetMock<IEnginesTransformations>().Setup(x => x.SetDamage(Any<EnginesState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-testing-engines-damaged", payload, expected);
+        var payload = new DamagedSystemsPayload();
+        GetMock<IEnginesTransformations>().Setup(x => x.SetDamaged(Any<EnginesState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-damaged", payload, expected);
     }
     
     [Test]

@@ -148,19 +148,33 @@ public class ShieldTransformationsTests : WithAnAutomocked<ShieldTransformations
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
 
-    [TestCase(true, false, false)]
-    [TestCase(true, true, false)]
-    [TestCase(false, true, true)]
-    [TestCase(false, false, false)]
-    public void When_setting_damaged(bool newDamaged, bool wereRaised, bool expectedRaised)
+    [TestCase(true, true, true, false)]
+    [TestCase(true, true, false, false)]
+    [TestCase(false, true, true, true)]
+    [TestCase(false, true, false, false)]
+    [TestCase(false, false)]
+    [TestCase(true, false)]
+    public void When_setting_damage(bool newDamaged, bool expectChange, bool wereRaised = false, bool expectedRaised = false)
     {
+        var systemName = "shields";
+        var payload = new DamagedSystemsPayload { ["other"] = false };
+        if (expectChange)
+        {
+            payload[systemName] = newDamaged;
+        }
+
         var state = new ShieldsState { Damaged = !newDamaged, Raised = wereRaised };
-        var payload = new SystemDamagePayload { Damaged = newDamaged };
-        var expected = state with { Damaged = newDamaged, Raised = expectedRaised };
-        
-        var result = ClassUnderTest.SetDamaged(state, payload);
-        
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        var result = ClassUnderTest.SetDamaged(state, systemName, payload);
+
+        if (expectChange)
+        {
+            var expected = state with { Damaged = newDamaged, Raised = expectedRaised};
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        }
+        else
+        {
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));    
+        }
     }
     
     [TestCase(true)]

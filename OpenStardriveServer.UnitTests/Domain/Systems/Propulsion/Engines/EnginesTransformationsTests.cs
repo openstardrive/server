@@ -123,27 +123,41 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
         Assert.That(result.ErrorMessage, Is.EqualTo(StandardSystemBaseState.DisabledError));
     }
 
-    [TestCase(true)]
-    [TestCase(false)]
-    public void When_system_is_damaged(bool isDamaged)
+    [TestCase(true, true)]
+    [TestCase(false, true)]
+    [TestCase(false, false)]
+    [TestCase(true, false)]
+    public void When_setting_damage(bool newDamaged, bool expectChange)
     {
-        var state = EnginesStateDefaults.Testing with { Damaged = !isDamaged };
-        var expected = EnginesStateDefaults.Testing with { Damaged = isDamaged };
-        var payload = new SystemDamagePayload { Damaged = isDamaged };
+        var systemName = "engines";
+        var payload = new DamagedSystemsPayload { ["other"] = false };
+        if (expectChange)
+        {
+            payload[systemName] = newDamaged;
+        }
 
-        var result = ClassUnderTest.SetDamage(state, payload);
-            
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        var result = ClassUnderTest.SetDamaged(new EnginesState { Damaged = !newDamaged }, systemName, payload);
+
+        if (expectChange)
+        {
+            var expected = new EnginesState { Damaged = newDamaged };
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        }
+        else
+        {
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));    
+        }
     }
 
     [Test]
     public void When_system_is_damaged_speed_drops_to_zero()
     {
+        var systemName = "engines";
         var state = EnginesStateDefaults.Testing with { CurrentSpeed = 2 };
         var expected = EnginesStateDefaults.Testing with { CurrentSpeed = 0, Damaged = true };
-        var payload = new SystemDamagePayload { Damaged = true };
+        var payload = new DamagedSystemsPayload { [systemName] = true };
 
-        var result = ClassUnderTest.SetDamage(state, payload);
+        var result = ClassUnderTest.SetDamaged(state, systemName, payload);
             
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }

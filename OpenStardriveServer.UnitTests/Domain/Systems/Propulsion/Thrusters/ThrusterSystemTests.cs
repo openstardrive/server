@@ -34,9 +34,9 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     [Test]
     public void When_setting_damaged()
     {
-        var payload = new SystemDamagePayload { Damaged = true };
-        GetMock<IThrusterTransformations>().Setup(x => x.SetDamage(Any<ThrustersState>(), payload)).Returns(expected);
-        TestCommandWithPayload("set-thrusters-damaged", payload, expected);
+        var payload = new DamagedSystemsPayload();
+        GetMock<IThrusterTransformations>().Setup(x => x.SetDamaged(Any<ThrustersState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-damaged", payload, expected);
     }
     
     [Test]

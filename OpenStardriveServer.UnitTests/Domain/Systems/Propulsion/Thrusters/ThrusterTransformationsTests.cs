@@ -1,3 +1,4 @@
+using System.Linq;
 using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 using OpenStardriveServer.Domain.Systems.Standard;
@@ -157,17 +158,30 @@ public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformat
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
     
-    [TestCase(true)]
-    [TestCase(false)]
-    public void When_setting_damage(bool damaged)
+    [TestCase(true, true)]
+    [TestCase(false, true)]
+    [TestCase(false, false)]
+    [TestCase(true, false)]
+    public void When_setting_damage(bool newDamaged, bool expectChange)
     {
-        var payload = new SystemDamagePayload { Damaged = damaged };
-        var expected = new ThrustersState { Damaged = damaged };
+        var systemName = "thrusters";
+        var payload = new DamagedSystemsPayload { ["other"] = false };
+        if (expectChange)
+        {
+            payload[systemName] = newDamaged;
+        }
 
-        var result = ClassUnderTest.SetDamage(new ThrustersState { Damaged = !damaged }, payload);
-        
-        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        var result = ClassUnderTest.SetDamaged(new ThrustersState { Damaged = !newDamaged }, systemName, payload);
+
+        if (expectChange)
+        {
+            var expected = new ThrustersState { Damaged = newDamaged };
+            Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        }
+        else
+        {
+            Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));    
+        }
     }
     
     [TestCase(true)]
