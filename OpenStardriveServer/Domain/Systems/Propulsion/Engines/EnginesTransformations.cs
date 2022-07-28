@@ -12,6 +12,7 @@ public interface IEnginesTransformations
     TransformResult<EnginesState> SetDamage(EnginesState state, SystemDamagePayload payload);
     TransformResult<EnginesState> SetDisabled(EnginesState state, SystemDisabledPayload payload);
     TransformResult<EnginesState> SetCurrentPower(EnginesState state, string systemName, CurrentPowerPayload payload);
+    TransformResult<EnginesState> SetRequiredPower(EnginesState state, string systemName, RequiredPowerPayload payload);
     TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload);
     TransformResult<EnginesState> Configure(EnginesState state, EnginesConfigurationPayload payload);
 }
@@ -80,7 +81,27 @@ public class EnginesTransformations : IEnginesTransformations
                     CurrentSpeed = newSpeed
                 });
             },
-            none: TransformResult<EnginesState>.NoChange);
+            none: TransformResult<EnginesState>.NoChange
+        );
+    }
+    
+    public TransformResult<EnginesState> SetRequiredPower(EnginesState state, string systemName, RequiredPowerPayload payload)
+    {
+        return payload.ValueOrNone(systemName).Case(
+            some: newRequired =>
+            {
+                var newSpeed = state.CurrentSpeed;
+                var newState = state with { RequiredPower = newRequired };
+                if (state.CurrentSpeed > 0)
+                {
+                    newSpeed = CalculatePowerRequirements(newState)
+                        .Where(x => x.speed <= state.CurrentSpeed && x.powerRequired <= state.CurrentPower)
+                        .LastOrDefault((speed: 0, powerRequired: 0)).speed;
+                }
+                return TransformResult<EnginesState>.StateChanged(newState with { CurrentSpeed = newSpeed });
+            },
+            none: TransformResult<EnginesState>.NoChange
+        );
     }
 
     public TransformResult<EnginesState> UpdateHeat(EnginesState state, ChronometerPayload payload)

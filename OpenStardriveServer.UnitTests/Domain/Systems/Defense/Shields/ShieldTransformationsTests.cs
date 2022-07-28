@@ -108,6 +108,45 @@ public class ShieldTransformationsTests : WithAnAutomocked<ShieldTransformations
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
+    
+    [TestCase(0, true, true)]
+    [TestCase(0, false, false)]
+    [TestCase(4, true, true)]
+    [TestCase(5, true, true)]
+    [TestCase(6, false, false)]
+    [TestCase(6, true, false)]
+    public void When_setting_required_power(int newPower, bool wereRaised, bool expectedRaised)
+    {
+        var systemName = "shields";
+        var state = new ShieldsState
+        {
+            CurrentPower = 5,
+            RequiredPower = 5,
+            Raised = wereRaised
+        };
+        var payload = new RequiredPowerPayload
+        {
+            ["other"] = 11,
+            [systemName] = newPower
+        };
+        var expected = state with { RequiredPower = newPower, Raised = expectedRaised };
+        
+        var result = ClassUnderTest.SetRequiredPower(state, systemName, payload);
+        
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_setting_required_power_but_there_is_no_match()
+    {
+        var systemName = "shields";
+        var state = new ShieldsState();
+        var payload = new RequiredPowerPayload { ["other"] = 22 };
+        
+        var result = ClassUnderTest.SetRequiredPower(state, systemName, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+    }
 
     [TestCase(true, false, false)]
     [TestCase(true, true, false)]

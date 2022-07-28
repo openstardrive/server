@@ -25,6 +25,14 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
     }
     
     [Test]
+    public void When_setting_required_power()
+    {
+        var payload = new RequiredPowerPayload();
+        GetMock<IEnginesTransformations>().Setup(x => x.SetRequiredPower(Any<EnginesState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-required-power", payload, expected);
+    }
+    
+    [Test]
     public void When_setting_damaged()
     {
         var payload = new SystemDamagePayload { Damaged = true };

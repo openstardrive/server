@@ -15,6 +15,7 @@ public class WarheadLauncherSystem : SystemBase<WarheadLauncherState>
             ["load-warhead"] = c => Update(c, transforms.Load(state, Payload<LoadWarheadPayload>(c))),
             ["fire-warhead"] = c => Update(c, transforms.Fire(state, Payload<FireWarheadPayload>(c), c.TimeStamp)),
             ["set-power"] = c => Update(c, transforms.SetPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
+            ["set-required-power"] = c => Update(c, transforms.SetRequiredPower(state, SystemName, Payload<RequiredPowerPayload>(c))),
             ["set-warhead-launcher-damaged"] = c => Update(c, transforms.SetDamaged(state, Payload<SystemDamagePayload>(c))),
             ["set-warhead-launcher-disabled"] = c => Update(c, transforms.SetDisabled(state, Payload<SystemDisabledPayload>(c))),
             ["set-warhead-inventory"] = c => Update(c, transforms.SetInventory(state, Payload<WarheadInventoryPayload>(c)))

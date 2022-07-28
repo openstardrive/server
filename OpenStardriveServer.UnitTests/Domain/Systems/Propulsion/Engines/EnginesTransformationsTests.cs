@@ -205,6 +205,61 @@ public class EnginesTransformationsTests : WithAnAutomocked<EnginesTransformatio
         Assert.That(result.NewState.Value.CurrentSpeed, Is.EqualTo(expectedSpeed));
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
+    
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(4)]
+    public void When_required_power_changes(int newPower)
+    {
+        var systemName = "engines";
+        var state = EnginesStateDefaults.Testing with { RequiredPower = 2 };
+        var expected = EnginesStateDefaults.Testing with { RequiredPower = newPower };
+        var payload = new RequiredPowerPayload
+        {
+            ["other"] = 11,
+            [systemName] = newPower
+        };
+
+        var result = ClassUnderTest.SetRequiredPower(state, systemName, payload);
+            
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_required_power_changes_but_no_matching_system()
+    {
+        var state = EnginesStateDefaults.Testing with { RequiredPower = 2 };
+        var payload = new RequiredPowerPayload { ["other"] = 11 };
+
+        var result = ClassUnderTest.SetRequiredPower(state, "engines", payload);
+            
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+    }
+    
+    [TestCase(2, 2, 0, 2)]
+    [TestCase(2, 2, 3, 0)]
+    [TestCase(9, 8, 3, 9)]
+    [TestCase(7, 5, 6, 7)]
+    public void When_required_power_increases_speed_drops_to_next_available(int priorSpeed, int currentPower, int newRequiredPower, int expectedSpeed)
+    {
+        var state = EnginesStateDefaults.Testing with {
+            CurrentSpeed = priorSpeed,
+            CurrentPower = currentPower,
+            RequiredPower = 2,
+            SpeedPowerRequirements = new []
+            {
+                new SpeedPowerRequirement { Speed = 7, PowerNeeded = 5 },
+                new SpeedPowerRequirement { Speed = 9, PowerNeeded = 8 }
+            }
+        };
+        var expected = state with { RequiredPower = newRequiredPower, CurrentSpeed = expectedSpeed};
+        var payload = new RequiredPowerPayload { ["engines"] = newRequiredPower };
+
+        var result = ClassUnderTest.SetRequiredPower(state, "engines", payload);
+        
+        Assert.That(result.NewState.Value.CurrentSpeed, Is.EqualTo(expectedSpeed));
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
         
     [TestCase(true)]
     [TestCase(false)]

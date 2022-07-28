@@ -13,13 +13,14 @@ public abstract class EnginesSystem : SystemBase<EnginesState>
         state = initialState;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
-            ["report-state"] = (c) => Update(c, TransformResult<EnginesState>.StateChanged(state)),
+            ["report-state"] = c => Update(c, TransformResult<EnginesState>.StateChanged(state)),
             [$"set-{SystemName}-speed"] = c => Update(c, transformations.SetSpeed(state, Payload<SetSpeedPayload>(c))),
             [$"configure-{SystemName}"] = c => Update(c, transformations.Configure(state, Payload<EnginesConfigurationPayload>(c))),
             [ChronometerCommand.Type] = c => Update(c, transformations.UpdateHeat(state, Payload<ChronometerPayload>(c))),
-            ["set-power"] = (c) => Update(c, transformations.SetCurrentPower(state, systemName, Payload<CurrentPowerPayload>(c))),
-            [$"set-{SystemName}-damaged"] = (c) => Update(c, transformations.SetDamage(state, Payload<SystemDamagePayload>(c))),
-            [$"set-{SystemName}-disabled"] = (c) => Update(c, transformations.SetDisabled(state, Payload<SystemDisabledPayload>(c)))
+            ["set-power"] = c => Update(c, transformations.SetCurrentPower(state, systemName, Payload<CurrentPowerPayload>(c))),
+            ["set-required-power"] = c => Update(c, transformations.SetRequiredPower(state, systemName, Payload<RequiredPowerPayload>(c))),
+            [$"set-{SystemName}-damaged"] = c => Update(c, transformations.SetDamage(state, Payload<SystemDamagePayload>(c))),
+            [$"set-{SystemName}-disabled"] = c => Update(c, transformations.SetDisabled(state, Payload<SystemDisabledPayload>(c)))
         };
     }
 }

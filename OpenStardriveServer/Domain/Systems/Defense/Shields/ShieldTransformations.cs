@@ -9,6 +9,7 @@ public interface IShieldTransformations
     TransformResult<ShieldsState> LowerShields(ShieldsState state);
     TransformResult<ShieldsState> SetModulationFrequency(ShieldsState state, ShieldModulationPayload payload);
     TransformResult<ShieldsState> SetPower(ShieldsState state, string systemName, CurrentPowerPayload payload);
+    TransformResult<ShieldsState> SetRequiredPower(ShieldsState state, string systemName, RequiredPowerPayload payload);
     TransformResult<ShieldsState> SetDamaged(ShieldsState state, SystemDamagePayload payload);
     TransformResult<ShieldsState> SetDisabled(ShieldsState state, SystemDisabledPayload payload);
     TransformResult<ShieldsState> SetSectionStrengths(ShieldsState state, ShieldStrengthPayload payload);
@@ -38,6 +39,17 @@ public class ShieldTransformations : IShieldTransformations
             {
                 var raised = state.Raised && newPower >= state.RequiredPower;
                 return TransformResult<ShieldsState>.StateChanged(state with { CurrentPower = newPower, Raised = raised });
+            },
+            none: TransformResult<ShieldsState>.NoChange);
+    }
+    
+    public TransformResult<ShieldsState> SetRequiredPower(ShieldsState state, string systemName, RequiredPowerPayload payload)
+    {
+        return payload.ValueOrNone(systemName).Case(
+            some: newRequired =>
+            {
+                var raised = state.Raised && state.CurrentPower >= newRequired;
+                return TransformResult<ShieldsState>.StateChanged(state with { RequiredPower = newRequired, Raised = raised });
             },
             none: TransformResult<ShieldsState>.NoChange);
     }

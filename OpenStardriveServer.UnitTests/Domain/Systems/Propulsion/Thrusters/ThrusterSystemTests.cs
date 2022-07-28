@@ -24,6 +24,14 @@ public class ThrusterSystemTests : SystemsTest<ThrustersSystem>
     }
     
     [Test]
+    public void When_setting_required_power()
+    {
+        var payload = new RequiredPowerPayload();
+        GetMock<IThrusterTransformations>().Setup(x => x.SetRequiredPower(Any<ThrustersState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-required-power", payload, expected);
+    }
+    
+    [Test]
     public void When_setting_damaged()
     {
         var payload = new SystemDamagePayload { Damaged = true };

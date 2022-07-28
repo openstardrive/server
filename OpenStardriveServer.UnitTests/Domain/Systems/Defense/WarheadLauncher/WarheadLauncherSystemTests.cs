@@ -49,6 +49,14 @@ public class WarheadLauncherSystemTests : SystemsTest<WarheadLauncherSystem>
     }
     
     [Test]
+    public void When_setting_required_power()
+    {
+        var payload = new RequiredPowerPayload();
+        GetMock<IWarheadLauncherTransforms>().Setup(x => x.SetRequiredPower(Any<WarheadLauncherState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        TestCommandWithPayload("set-required-power", payload, expected);
+    }
+    
+    [Test]
     public void When_setting_damaged()
     {
         var payload = new SystemDamagePayload { Damaged = true };

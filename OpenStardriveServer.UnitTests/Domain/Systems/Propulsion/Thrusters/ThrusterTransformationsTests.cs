@@ -135,6 +135,40 @@ public class ThrusterTransformationsTests : WithAnAutomocked<ThrusterTransformat
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
     
+    [TestCase(0)]
+    [TestCase(2)]
+    [TestCase(4)]
+    public void When_setting_required_power_for_the_system(int newPower)
+    {
+        var systemName = "thrusters";
+        var payload = new RequiredPowerPayload
+        {
+            ["other"] = 11,
+            [systemName] = newPower,
+            ["different"] = 12
+        };
+        var expected = new ThrustersState { RequiredPower = newPower };
+
+        var result = ClassUnderTest.SetRequiredPower(new ThrustersState(), systemName, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.StateChanged));
+        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+    }
+    
+    [Test]
+    public void When_setting_required_power_for_the_system_but_there_is_no_match()
+    {
+        var systemName = "thrusters";
+        var payload = new RequiredPowerPayload
+        {
+            ["other"] = 11,
+            ["different"] = 12
+        };
+        var result = ClassUnderTest.SetRequiredPower(new ThrustersState(), systemName, payload);
+        
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+    }
+    
     [TestCase(true)]
     [TestCase(false)]
     public void When_setting_damage(bool damaged)
