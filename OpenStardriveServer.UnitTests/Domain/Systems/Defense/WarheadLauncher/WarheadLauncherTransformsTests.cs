@@ -307,7 +307,7 @@ public class WarheadLauncherTransformsTests : StandardTransformsTest<WarheadLaun
         };
         var expected = state with { CurrentPower = newPower };
         
-        var result = ClassUnderTest.SetPower(state, systemName, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -319,7 +319,7 @@ public class WarheadLauncherTransformsTests : StandardTransformsTest<WarheadLaun
         var state = testingState with { CurrentPower = 2 };
         var payload = new CurrentPowerPayload { ["other"] = 22 };
         
-        var result = ClassUnderTest.SetPower(state, systemName, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }

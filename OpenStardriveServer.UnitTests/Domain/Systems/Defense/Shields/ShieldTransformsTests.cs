@@ -92,7 +92,7 @@ public class ShieldTransformsTests : StandardTransformsTest<ShieldTransforms, Sh
         };
         var expected = state with { CurrentPower = newPower, Raised = expectedRaised };
         
-        var result = ClassUnderTest.SetPower(state, systemName, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
         
         Assert.That(result.NewState.Value, Is.EqualTo(expected));
     }
@@ -104,7 +104,7 @@ public class ShieldTransformsTests : StandardTransformsTest<ShieldTransforms, Sh
         var state = new ShieldsState();
         var payload = new CurrentPowerPayload { ["other"] = 22 };
         
-        var result = ClassUnderTest.SetPower(state, systemName, payload);
+        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
         
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }

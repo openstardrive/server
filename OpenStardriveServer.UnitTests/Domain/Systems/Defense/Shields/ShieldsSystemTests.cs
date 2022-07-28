@@ -19,7 +19,7 @@ public class ShieldsSystemTests : SystemsTest<ShieldsSystem>
     public void When_setting_power()
     {
         var payload = new CurrentPowerPayload();
-        GetMock<IShieldTransforms>().Setup(x => x.SetPower(Any<ShieldsState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
+        GetMock<IShieldTransforms>().Setup(x => x.SetCurrentPower(Any<ShieldsState>(), ClassUnderTest.SystemName, payload)).Returns(expected);
         TestCommandWithPayload("set-power", payload, expected);
     }
     

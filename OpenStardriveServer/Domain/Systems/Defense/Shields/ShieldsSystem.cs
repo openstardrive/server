@@ -12,7 +12,7 @@ public class ShieldsSystem : SystemBase<ShieldsState>
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
         {
             ["report-state"] = c => Update(c, TransformResult<ShieldsState>.StateChanged(state)),
-            ["set-power"] = c => Update(c, transforms.SetPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
+            ["set-power"] = c => Update(c, transforms.SetCurrentPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
             ["set-required-power"] = c => Update(c, transforms.SetRequiredPower(state, SystemName, Payload<RequiredPowerPayload>(c))),
             ["set-damaged"] = c => Update(c, transforms.SetDamaged(state, SystemName, Payload<DamagedSystemsPayload>(c))),
             ["set-disabled"] = c => Update(c, transforms.SetDisabled(state, SystemName, Payload<DisabledSystemsPayload>(c))),

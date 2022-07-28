@@ -6,8 +6,6 @@ public interface IThrusterTransforms : IStandardTransforms<ThrustersState>
 {
     TransformResult<ThrustersState> SetAttitude(ThrustersState state, ThrusterAttitudePayload payload);
     TransformResult<ThrustersState> SetVelocity(ThrustersState state, ThrusterVelocityPayload payload);
-    TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, string systemName, CurrentPowerPayload payload);
-    TransformResult<ThrustersState> SetRequiredPower(ThrustersState state, string systemName, RequiredPowerPayload payload);
 }
 
 public class ThrusterTransforms : IThrusterTransforms
