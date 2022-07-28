@@ -50,16 +50,12 @@ public class ThrusterTransforms : IThrusterTransforms
 
     public TransformResult<ThrustersState> SetCurrentPower(ThrustersState state, string systemName, CurrentPowerPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: x => TransformResult<ThrustersState>.StateChanged(state with { CurrentPower = x }),
-            none: TransformResult<ThrustersState>.NoChange);
+        return standardTransforms.SetCurrentPower(state, systemName, payload);
     }
     
     public TransformResult<ThrustersState> SetRequiredPower(ThrustersState state, string systemName, RequiredPowerPayload payload)
     {
-        return payload.ValueOrNone(systemName).Case(
-            some: x => TransformResult<ThrustersState>.StateChanged(state with { RequiredPower = x }),
-            none: TransformResult<ThrustersState>.NoChange);
+        return standardTransforms.SetRequiredPower(state, systemName, payload);
     }
 
     public TransformResult<ThrustersState> SetDamaged(ThrustersState state, string systemName, DamagedSystemsPayload payload)

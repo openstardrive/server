@@ -293,66 +293,16 @@ public class WarheadLauncherTransformsTests : StandardTransformsTest<WarheadLaun
         Assert.That(result.NewState.Value.LastFiredWarhead, Is.EqualTo(expected.LastFiredWarhead));
     }
     
-    [TestCase(0)]
-    [TestCase(1)]
-    [TestCase(4)]
-    public void When_setting_power(int newPower)
+    [Test]
+    public void When_setting_power()
     {
-        var systemName = "Warhead Launcher";
-        var state = testingState with { CurrentPower = 2 };
-        var payload = new CurrentPowerPayload
-        {
-            ["other"] = 11,
-            [systemName] = newPower
-        };
-        var expected = state with { CurrentPower = newPower };
-        
-        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
-        
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
+        TestStandardCurrentPower(new WarheadLauncherState());
     }
     
     [Test]
-    public void When_setting_power_but_there_is_no_match()
+    public void When_setting_required_power()
     {
-        var systemName = "Warhead Launcher";
-        var state = testingState with { CurrentPower = 2 };
-        var payload = new CurrentPowerPayload { ["other"] = 22 };
-        
-        var result = ClassUnderTest.SetCurrentPower(state, systemName, payload);
-        
-        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
-    }
-    
-    [TestCase(0)]
-    [TestCase(1)]
-    [TestCase(4)]
-    public void When_setting_required_power(int newPower)
-    {
-        var systemName = "Warhead Launcher";
-        var state = testingState with { CurrentPower = 2 };
-        var payload = new RequiredPowerPayload
-        {
-            ["other"] = 11,
-            [systemName] = newPower
-        };
-        var expected = state with { RequiredPower = newPower };
-        
-        var result = ClassUnderTest.SetRequiredPower(state, systemName, payload);
-        
-        Assert.That(result.NewState.Value, Is.EqualTo(expected));
-    }
-    
-    [Test]
-    public void When_setting_required_power_but_there_is_no_match()
-    {
-        var systemName = "Warhead Launcher";
-        var state = testingState with { CurrentPower = 2 };
-        var payload = new RequiredPowerPayload { ["other"] = 22 };
-        
-        var result = ClassUnderTest.SetRequiredPower(state, systemName, payload);
-        
-        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
+        TestStandardRequiredPower(new WarheadLauncherState());
     }
 
     [Test]
