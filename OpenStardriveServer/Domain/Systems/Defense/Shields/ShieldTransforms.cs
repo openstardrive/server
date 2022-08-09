@@ -78,10 +78,10 @@ public class ShieldTransforms : IShieldTransforms
     {
         return TransformResult<ShieldsState>.StateChanged(state with { SectionStrengths = new ShieldSectionStrengths
         {
-            ForwardPercent = Math.Clamp(payload.SectionStrengths.ForwardPercent, 0, 1),
-            AftPercent = Math.Clamp(payload.SectionStrengths.AftPercent, 0, 1),
-            PortPercent = Math.Clamp(payload.SectionStrengths.PortPercent, 0, 1),
-            StarboardPercent = Math.Clamp(payload.SectionStrengths.StarboardPercent, 0, 1)
+            ForwardPercent = Math.Max(0, payload.SectionStrengths.ForwardPercent),
+            AftPercent = Math.Max(0, payload.SectionStrengths.AftPercent),
+            PortPercent = Math.Max(0, payload.SectionStrengths.PortPercent),
+            StarboardPercent = Math.Max(0, payload.SectionStrengths.StarboardPercent)
         }});
     }
 }

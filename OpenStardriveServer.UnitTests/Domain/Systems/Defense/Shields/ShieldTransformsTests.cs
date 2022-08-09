@@ -185,7 +185,7 @@ public class ShieldTransformsTests : StandardTransformsTest<ShieldTransforms, Sh
 
     [TestCase(.3, .4, .5, .6, .3, .4, .5, .6)]
     [TestCase(-.3, -.4, -.5, -.6, 0, 0, 0, 0)]
-    [TestCase(1.3, 1.4, 1.5, 1.6, 1, 1, 1, 1)]
+    [TestCase(1.3, 1.4, 1.5, 1.6, 1.3, 1.4, 1.5, 1.6)]
     [TestCase(0, 0, 0, 0, 0, 0, 0, 0)]
     [TestCase(1, 1, 1, 1, 1, 1, 1, 1)]
     public void When_setting_shield_section_strengths(double forward, double aft, double port, double starboard,
