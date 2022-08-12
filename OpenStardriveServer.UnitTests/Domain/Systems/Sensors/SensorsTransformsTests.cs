@@ -35,11 +35,12 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
     public void When_starting_a_scan()
     {
         var state = new SensorsState();
-        var payload = new NewScanPayload { ScanFor = "life signs" };
+        var payload = new NewScanPayload { ScanId = RandomString(), ScanFor = "life signs" };
 
         var result = ClassUnderTest.NewScan(state, payload);
 
         var newState = result.NewState.Value;
+        Assert.That(newState.LastUpdatedScan.ScanId, Is.EqualTo(payload.ScanId));
         Assert.That(newState.LastUpdatedScan.ScanFor, Is.EqualTo(payload.ScanFor));
         Assert.That(newState.LastUpdatedScan.State, Is.EqualTo(SensorScanState.Active));
         Assert.That(newState.LastUpdatedScan.LastUpdated, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
@@ -47,17 +48,49 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         Assert.That(newState.ActiveScans, Does.Contain(newState.LastUpdatedScan));
     }
     
+    [Test]
+    public void When_starting_a_scan_with_a_duplicate_scan_id()
+    {
+        var scanId = RandomString();
+        var state = new SensorsState
+        {
+            ActiveScans = new []
+            {
+                new SensorScan { ScanId = scanId }
+            }
+        };
+        var payload = new NewScanPayload { ScanId = scanId, ScanFor = "black holes" };
+
+        var result = ClassUnderTest.NewScan(state, payload);
+
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
+        Assert.That(result.ErrorMessage, Is.EqualTo("You must specify a unique scanId"));
+    }
+    
+    [TestCase(null)]
+    [TestCase("")]
+    public void When_starting_a_scan_without_specifying_a_scan_id(string scanId)
+    {
+        var state = new SensorsState();
+        var payload = new NewScanPayload { ScanId = scanId, ScanFor = "ships hiding in the nebula" };
+
+        var result = ClassUnderTest.NewScan(state, payload);
+
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
+        Assert.That(result.ErrorMessage, Is.EqualTo("You must specify a scanId"));
+    }
+    
     [TestCase(null)]
     [TestCase("")]
     public void When_starting_a_scan_without_specifying_what_to_scan_for(string scanFor)
     {
         var state = new SensorsState();
-        var payload = new NewScanPayload { ScanFor = scanFor };
+        var payload = new NewScanPayload { ScanId = RandomString(), ScanFor = scanFor };
 
         var result = ClassUnderTest.NewScan(state, payload);
 
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
-        Assert.That(result.ErrorMessage, Is.EqualTo("you must specify what to scan for"));
+        Assert.That(result.ErrorMessage, Is.EqualTo("You must specify what to scan for"));
     }
 
     [Test]
@@ -67,9 +100,9 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         {
             ActiveScans = new[]
             {
-                new SensorScan { ScanFor = "life forms", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-5)},
-                new SensorScan { ScanFor = "black holes", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-6) },
-                new SensorScan { ScanFor = "debris", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-7) },
+                new SensorScan { ScanId = RandomString(), ScanFor = "life forms", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-5)},
+                new SensorScan { ScanId = RandomString(), ScanFor = "black holes", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-6) },
+                new SensorScan { ScanId = RandomString(), ScanFor = "debris", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-7) },
             }
         };
         var payload = new ScanResultPayload
@@ -112,7 +145,7 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         };
         var payload = new ScanResultPayload
         {
-            ScanId = Guid.NewGuid(),
+            ScanId = RandomString(),
             Result = "The vessel is of unknown configuration."
         };
 
@@ -124,14 +157,14 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
     [Test]
     public void When_canceling_an_active_scan()
     {
-        var scanId = Guid.NewGuid();
+        var scanId = RandomString();
         var state = new SensorsState
         {
             ActiveScans = new[]
             {
                 new SensorScan { ScanId = scanId, ScanFor = "ice on Mars", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-6)},
-                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "diamonds on Jupiter", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-7) },
-                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "is Pluto a planet?", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-8) }
+                new SensorScan { ScanId = RandomString(), ScanFor = "diamonds on Jupiter", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-7) },
+                new SensorScan { ScanId = RandomString(), ScanFor = "is Pluto a planet?", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-8) }
             }
         };
         var payload = new CancelScanPayload { ScanId = scanId };
@@ -150,14 +183,14 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
     [Test]
     public void When_canceling_an_active_scan_but_there_is_no_matching_active_scan()
     {
-        var scanId = Guid.NewGuid();
+        var scanId = RandomString();
         var state = new SensorsState
         {
             ActiveScans = new[]
             {
-                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "ice on Mars", State = SensorScanState.Active },
-                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "diamonds on Jupiter", State = SensorScanState.Active },
-                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "is Pluto a planet?", State = SensorScanState.Active }
+                new SensorScan { ScanId = RandomString(), ScanFor = "ice on Mars", State = SensorScanState.Active },
+                new SensorScan { ScanId = RandomString(), ScanFor = "diamonds on Jupiter", State = SensorScanState.Active },
+                new SensorScan { ScanId = RandomString(), ScanFor = "is Pluto a planet?", State = SensorScanState.Active }
             }
         };
         var payload = new CancelScanPayload { ScanId = scanId };
@@ -196,6 +229,7 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         };
         var payload = new NewSensorContactPayload
         {
+            ContactId = RandomString(),
             Name = "USS Odyssey",
             Icon = "Starship",
             Position = new Point { X = 3, Y = 4, Z = -5 },
@@ -212,10 +246,55 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
 
         var newState = result.NewState.Value;
         Assert.That(newState.Contacts.Length, Is.EqualTo(3));
+        Assert.That(newState.Contacts[2].ContactId, Is.EqualTo(payload.ContactId));
         Assert.That(newState.Contacts[2].Name, Is.EqualTo(payload.Name));
         Assert.That(newState.Contacts[2].Icon, Is.EqualTo(payload.Icon));
         Assert.That(newState.Contacts[2].Position, Is.EqualTo(payload.Position));
         Assert.That(newState.Contacts[2].Destinations, Is.EqualTo(payload.Destinations));
+    }
+    
+    [TestCase(null)]
+    [TestCase("")]
+    public void When_adding_a_new_sensor_contact_without_a_contact_id(string contactId)
+    {
+        var state = new SensorsState();
+        var payload = new NewSensorContactPayload
+        {
+            ContactId = contactId,
+            Name = "USS Odyssey",
+            Icon = "Starship",
+            Position = new Point { X = 3, Y = 4, Z = -5 },
+            Destinations = Array.Empty<Destination>()
+        };
+
+        var result = ClassUnderTest.NewContact(state, payload);
+
+        Assert.That(result.ErrorMessage, Is.EqualTo("You must specify a contactId"));
+    }
+    
+    [Test]
+    public void When_adding_a_new_sensor_contact_with_a_duplicate_contact_id()
+    {
+        var contactId = RandomString();
+        var state = new SensorsState
+        {
+            Contacts = new []
+            {
+                new SensorContact { ContactId = contactId }
+            }
+        };
+        var payload = new NewSensorContactPayload
+        {
+            ContactId = contactId,
+            Name = "USS Odyssey",
+            Icon = "Starship",
+            Position = new Point { X = 3, Y = 4, Z = -5 },
+            Destinations = Array.Empty<Destination>()
+        };
+
+        var result = ClassUnderTest.NewContact(state, payload);
+
+        Assert.That(result.ErrorMessage, Is.EqualTo("You must specify a unique contactId"));
     }
 
     [Test]
@@ -223,7 +302,12 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
     {
         var state = new SensorsState
         {
-            Contacts = new [] { new SensorContact(), new SensorContact(), new SensorContact() }
+            Contacts = new []
+            {
+                new SensorContact { ContactId = RandomString() },
+                new SensorContact { ContactId = RandomString() },
+                new SensorContact { ContactId = RandomString() }
+            }
         };
         var payload = new RemoveSensorContactPayload { ContactId = state.Contacts[1].ContactId };
         var expected = new[] { state.Contacts[0], state.Contacts[2] };
@@ -241,7 +325,7 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         {
             Contacts = new [] { new SensorContact(), new SensorContact(), new SensorContact() }
         };
-        var payload = new RemoveSensorContactPayload { ContactId = Guid.NewGuid() };
+        var payload = new RemoveSensorContactPayload { ContactId = RandomString() };
 
         var result = ClassUnderTest.RemoveContact(state, payload);
         
@@ -253,7 +337,12 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
     {
         var state = new SensorsState
         {
-            Contacts = new [] { new SensorContact(), new SensorContact(), new SensorContact() }
+            Contacts = new []
+            {
+                new SensorContact { ContactId = RandomString()},
+                new SensorContact { ContactId = RandomString()},
+                new SensorContact { ContactId = RandomString()}
+            }
         };
         var payload = new UpdateSensorContactPayload
         {
@@ -279,7 +368,7 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         var state = new SensorsState();
         var payload = new UpdateSensorContactPayload
         {
-            ContactId = Guid.NewGuid(),
+            ContactId = RandomString(),
             Name = "Asteroid",
             Icon = "asteroid",
             Position = new Point { X = 1, Y = 2, Z = 3 },

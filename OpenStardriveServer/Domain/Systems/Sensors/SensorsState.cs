@@ -13,7 +13,7 @@ public record SensorsState : StandardSystemBaseState
 
 public record SensorScan
 {
-    public Guid ScanId { get; init; } = Guid.NewGuid();
+    public string ScanId { get; init; } = "";
     public string State { get; init; } = "";
     public string ScanFor { get; init; } = "";
     public string Result { get; init; } = "";
@@ -29,7 +29,7 @@ public static class SensorScanState
 
 public record SensorContact
 {
-    public Guid ContactId { get; init; } = Guid.NewGuid();
+    public string ContactId { get; init; } = "";
     public string Name { get; init; } = "";
     public string Icon { get; init; } = "";
     public Point Position { get; init; }

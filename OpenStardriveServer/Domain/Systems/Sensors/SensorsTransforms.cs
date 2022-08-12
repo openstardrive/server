@@ -48,13 +48,24 @@ public class SensorsTransforms : ISensorsTransforms
 
     public TransformResult<SensorsState> NewScan(SensorsState state, NewScanPayload payload)
     {
+        if (string.IsNullOrEmpty(payload.ScanId))
+        {
+            return TransformResult<SensorsState>.Error("You must specify a scanId");
+        }
+
+        if (state.ActiveScans.Any(x => x.ScanId == payload.ScanId))
+        {
+            return TransformResult<SensorsState>.Error("You must specify a unique scanId");
+        }
+        
         if (string.IsNullOrEmpty(payload.ScanFor))
         {
-            return TransformResult<SensorsState>.Error("you must specify what to scan for");
+            return TransformResult<SensorsState>.Error("You must specify what to scan for");
         }
         
         var scan = new SensorScan
         {
+            ScanId = payload.ScanId,
             ScanFor = payload.ScanFor,
             State = SensorScanState.Active
         };
@@ -102,8 +113,19 @@ public class SensorsTransforms : ISensorsTransforms
 
     public TransformResult<SensorsState> NewContact(SensorsState state, NewSensorContactPayload payload)
     {
+        if (string.IsNullOrEmpty(payload.ContactId))
+        {
+            return TransformResult<SensorsState>.Error("You must specify a contactId");    
+        }
+        
+        if (state.Contacts.Any(x => x.ContactId == payload.ContactId))
+        {
+            return TransformResult<SensorsState>.Error("You must specify a unique contactId");    
+        }
+        
         var newContact = new SensorContact
         {
+            ContactId = payload.ContactId,
             Name = payload.Name,
             Icon = payload.Icon,
             Position = payload.Position,
