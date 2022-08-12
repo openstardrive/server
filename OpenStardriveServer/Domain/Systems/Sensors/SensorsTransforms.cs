@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using OpenStardriveServer.Domain.Chronometer;
 using OpenStardriveServer.Domain.Systems.Standard;
@@ -69,7 +70,7 @@ public class SensorsTransforms : ISensorsTransforms
         return state.ActiveScans.FirstOrNone(x => x.ScanId == payload.ScanId).Case(
             some: scan => TransformResult<SensorsState>.StateChanged(state with
             {
-                LastUpdatedScan = scan with { Result = payload.Result, State = SensorScanState.Completed },
+                LastUpdatedScan = scan with { Result = payload.Result, State = SensorScanState.Completed, LastUpdated = DateTimeOffset.UtcNow },
                 ActiveScans = state.ActiveScans.Where(x => x.ScanId != payload.ScanId).ToArray()
             }),
             none: () => TransformResult<SensorsState>.Error($"No active scan with id {payload.ScanId}"));
@@ -80,7 +81,7 @@ public class SensorsTransforms : ISensorsTransforms
         return state.ActiveScans.FirstOrNone(x => x.ScanId == payload.ScanId).Case(
             some: scan => TransformResult<SensorsState>.StateChanged(state with
             {
-                LastUpdatedScan = scan with { State = SensorScanState.Canceled},
+                LastUpdatedScan = scan with { State = SensorScanState.Canceled, LastUpdated = DateTimeOffset.UtcNow },
                 ActiveScans = state.ActiveScans.Where(x => x.ScanId != payload.ScanId).ToArray()
             }), 
             none: () => TransformResult<SensorsState>.Error($"No active scan with id {payload.ScanId}"));

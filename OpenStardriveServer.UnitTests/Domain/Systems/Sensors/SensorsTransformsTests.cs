@@ -42,6 +42,7 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         var newState = result.NewState.Value;
         Assert.That(newState.LastUpdatedScan.ScanFor, Is.EqualTo(payload.ScanFor));
         Assert.That(newState.LastUpdatedScan.State, Is.EqualTo(SensorScanState.Active));
+        Assert.That(newState.LastUpdatedScan.LastUpdated, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
         Assert.That(newState.ActiveScans.Length, Is.EqualTo(1));
         Assert.That(newState.ActiveScans, Does.Contain(newState.LastUpdatedScan));
     }
@@ -66,9 +67,9 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         {
             ActiveScans = new[]
             {
-                new SensorScan { ScanFor = "life forms", State = SensorScanState.Active },
-                new SensorScan { ScanFor = "black holes", State = SensorScanState.Active },
-                new SensorScan { ScanFor = "debris", State = SensorScanState.Active },
+                new SensorScan { ScanFor = "life forms", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-5)},
+                new SensorScan { ScanFor = "black holes", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-6) },
+                new SensorScan { ScanFor = "debris", State = SensorScanState.Active, LastUpdated = DateTimeOffset.Now.AddSeconds(-7) },
             }
         };
         var payload = new ScanResultPayload
@@ -76,10 +77,15 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
             ScanId = state.ActiveScans[1].ScanId,
             Result = "None detected."
         };
+
+        var result = ClassUnderTest.SetScanResult(state, payload);
+        
+        var newState = result.NewState.Value;
         var expected = state.ActiveScans[1] with
         {
             Result = payload.Result,
-            State = SensorScanState.Completed
+            State = SensorScanState.Completed,
+            LastUpdated = newState.LastUpdatedScan.LastUpdated
         };
         var expectedActive = new[]
         {
@@ -87,10 +93,8 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
             state.ActiveScans[2]
         };
 
-        var result = ClassUnderTest.SetScanResult(state, payload);
-
-        var newState = result.NewState.Value;
         Assert.That(newState.LastUpdatedScan, Is.EqualTo(expected));
+        Assert.That(newState.LastUpdatedScan.LastUpdated, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
         Assert.That(newState.ActiveScans, Is.EqualTo(expectedActive));
     }
     
@@ -125,19 +129,21 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         {
             ActiveScans = new[]
             {
-                new SensorScan { ScanId = scanId, ScanFor = "ice on Mars", State = SensorScanState.Active },
-                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "diamonds on Jupiter", State = SensorScanState.Active },
-                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "is Pluto a planet?", State = SensorScanState.Active }
+                new SensorScan { ScanId = scanId, ScanFor = "ice on Mars", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-6)},
+                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "diamonds on Jupiter", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-7) },
+                new SensorScan { ScanId = Guid.NewGuid(), ScanFor = "is Pluto a planet?", State = SensorScanState.Active, LastUpdated = DateTimeOffset.UtcNow.AddSeconds(-8) }
             }
         };
         var payload = new CancelScanPayload { ScanId = scanId };
-        var expected = state.ActiveScans[0] with { State = SensorScanState.Canceled };
-        var expectedActive = new[] { state.ActiveScans[1], state.ActiveScans[2] };
-        
+
         var result = ClassUnderTest.CancelScan(state, payload);
         
         var newState = result.NewState.Value;
+        var expected = state.ActiveScans[0] with { State = SensorScanState.Canceled, LastUpdated = newState.LastUpdatedScan.LastUpdated};
+        var expectedActive = new[] { state.ActiveScans[1], state.ActiveScans[2] };
+        
         Assert.That(newState.LastUpdatedScan, Is.EqualTo(expected));
+        Assert.That(newState.LastUpdatedScan.LastUpdated, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
         Assert.That(newState.ActiveScans, Is.EqualTo(expectedActive));
     }
     
@@ -174,6 +180,7 @@ public class SensorsTransformsTests : StandardTransformsTest<SensorsTransforms, 
         Assert.That(newState.LastUpdatedScan.Result, Is.EqualTo(payload.Result));
         Assert.That(newState.LastUpdatedScan.State, Is.EqualTo(SensorScanState.Completed));
         Assert.That(newState.ActiveScans.Length, Is.EqualTo(state.ActiveScans.Length));
+        Assert.That(newState.LastUpdatedScan.LastUpdated, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
     }
 
     [Test]

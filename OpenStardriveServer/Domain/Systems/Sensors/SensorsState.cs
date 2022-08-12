@@ -17,6 +17,7 @@ public record SensorScan
     public string State { get; init; } = "";
     public string ScanFor { get; init; } = "";
     public string Result { get; init; } = "";
+    public DateTimeOffset LastUpdated { get; init; } = DateTimeOffset.UtcNow;
 }
 
 public static class SensorScanState
