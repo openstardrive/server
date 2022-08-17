@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Systems;
+using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 
 namespace OpenStardriveServer.UnitTests.Domain.Systems;
 
@@ -30,6 +31,55 @@ public class SystemsRegistryTests : WithAnAutomocked<SystemsRegistry>
             
         Assert.That(result.HasValue, Is.True);
         Assert.That(result.Value, Is.SameAs(systems[1]));
+    }
+    
+    [Test]
+    public void When_getting_a_system_by_name_as_a_type_and_it_is_found()
+    {
+        var systems = new ISystem[]
+        {
+            new TestSystem("system-a"), 
+            new TestSystem("system-b"), 
+            new TestSystem("system-c")
+        };
+        ClassUnderTest.Register(systems);
+            
+        var result = ClassUnderTest.GetSystemByNameAs<TestSystem>(systems[1].SystemName);
+            
+        Assert.That(result.HasValue, Is.True);
+        Assert.That(result.Value, Is.SameAs(systems[1]));
+    }
+    
+    [Test]
+    public void When_getting_a_system_by_name_as_a_type_and_it_is_not_found()
+    {
+        var systems = new ISystem[]
+        {
+            new TestSystem("system-a"), 
+            new TestSystem("system-b"), 
+            new TestSystem("system-c")
+        };
+        ClassUnderTest.Register(systems);
+            
+        var result = ClassUnderTest.GetSystemByNameAs<TestSystem>("other system");
+            
+        Assert.That(result.HasValue, Is.False);
+    }
+    
+    [Test]
+    public void When_getting_a_system_by_name_as_a_type_and_it_is_not_of_that_type()
+    {
+        var systems = new ISystem[]
+        {
+            new TestSystem("system-a"), 
+            new TestSystem("system-b"), 
+            new TestSystem("system-c")
+        };
+        ClassUnderTest.Register(systems);
+            
+        var result = ClassUnderTest.GetSystemByNameAs<IEnginesSystem>(systems[1].SystemName);
+            
+        Assert.That(result.HasValue, Is.False);
     }
 
     [Test]

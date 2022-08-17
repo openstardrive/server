@@ -8,6 +8,7 @@ public interface ISystemsRegistry
 {
     void Register(IEnumerable<ISystem> systems);
     Maybe<ISystem> GetSystemByName(string systemName);
+    Maybe<T> GetSystemByNameAs<T>(string systemName) where T : class;
     Dictionary<string, List<Func<Command, CommandResult>>> GetAllProcessors();
 }
 
@@ -26,6 +27,13 @@ public class SystemsRegistry : ISystemsRegistry
     public Maybe<ISystem> GetSystemByName(string systemName)
     {
         return allSystems.Where(x => x.SystemName == systemName).FirstOrNone();
+    }
+
+    public Maybe<T> GetSystemByNameAs<T>(string systemName) where T : class
+    {
+        return GetSystemByName(systemName).Case(
+            some: system => (system as T).ToMaybe(),
+            none: () => Maybe<T>.None);
     }
 
     public Dictionary<string, List<Func<Command, CommandResult>>> GetAllProcessors()
