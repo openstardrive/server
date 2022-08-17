@@ -5,7 +5,13 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 
-public abstract class EnginesSystem : SystemBase<EnginesState>
+public interface IEnginesSystem : ISystem
+{
+    int MaxSpeed { get; }
+    int CurrentSpeed { get; }
+}
+
+public abstract class EnginesSystem : SystemBase<EnginesState>, IEnginesSystem
 {
     protected EnginesSystem(string systemName, EnginesState initialState, IEnginesTransforms transforms, IJson json) : base (json)
     {
@@ -23,6 +29,9 @@ public abstract class EnginesSystem : SystemBase<EnginesState>
             ["set-disabled"] = c => Update(c, transforms.SetDisabled(state, SystemName, Payload<DisabledSystemsPayload>(c)))
         };
     }
+
+    public int MaxSpeed => state.SpeedConfig.MaxSpeed;
+    public int CurrentSpeed => state.CurrentSpeed;
 }
 
 public class FtlEnginesSystem : EnginesSystem

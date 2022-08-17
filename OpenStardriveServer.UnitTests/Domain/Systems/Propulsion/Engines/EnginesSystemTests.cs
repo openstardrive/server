@@ -1,3 +1,4 @@
+using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Chronometer;
 using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
@@ -70,5 +71,35 @@ public class EnginesSystemTests : SystemsTest<TestingEnginesSystem>
         var payload = new EnginesConfigurationPayload();
         GetMock<IEnginesTransforms>().Setup(x => x.Configure(Any<EnginesState>(), payload)).Returns(expected);
         TestCommandWithPayload("configure-testing-engines", payload, expected);
+    }
+
+    [Test]
+    public void When_getting_max_speed()
+    {
+        Assert.That(ClassUnderTest.MaxSpeed, Is.EqualTo(EnginesStateDefaults.Testing.SpeedConfig.MaxSpeed));
+        
+        var returned = TransformResult<EnginesState>.StateChanged(EnginesStateDefaults.Testing with
+        {
+            SpeedConfig = new EngineSpeedConfig { MaxSpeed = 2 } 
+        });
+        GetMock<IEnginesTransforms>().Setup(x => x.Configure(Any<EnginesState>(), Any<EnginesConfigurationPayload>())).Returns(returned);
+        ClassUnderTest.CommandProcessors["configure-testing-engines"](new Command { Payload = "{}"});
+
+        Assert.That(ClassUnderTest.MaxSpeed, Is.EqualTo(2));
+    }
+    
+    [Test]
+    public void When_getting_current_speed()
+    {
+        Assert.That(ClassUnderTest.CurrentSpeed, Is.EqualTo(EnginesStateDefaults.Testing.CurrentSpeed));
+        
+        var returned = TransformResult<EnginesState>.StateChanged(EnginesStateDefaults.Testing with
+        {
+            CurrentSpeed = 7 
+        });
+        GetMock<IEnginesTransforms>().Setup(x => x.SetSpeed(Any<EnginesState>(), Any<SetSpeedPayload>())).Returns(returned);
+        ClassUnderTest.CommandProcessors["set-testing-engines-speed"](new Command { Payload = "{}"});
+
+        Assert.That(ClassUnderTest.CurrentSpeed, Is.EqualTo(7));
     }
 }
