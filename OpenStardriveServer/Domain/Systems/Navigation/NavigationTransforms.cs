@@ -184,8 +184,18 @@ public class NavigationTransforms : INavigationTransforms
         return systemsRegistry.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem).Case(
             some: engines =>
             {
+                if (engines.CurrentSpeed <= 0)
+                {
+                    return TransformResult<NavigationState>.NoChange();                   
+                }
+                
                 var remaining = travelTime.ArriveInMilliseconds - (payload.ElapsedMilliseconds * engines.CurrentSpeed);
-                var newEta = new SetEtaPayload { Speed = 1, ArriveInMilliseconds = (int)remaining };
+                var newEta = new SetEtaPayload
+                {
+                    EngineSystem = state.CurrentCourse.Eta.EngineSystem,
+                    Speed = 1,
+                    ArriveInMilliseconds = (int)remaining
+                };
 
                 return TransformResult<NavigationState>.StateChanged(state with
                 {

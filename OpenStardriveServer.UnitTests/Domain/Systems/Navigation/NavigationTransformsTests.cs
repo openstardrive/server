@@ -493,7 +493,40 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
 
         var result = ClassUnderTest.Travel(state, payload);
         
+        Assert.That(result.NewState.Value.CurrentCourse.Eta.EngineSystem, Is.EqualTo(state.CurrentCourse.Eta.EngineSystem));
         Assert.That(result.NewState.Value.CurrentCourse.Eta.TravelTimes, Is.EqualTo(expectedTravelTimes));
+    }
+    
+    
+
+    [TestCase(new[] {600, 300, 200, 150})]
+    [TestCase(new[] {600, 300, 200, 150})]
+    [TestCase(new[] {600, 300, 200, 150})]
+    [TestCase(new[] {600, 300, 200, 150})]
+    [TestCase(new[] {600, 300, 200, 150})]
+    public void When_traveling_but_the_speed_is_zero(int[] travelTimes)
+    {
+        var state = new NavigationState
+        {
+            CurrentCourse = new CurrentCourse
+            {
+                Eta = new Eta
+                {
+                    EngineSystem = "ftl-engines",
+                    TravelTimes = travelTimes.Select((x, i) => new TravelTime
+                    {
+                        Speed = i + 1,
+                        ArriveInMilliseconds = x
+                    }).ToArray()
+                }
+            }
+        };
+        var payload = new ChronometerPayload { ElapsedMilliseconds = 1000 };
+        SetupMockEngines(0, travelTimes.Length, state.CurrentCourse.Eta.EngineSystem);
+
+        var result = ClassUnderTest.Travel(state, payload);
+
+        Assert.That(result.ResultType, Is.EqualTo(TransformResultType.NoChange));
     }
 
     private void SetupMockEngines(int currentSpeed, int maxSpeed, string systemName)
