@@ -22,6 +22,7 @@ public class NavigationSystem : SystemBase<NavigationState>
             ["course-calculated"] = c => Update(c, transforms.CourseCalculated(state, Payload<CalculatedCoursePayload>(c))),
             ["set-course"] = c => Update(c, transforms.SetCourse(state, Payload<SetCoursePayload>(c))),
             ["update-eta"] = c => Update(c, transforms.UpdateEta(state, Payload<SetEtaPayload>(c))),
+            ["clear-eta"] = c => Update(c, transforms.ClearEta(state)),
             [ChronometerCommand.Type] = c => Update(c, transforms.Travel(state, Payload<ChronometerPayload>(c)))
         };
     }

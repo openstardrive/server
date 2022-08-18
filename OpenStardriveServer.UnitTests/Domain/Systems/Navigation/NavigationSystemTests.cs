@@ -95,6 +95,13 @@ public class NavigationSystemTests : SystemsTest<NavigationSystem>
     }
     
     [Test]
+    public void When_the_eta_is_cleared()
+    {
+        GetMock<INavigationTransforms>().Setup(x => x.ClearEta(Any<NavigationState>())).Returns(expected);
+        TestCommand("clear-eta", expected);
+    }
+    
+    [Test]
     public void When_the_chronometer_fires()
     {
         var payload = new ChronometerPayload();

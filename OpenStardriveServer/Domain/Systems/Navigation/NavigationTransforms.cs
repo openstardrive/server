@@ -13,6 +13,7 @@ public interface INavigationTransforms : IStandardTransforms<NavigationState>
     TransformResult<NavigationState> CourseCalculated(NavigationState state, CalculatedCoursePayload payload);
     TransformResult<NavigationState> SetCourse(NavigationState state, SetCoursePayload payload);
     TransformResult<NavigationState> UpdateEta(NavigationState state, SetEtaPayload payload);
+    TransformResult<NavigationState> ClearEta(NavigationState state);
     TransformResult<NavigationState> Travel(NavigationState state, ChronometerPayload payload);
 }
 
@@ -166,6 +167,22 @@ public class NavigationTransforms : INavigationTransforms
                 }
             }),
             none: () => TransformResult<NavigationState>.Error($"Unable to locate the engine system: {payload.EngineSystem}"));
+    }
+
+    public TransformResult<NavigationState> ClearEta(NavigationState state)
+    {
+        if (state.CurrentCourse == null)
+        {
+            return TransformResult<NavigationState>.Error("No current course for clearing the ETA");
+        }
+        
+        return TransformResult<NavigationState>.StateChanged(state with
+        {
+            CurrentCourse = state.CurrentCourse with
+            {
+                Eta = null
+            }
+        });
     }
 
     public TransformResult<NavigationState> Travel(NavigationState state, ChronometerPayload payload)

@@ -461,6 +461,32 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         Assert.That(result.ErrorMessage, Is.EqualTo("No current course for setting the ETA"));
     }
 
+    [Test]
+    public void When_clearing_eta()
+    {
+        var state = new NavigationState
+        {
+            CurrentCourse = new CurrentCourse { Eta = new Eta() }
+        };
+        
+        var result = ClassUnderTest.ClearEta(state);
+        
+        Assert.That(result.NewState.Value, Is.EqualTo(state with { CurrentCourse = state.CurrentCourse with { Eta = null }}));
+    }
+    
+    [Test]
+    public void When_clearing_eta_but_there_is_no_course()
+    {
+        var state = new NavigationState
+        {
+            CurrentCourse = null
+        };
+        
+        var result = ClassUnderTest.ClearEta(state);
+        
+        Assert.That(result.ErrorMessage, Is.EqualTo("No current course for clearing the ETA"));
+    }
+
     [TestCase(new[] {600, 300, 200, 150}, 1, 100, new[] {500, 250, 166, 125})]
     [TestCase(new[] {600, 300, 200, 150}, 2, 100, new[] {400, 200, 133, 100})]
     [TestCase(new[] {600, 300, 200, 150}, 3, 100, new[] {300, 150, 100, 75})]
@@ -497,8 +523,6 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         Assert.That(result.NewState.Value.CurrentCourse.Eta.TravelTimes, Is.EqualTo(expectedTravelTimes));
     }
     
-    
-
     [TestCase(new[] {600, 300, 200, 150})]
     [TestCase(new[] {600, 300, 200, 150})]
     [TestCase(new[] {600, 300, 200, 150})]
