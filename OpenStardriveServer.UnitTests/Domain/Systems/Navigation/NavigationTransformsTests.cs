@@ -198,7 +198,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         };
         var mockEngines = GetMock<IEnginesSystem>();
         mockEngines.Setup(x => x.MaxSpeed).Returns(10);
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem)).Returns(Maybe<IEnginesSystem>.Some(mockEngines.Object));
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem))
+            .ReturnsSome(mockEngines.Object);
         
         var result = ClassUnderTest.CourseCalculated(state, payload);
 
@@ -229,7 +231,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
                 ArriveInMilliseconds = 350000
             }
         };
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem)).Returns(Maybe<IEnginesSystem>.None);
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem))
+            .ReturnsNone();
 
         var result = ClassUnderTest.CourseCalculated(state, payload);
 
@@ -341,7 +345,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         });
         var mockEngines = GetMock<IEnginesSystem>();
         mockEngines.Setup(x => x.MaxSpeed).Returns(10);
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem)).Returns(Maybe<IEnginesSystem>.Some(mockEngines.Object));
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem))
+            .ReturnsSome(mockEngines.Object);
 
         var result = ClassUnderTest.SetCourse(state, payload);
 
@@ -370,7 +376,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
                 ArriveInMilliseconds = 123456
             }
         };
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem)).Returns(Maybe<IEnginesSystem>.None);
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.Eta.EngineSystem))
+            .ReturnsNone();
 
         var result = ClassUnderTest.SetCourse(state, payload);
 
@@ -422,7 +430,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         });
         var mockEngines = GetMock<IEnginesSystem>();
         mockEngines.Setup(x => x.MaxSpeed).Returns(expectedMilliseconds.Length);
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.EngineSystem)).Returns(Maybe<IEnginesSystem>.Some(mockEngines.Object));
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.EngineSystem))
+            .ReturnsSome(mockEngines.Object);
 
         var result = ClassUnderTest.UpdateEta(state, payload);
 
@@ -444,7 +454,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
             Speed = 2,
             ArriveInMilliseconds = 123456
         };
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.EngineSystem)).Returns(Maybe<IEnginesSystem>.None);
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.EngineSystem))
+            .ReturnsNone();
 
         var result = ClassUnderTest.UpdateEta(state, payload);
 
@@ -461,7 +473,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
             Speed = 2,
             ArriveInMilliseconds = 123456
         };
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.EngineSystem)).Returns(Maybe<IEnginesSystem>.None);
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(payload.EngineSystem))
+            .ReturnsNone();
 
         var result = ClassUnderTest.UpdateEta(state, payload);
 
@@ -499,8 +513,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         var mockEngines = GetMock<IEnginesSystem>();
         mockEngines.Setup(x => x.CurrentSpeed).Returns(speed);
         mockEngines.Setup(x => x.MaxSpeed).Returns(travelTimes.Length);
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem))
-            .Returns(Maybe<IEnginesSystem>.Some(mockEngines.Object));
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem))
+            .ReturnsSome(mockEngines.Object);
 
         var result = ClassUnderTest.Travel(state, payload);
         
@@ -538,8 +553,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         var mockEngines = GetMock<IEnginesSystem>();
         mockEngines.Setup(x => x.CurrentSpeed).Returns(speed);
         mockEngines.Setup(x => x.MaxSpeed).Returns(travelTimes.Length);
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem))
-            .Returns(Maybe<IEnginesSystem>.Some(mockEngines.Object));
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem))
+            .ReturnsSome(mockEngines.Object);
 
         var result = ClassUnderTest.Travel(state, payload);
         
@@ -562,8 +578,9 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         };
         var payload = new ChronometerPayload { ElapsedMilliseconds = 1 };
         var mockEngines = GetMock<IEnginesSystem>();
-        GetMock<ISystemsRegistry>().Setup(x => x.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem))
-            .Returns(Maybe<IEnginesSystem>.Some(mockEngines.Object));
+        GetMock<ISystemsRegistry>()
+            .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem))
+            .ReturnsSome(mockEngines.Object);
 
         var result = ClassUnderTest.Travel(state, payload);
         
@@ -618,7 +635,7 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         var payload = new ChronometerPayload { ElapsedMilliseconds = 100 };
         GetMock<ISystemsRegistry>()
             .Setup(x => x.GetSystemByNameAs<IEnginesSystem>(state.CurrentCourse.Eta.EngineSystem))
-            .Returns(Maybe<IEnginesSystem>.None);
+            .ReturnsNone();
         
         var result = ClassUnderTest.Travel(state, payload);
 

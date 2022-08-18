@@ -1,6 +1,8 @@
 using System;
 using System.Linq.Expressions;
 using Moq;
+using Moq.Language.Flow;
+using OpenStardriveServer.Domain;
 
 namespace OpenStardriveServer.UnitTests;
 
@@ -16,5 +18,15 @@ public static class MoqExtensions
         where T : class
     {
         mock.Verify(expression, Times.Never);
+    }
+
+    public static void ReturnsNone<T, TResult>(this ISetup<T, Maybe<TResult>> setup) where T : class
+    {
+        setup.Returns(Maybe<TResult>.None);
+    }
+    
+    public static void ReturnsSome<T, TResult>(this ISetup<T, Maybe<TResult>> setup, TResult result) where T : class
+    {
+        setup.Returns(Maybe<TResult>.Some(result));
     }
 }
