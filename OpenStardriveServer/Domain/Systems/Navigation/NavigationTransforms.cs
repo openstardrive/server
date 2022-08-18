@@ -60,7 +60,7 @@ public class NavigationTransforms : INavigationTransforms
                 some: _ => TransformResult<NavigationState>.Error($"There is already a requested course calculation with courseId: {payload.CourseId}"),
                 none: () => TransformResult<NavigationState>.StateChanged(state with
                 {
-                    RequestedCourseCalculations = state.RequestedCourseCalculations.Concat(new [] { newRequested }).ToArray()
+                    RequestedCourseCalculations = state.RequestedCourseCalculations.Append(newRequested).ToArray()
                 }));
         });
     }
@@ -90,17 +90,15 @@ public class NavigationTransforms : INavigationTransforms
             RequestedCourseCalculations = state.RequestedCourseCalculations.Where(x => x.CourseId != payload.CourseId).ToArray(),
             CalculatedCourses = state.CalculatedCourses
                 .Where(x => x.CourseId != payload.CourseId)
-                .Concat(new []
-            {
-                new CalculatedCourse
+                .Append(new CalculatedCourse
                 {
                     CourseId = payload.CourseId,
                     Destination = payload.Destination,
                     Coordinates = payload.Coordinates,
                     CalculatedAt = DateTimeOffset.UtcNow,
                     Eta = maybeEngines.Case(engines => CalculateEta(payload.Eta, engines), () => null)
-                }
-            }).ToArray()
+                })
+                .ToArray()
         });
     }
 

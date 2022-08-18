@@ -71,7 +71,7 @@ public class SensorsTransforms : ISensorsTransforms
         };
         return TransformResult<SensorsState>.StateChanged(state with
         {
-            ActiveScans = state.ActiveScans.Concat(new [] {scan}).ToArray(),
+            ActiveScans = state.ActiveScans.Append(scan).ToArray(),
             LastUpdatedScan = scan
         });
     }
@@ -133,7 +133,7 @@ public class SensorsTransforms : ISensorsTransforms
         };
         return TransformResult<SensorsState>.StateChanged(state with
         {
-            Contacts = state.Contacts.Concat(new []{ newContact }).ToArray()
+            Contacts = state.Contacts.Append(newContact).ToArray()
         });
     }
 

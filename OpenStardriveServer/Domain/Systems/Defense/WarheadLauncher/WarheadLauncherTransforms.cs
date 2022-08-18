@@ -37,7 +37,7 @@ public class WarheadLauncherTransforms : IWarheadLauncherTransforms
 
             return TransformResult<WarheadLauncherState>.StateChanged(state with
             {
-                Loaded = state.Loaded.Concat(new[] { payload.Kind }).ToArray(),
+                Loaded = state.Loaded.Append(payload.Kind).ToArray(),
                 Inventory = state.Inventory
                     .Select(x => x with { Number = x.Kind == payload.Kind ? x.Number - 1 : x.Number })
                     .ToArray()
