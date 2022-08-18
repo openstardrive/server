@@ -77,24 +77,16 @@ public class EnergyBeamTransforms : IEnergyBeamTransforms
             return TransformResult<EnergyBeamState>.StateChanged(state with
             {
                 Banks = state.Banks
-                    .Select(x => UpdateChargeOnMatch(x, payload.BankName, payload.NewCharge))
+                    .Replace(x => x.Name == payload.BankName, x => x with
+                    {
+                        PercentCharged = ValidCharge(payload.NewCharge)
+                    })
                     .ToArray()
             });
         });
     }
 
-    private EnergyBeamBank UpdateChargeOnMatch(EnergyBeamBank bank, string name, double charge)
-    {
-        if (bank.Name == name)
-        {
-            return bank with
-            {
-                PercentCharged = Math.Max(0, charge)
-            };
-        }
-
-        return bank;
-    }
+    private double ValidCharge(double charge) => Math.Max(0, charge);
 
     public TransformResult<EnergyBeamState> Fire(EnergyBeamState state, FireEnergyBeamPayload payload)
     {
@@ -112,7 +104,10 @@ public class EnergyBeamTransforms : IEnergyBeamTransforms
                     return TransformResult<EnergyBeamState>.StateChanged(state with
                     {
                         Banks = state.Banks
-                            .Select(x => UpdateChargeOnMatch(x, payload.BankName, x.PercentCharged - dischargePercent))
+                            .Replace(x => x.Name == payload.BankName, x => x with
+                            {
+                                PercentCharged = ValidCharge(x.PercentCharged - dischargePercent)
+                            })
                             .ToArray(),
                         LastFiredEnergyBeam = new FiredEnergyBeam
                         {
@@ -139,9 +134,11 @@ public class EnergyBeamTransforms : IEnergyBeamTransforms
         return TransformResult<EnergyBeamState>.StateChanged(state with
         {
             Banks = state.Banks
-                .Select(x => x.Name == payload.BankName
-                    ? x with { Frequency = payload.Frequency, ArcDegrees = payload.ArcDegrees }
-                    : x)
+                .Replace(x => x.Name == payload.BankName, x => x with
+                {
+                    Frequency = payload.Frequency,
+                    ArcDegrees = payload.ArcDegrees
+                })
                 .ToArray()
         });
     }

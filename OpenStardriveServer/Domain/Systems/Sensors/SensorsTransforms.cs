@@ -153,7 +153,7 @@ public class SensorsTransforms : ISensorsTransforms
             some: _ => TransformResult<SensorsState>.StateChanged(state with
             {
                 Contacts = state.Contacts
-                    .Select(x => x.ContactId == payload.ContactId ? payload : x)
+                    .Replace(x => x.ContactId == payload.ContactId, _ => payload)
                     .ToArray()
             }),
             none: () => TransformResult<SensorsState>.Error($"No sensor contact found with id {payload.ContactId}"));
@@ -193,8 +193,7 @@ public class SensorsTransforms : ISensorsTransforms
         {
             Position = target,
             Destinations = contact.Destinations
-                .Select((x, i) => i == 0 ? null : x)
-                .Where(x => x is not null)
+                .Where((_, i) => i != 0)
                 .ToArray()
         };
     }
@@ -211,7 +210,10 @@ public class SensorsTransforms : ISensorsTransforms
                 Z = origin.Z + AmountToMove(origin.Z, target.Z, remaining, elapsed)
             },
             Destinations = contact.Destinations
-                .Select((x, i) => i == 0 ? x with { RemainingMilliseconds = (int) (x.RemainingMilliseconds - elapsed) } : x)
+                .Replace((_, i) => i == 0, x => x with
+                {
+                    RemainingMilliseconds = (int) (x.RemainingMilliseconds - elapsed)
+                })
                 .ToArray()
         };
     }

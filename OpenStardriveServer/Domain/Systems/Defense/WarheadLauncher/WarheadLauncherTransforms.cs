@@ -54,7 +54,7 @@ public class WarheadLauncherTransforms : IWarheadLauncherTransforms
                 some: _ =>
                 {
                     var firstIndex = Array.IndexOf(state.Loaded, payload.Kind);
-                    var loaded = state.Loaded.Select((y, index) => index == firstIndex ? null : y).Where(y => y != null).ToArray();
+                    var loaded = state.Loaded.Where((_, i) => i != firstIndex).ToArray();
                     var lastFired = new FiredWarhead
                     {
                         Kind = payload.Kind,
