@@ -12,6 +12,7 @@ public interface INavigationTransforms : IStandardTransforms<NavigationState>
     TransformResult<NavigationState> CancelRequestedCourse(NavigationState state, CancelRequestedCourseCalculationPayload payload);
     TransformResult<NavigationState> CourseCalculated(NavigationState state, CalculatedCoursePayload payload);
     TransformResult<NavigationState> SetCourse(NavigationState state, SetCoursePayload payload);
+    TransformResult<NavigationState> ClearCourse(NavigationState state);
     TransformResult<NavigationState> UpdateEta(NavigationState state, SetEtaPayload payload);
     TransformResult<NavigationState> ClearEta(NavigationState state);
     TransformResult<NavigationState> Travel(NavigationState state, ChronometerPayload payload);
@@ -149,6 +150,11 @@ public class NavigationTransforms : INavigationTransforms
                 }
             });
         });
+    }
+
+    public TransformResult<NavigationState> ClearCourse(NavigationState state)
+    {
+        return TransformResult<NavigationState>.StateChanged(state with { CurrentCourse = null });
     }
 
     public TransformResult<NavigationState> UpdateEta(NavigationState state, SetEtaPayload payload)

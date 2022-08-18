@@ -396,6 +396,19 @@ public class NavigationTransformsTests : StandardTransformsTest<NavigationTransf
         Assert.That(result.ErrorMessage, Is.EqualTo(expectedError));
     }
 
+    [Test]
+    public void When_clearing_course()
+    {
+        var state = new NavigationState
+        {
+            CurrentCourse = new CurrentCourse()
+        };
+
+        var result = ClassUnderTest.ClearCourse(state);
+        
+        Assert.That(result.NewState.Value, Is.EqualTo(state with { CurrentCourse = null }));
+    }
+
     [TestCase(1, 100, new [] { 100, 50, 33, 25, 20, 16 })]
     [TestCase(2, 30000, new [] { 60000, 30000, 20000, 15000, 12000, 10000, 8571 })]
     public void When_updating_eta(int speed, int milliseconds, int[] expectedMilliseconds)

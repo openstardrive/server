@@ -87,6 +87,13 @@ public class NavigationSystemTests : SystemsTest<NavigationSystem>
     }
     
     [Test]
+    public void When_a_course_is_cleared()
+    {
+        GetMock<INavigationTransforms>().Setup(x => x.ClearCourse(Any<NavigationState>())).Returns(expected);
+        TestCommand("clear-course", expected);
+    }
+    
+    [Test]
     public void When_the_eta_is_updated()
     {
         var payload = new SetEtaPayload();
