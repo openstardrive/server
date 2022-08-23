@@ -13,6 +13,10 @@ cd OpenStardriveServer
 dotnet run
 ```
 
+Once the server is running, you can connect clients to interact with it.
+The [dev-client](./dev-client/README.md) directory contains an example client used during development
+of the software.
+
 
 ## License
 

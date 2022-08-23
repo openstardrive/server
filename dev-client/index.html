@@ -1,0 +1,139 @@
+<html>
+    <head>
+        <title>Simple Client</title>
+        <link rel="stylesheet" href="./style.css">
+        <script src="./api.js"></script>
+        <script src="./renderers.js"></script>
+        <script src="./commands.js"></script>
+        <script src="./client.js"></script>
+    </head>
+    <body>
+        <div>
+            Seconds: <input id="pollingSeconds" type="number" min="1" value="1">
+            <button id="pausePolling">Pause</button>
+            <button id="startPolling">Start</button>
+            Cursor: <span id="cursor"></span>
+            <select id="system-select"></select>
+            <select id="system-action">
+                <option value="damaged:true">Damage</option>
+                <option value="damaged:false">Repair</option>
+                <option value="disabled:true">Disable</option>
+                <option value="disabled:false">Enable</option>
+            </select>
+            <button onclick="commands.updateSystem(getValue('system-select'), getValue('system-action'))">Go</button>
+        </div>
+
+        <div class="system">
+            <div>Clients</div>
+            <span id="clients"></span>
+        </div>
+
+        <div class="system">
+            <div>Navigation</div>
+            <div>
+                <div id="navigation"></div>
+                <input id="course-text" type="text">
+                <button onclick="commands.requestCourse(getValue('course-text'))">Request Course</button>
+                <button onclick="commands.calculateCourse()">Calculate</button>
+                <button onclick="commands.randomCourse(getValue('course-text'))">Random</button>
+                <button onclick="commands.setCourse(getValue('course-text'))">Set Course</button>
+                <button onclick="commands.clearCourse()">Clear Course</button>
+                <button onclick="commands.setEta()">Set ETA</button>
+                <button onclick="commands.clearEta()">Clear ETA</button>
+            </div>
+        </div>
+
+        <div class="system">
+            <div>FTL</div>
+            <div>
+                <div id="ftl-engines"></div>
+                <button onclick="commands.speedDown('ftl-engines')">Speed -</button>
+                <button onclick="commands.speedUp('ftl-engines')">Speed +</button>
+                <button onclick="commands.powerDown('ftl-engines')">Power -</button>
+                <button onclick="commands.powerUp('ftl-engines')">Power +</button>
+            </div>
+        </div>
+        
+        <div class="system">
+            <div>Sublight</div>
+            <div>
+                <div id="sublight-engines"></div>
+                <button onclick="commands.speedDown('sublight-engines')">Speed -</button>
+                <button onclick="commands.speedUp('sublight-engines')">Speed +</button>
+                <button onclick="commands.powerDown('sublight-engines')">Power -</button>
+                <button onclick="commands.powerUp('sublight-engines')">Power +</button>
+            </div>
+        </div>
+        
+        <div class="system">
+            <div>Thrusters</div>
+            <div>
+                <div id="thrusters"></div>
+                <select id="thruster-velocity" onchange="commands.setThrusterVelocity(getValue('thruster-velocity'))">
+                    <option value="0,0,0">Zero</option>
+                    <option value="0,0,1">Up</option>
+                    <option value="0,0,-1">Down</option>
+                    <option value="-1,0,0">Port</option>
+                    <option value="1,0,0">Starboard</option>
+                    <option value="0,1,0">Forward</option>
+                    <option value="0,-1,0">Reverse</option>
+                </select>
+                <select id="thruster-attitude">
+                    <option value="yaw">Yaw</option>
+                    <option value="pitch">Pitch</option>
+                    <option value="roll">Roll</option>
+                </select>
+                <button onclick="commands.setThrusterAttitude(getValue('thruster-attitude'), -5)">-</button>
+                <button onclick="commands.setThrusterAttitude(getValue('thruster-attitude'), 5)">+</button>
+            </div>
+        </div>
+
+        <div class="system">
+            <div>Shields</div>
+            <div>
+                <div id="shields"></div>
+                <button onclick="commands.toggleShields()">Toggle</button>
+            </div>
+        </div>
+
+        <div class="system">
+            <div>Warhead Launcher</div>
+            <div>
+                <div id="warhead-launcher"></div>
+                <button onclick="commands.loadWarhead()">Load</button>
+                <button onclick="commands.fireWarhead()">Fire</button>
+            </div>
+        </div>
+
+        <div class="system">
+            <div>Energy Beams</div>
+            <div>
+                <div id="energy-beams"></div>
+                <button onclick="commands.chargeEnergyBeam('Forward')">Charge Forward</button>
+                <button onclick="commands.fireEnergyBeam('Forward')">Fire Forward</button>
+                <button onclick="commands.chargeEnergyBeam('Aft')">Charge Aft</button>
+                <button onclick="commands.fireEnergyBeam('Aft')">Fire Aft</button>
+            </div>
+        </div>
+
+        <div class="system">
+            <div>Sensors</div>
+            <div>
+                <div id="sensors"></div>
+                <input id="scan-text" type="text">
+                <button onclick="commands.newSensorScan(getValue('scan-text'))">Active Scan</button>
+                <button onclick="commands.sensorScanResult(getValue('scan-text'))">Scan Result</button>
+                <button onclick="commands.passiveScan(getValue('scan-text'))">Passive Scan</button>
+                <button onclick="commands.addContact()">New Contact</button>
+                <button onclick="commands.moveContact()">Move Contact</button>
+            </div>
+        </div>
+
+        <script>
+            var commands
+            start().then(c => commands = c)
+
+            const getValue = id => document.getElementById(id).value
+        </script>
+    </body>
+</html>
