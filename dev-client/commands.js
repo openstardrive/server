@@ -99,6 +99,24 @@ const getCommands = (api, state) => {
                 cypherId: cypher.cypherId,
                 outbound: false
             })
+        },
+        decode: () => {
+            const cyphers = state.getSystemState('long-range-comms').cyphers
+            const cypher = cyphers[randomInt(0, cyphers.length)]
+            let solved = 0
+            var updated = cypher.decodeSubstitutions.map(x => {
+                const match = cypher.encodeSubstitutions.find(y => y.to == x.change) || {change: x.change}
+                const isSolved = x.to === match.change
+                if (!isSolved && solved < 3) {
+                    solved++
+                    return {change: x.change, to: match.change}
+                }
+                return x
+            })
+            api.sendCommand('update-long-range-substitutions', {
+                cypherId: cypher.cypherId,
+                decodeSubstitutions: updated
+            })
         }
     }
 }
