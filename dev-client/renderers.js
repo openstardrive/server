@@ -4,12 +4,11 @@ const getRenderFunctions = () => {
         return systems.map(x => `<option value="${x}">${x}</option>`).join('')
     }
 
-    const renderClients = (data, additionalData) => {
+    const renderClients = (data) => {
         const now = new Date().valueOf()
         return data.clients.map(x => {
             const clientId = x.clientId
-            const data = additionalData.find(y => y.id == clientId)
-            const lastSeen = data ? data.lastSeen : 1200000
+            const lastSeen = x.lastSeen || 1200000
             const elapsedSeconds = (now - lastSeen) / 1000
             let color = 'active'
             if (elapsedSeconds > 60) {
@@ -127,6 +126,41 @@ const getRenderFunctions = () => {
             `<br/><br/>${renderPower(data)}`
     }
 
+    const renderCypher = cypher => {
+        if (!cypher) return 'null'
+        return `[${cypher.cypherId}] ${cypher.name} (${cypher.description})` +
+            `<br/>Encoding: ${cypher.encodeSubstitutions.map(x => `${x.change}->${x.to}`).join(', ')}` +
+            `<br/>Decoding: ${cypher.decodeSubstitutions.map(x => `${x.change}->${x.to}`).join(', ')}`
+    }
+
+    const renderMessage = (message, cyphers) => {
+        if (!message) return 'null'
+        let encoded = ''
+        const cypher = cyphers.find(x => x.cypherId === message.cypherId)
+        if (cypher) {
+            encoded = ' | ' + message.message
+                .split('')
+                .map(letter => {
+                    const encode = cypher.encodeSubstitutions.find(x => x.change === letter) || {to: letter}
+                    const decode = cypher.decodeSubstitutions.find(x => x.change === encode.to) || {to: encode.to}
+                    return decode.to
+                })
+                .join('')
+        }
+
+        return `<br/>[${message.messageId}] ${message.sender} -> ${message.recipient}` +
+            `: ${message.message}${encoded}`
+    }
+
+    const renderLongRangeComms = data => {
+        return renderDamagedAndDisabled(data) +
+            `Cyphers: ${data.cyphers.map(x => `<br/>[${x.cypherId}] ${x.name} (${toPercent(x.percentDecoded)} decoded)`).join('')}` +
+            `<br/><br/>Last updated cypher: ${renderCypher(data.lastUpdatedCypher)}` +
+            `<br/><br/>Messages: ${data.messages.map(x => renderMessage(x, data.cyphers)).join('')}` +
+            `<br/><br/>Last updated message: ${renderMessage(data.lastUpdatedLongRangeMessage, data.cyphers)}` +
+            `<br/><br/>${renderPower(data)}`
+    }
+
     return {
         'systems': renderSystems,
         'clients': renderClients,
@@ -137,6 +171,7 @@ const getRenderFunctions = () => {
         'warhead-launcher': renderWarheadLauncher,
         'energy-beams': renderEnergyBeams,
         'sensors': renderSensors,
-        'navigation': renderNavigation
+        'navigation': renderNavigation,
+        'long-range-comms': renderLongRangeComms
     }
 }

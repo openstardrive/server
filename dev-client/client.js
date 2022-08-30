@@ -1,18 +1,12 @@
 const start = async () => {
     console.log('Starting dev client...')
-    let allResults = []
     let lastCursor
-    let currentStates = {
-        'clients': { clients: [] }
-    }
-    const additionalData = {
-        'clients': []
-    }
+
     const renderMap = getRenderFunctions()
+    const state = initState()
 
     const processResults = (results, cursor) => {
         results.forEach(processResult)
-        allResults = allResults.concat(results)
         if (lastCursor != cursor)
         {
             lastCursor = cursor
@@ -24,51 +18,30 @@ const start = async () => {
             .concat('clients')
             .forEach(system => {
                 if (renderMap[system]) {
-                    document.getElementById(system).innerHTML = renderMap[system](currentStates[system], additionalData[system])
+                    document.getElementById(system).innerHTML = renderMap[system](state.getSystemState(system))
                 } else {
-                    console.log('unknown system:', system, currentStates[system])
+                    console.log('unknown system:', system, state.getSystemState(system))
                 }
             })
     }
 
     const processResult = (result) => {
-        if (result.type == 'unrecognized-command')
-        {
-            var client = currentStates.clients.clients.find(x => x.clientId == result.clientId)
+        if (result.type == 'unrecognized-command') {
+            var client = state.findClient(result.clientId) || {name: 'UNKNOWN'}
             console.warn(`Client ${client.name} sent a bad command`, result)
             return
         }
-        if (result.type == 'error')
-        {
-            var client = currentStates.clients.clients.find(x => x.clientId == result.clientId)
+        if (result.type == 'error') {
+            var client = state.findClient(result.clientId) || {name: 'UNKNOWN'}
             console.error(`Client ${client.name} had an error using ${result.system} system: ${result.payload}`)
             return
         }
-        if (result.type !== 'state-updated')
-        {
+        if (result.type !== 'state-updated') {
             console.log('unknown result type:', result.type)
             return
         }
 
-        trackClientLastSeen(result)
-        
-        var system = result.system
-        currentStates[system] = result.payload
-    }
-
-    const trackClientLastSeen = (result) => {
-        const clientId = result.clientId
-        const clientsLastSeen = additionalData['clients']
-        if (clientId) {
-            var client = clientsLastSeen.find(x => x.id == clientId)
-            if (!client) {
-                client = {id: clientId, lastSeen: new Date(result.timestamp).valueOf()}
-                clientsLastSeen.push(client)
-            }
-            else {
-                client.lastSeen = new Date(result.timestamp).valueOf()
-            }
-        }
+        state.processEvent(result)
     }
 
     const startPollingButton = document.getElementById('startPolling')
@@ -89,7 +62,7 @@ const start = async () => {
 
     let api = await startApi(processResults, onPollingStarted, onPollingPaused)
 
-    setTimeout(() => document.getElementById('system-select').innerHTML = renderMap.systems(Object.keys(currentStates)), 3000)
+    setTimeout(() => document.getElementById('system-select').innerHTML = renderMap.systems(state.allSystems()), 3000)
 
-    return getCommands(api, system => currentStates[system])
+    return getCommands(api, state)
 }

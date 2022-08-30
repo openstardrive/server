@@ -3,6 +3,7 @@
         <title>Simple Client</title>
         <link rel="stylesheet" href="./style.css">
         <script src="./api.js"></script>
+        <script src="./state.js"></script>
         <script src="./renderers.js"></script>
         <script src="./commands.js"></script>
         <script src="./client.js"></script>
@@ -21,6 +22,7 @@
                 <option value="disabled:false">Enable</option>
             </select>
             <button onclick="commands.updateSystem(getValue('system-select'), getValue('system-action'))">Go</button>
+            <button onclick="commands.logCurrentState()">Current State</button>
         </div>
 
         <div class="system">
@@ -126,6 +128,16 @@
                 <button onclick="commands.passiveScan(getValue('scan-text'))">Passive Scan</button>
                 <button onclick="commands.addContact()">New Contact</button>
                 <button onclick="commands.moveContact()">Move Contact</button>
+            </div>
+        </div>
+
+        <div class="system">
+            <div>Long Range Communications</div>
+            <div>
+                <div id="long-range-comms"></div>
+                <button onclick="commands.addRandomCypher()">Add Random Cypher</button>
+                <input id="long-range-text" type="text">
+                <button onclick="commands.sendLongRangeMessage(getValue('long-range-text'))">Send Message</button>
             </div>
         </div>
 
