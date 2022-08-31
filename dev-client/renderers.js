@@ -161,6 +161,28 @@ const getRenderFunctions = () => {
             `<br/><br/>${renderPower(data)}`
     }
 
+    const renderShortRangeComms = data => {
+        const currentRanges = data.frequencyRanges.filter(f => f.min <= data.currentFrequency && data.currentFrequency <= f.max)
+        let showCurrentRanges = ''
+        if (currentRanges.length > 0)
+        {
+            showCurrentRanges = ` (${currentRanges.map(x => x.name).join(', ')})`
+        }
+
+        return renderDamagedAndDisabled(data) +
+            `Frequency Ranges: ${data.frequencyRanges.map(x => `<br/>${x.name}: ${roundToPrecision(x.min, 3)} - ${roundToPrecision(x.max, 3)}`).join('')}` +
+            `<br/><br/>Active Signals: ${data.activeSignals.map(x => {
+                const ranges = data.frequencyRanges.filter(f => f.min <= x.frequency && x.frequency <= f.max)
+                let showRanges = ''
+                if (ranges.length > 0) {
+                    showRanges = ` (${ranges.map(x => x.name).join(', ')})`
+                }
+                return `<br/>${x.name}: ${roundToPrecision(x.frequency, 3)}${showRanges}`
+            }).join('')}` +
+            `<br/><br/>Current frequency: ${roundToPrecision(data.currentFrequency, 3)}${showCurrentRanges}, Broadcasting: ${data.isBroadcasting}` +
+            `<br/><br/>${renderPower(data)}`
+    }
+
     return {
         'systems': renderSystems,
         'clients': renderClients,
@@ -172,6 +194,7 @@ const getRenderFunctions = () => {
         'energy-beams': renderEnergyBeams,
         'sensors': renderSensors,
         'navigation': renderNavigation,
-        'long-range-comms': renderLongRangeComms
+        'long-range-comms': renderLongRangeComms,
+        'short-range-comms': renderShortRangeComms
     }
 }

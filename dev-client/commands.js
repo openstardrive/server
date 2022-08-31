@@ -117,6 +117,31 @@ const getCommands = (api, state) => {
                 cypherId: cypher.cypherId,
                 decodeSubstitutions: updated
             })
+        },
+        addRandomFrequencyRange: () => {
+            var frequencyRanges = state.getSystemState('short-range-comms').frequencyRanges
+            var a = randomFloat(1000, 9999)
+            var b = randomFloat(1000, 9999)
+            frequencyRanges.push({name: 'Band ' + frequencyRanges.length, min: Math.min(a, b), max: Math.max(a, b)})
+            api.sendCommand('configure-short-range-frequencies', { frequencyRanges })
+        },
+        addRandomSignal: () => {
+            var activeSignals = state.getSystemState('short-range-comms').activeSignals
+            activeSignals.push({name: `Signal ${randomInt(0, 9999)}`, frequency: randomFloat(1000, 9999)})
+            api.sendCommand('set-short-range-signals', { activeSignals })
+        },
+        removeRandomSignal: () => {
+            var activeSignals = state.getSystemState('short-range-comms').activeSignals
+            var index = randomInt(0, activeSignals.length)
+            activeSignals = activeSignals.filter((_, i) => i !== index)
+            api.sendCommand('set-short-range-signals', { activeSignals })
+        },
+        setRandomFrequency: () => {
+            api.sendCommand('set-short-range-frequency', {frequency: randomFloat(1000, 9999)})
+        },
+        toggleBroadcast: () => {
+            var isBroadcasting = state.getSystemState('short-range-comms').isBroadcasting
+            api.sendCommand('set-short-range-broadcasting', {isBroadcasting: !isBroadcasting})
         }
     }
 }

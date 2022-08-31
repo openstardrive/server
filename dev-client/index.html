@@ -142,6 +142,20 @@
             </div>
         </div>
 
+        <div class="system">
+            <div>Short Range Communications</div>
+            <div>
+                <div id="short-range-comms"></div>
+                <button onclick="commands.addRandomFrequencyRange()">Add Random Range</button>
+                <button onclick="commands.addRandomSignal()">Add Random Signal</button>
+                <button onclick="commands.removeRandomSignal()">Remove Random Signal</button>
+                <button onclick="commands.setRandomFrequency()">Set Random Frequency</button>
+                <button onclick="commands.toggleBroadcast()">Toggle Broadcast</button>
+                <button onclick="commands.powerDown('short-range-comms')">Power -</button>
+                <button onclick="commands.powerUp('short-range-comms')">Power +</button>
+            </div>
+        </div>
+
         <script>
             var commands
             start().then(c => commands = c)
