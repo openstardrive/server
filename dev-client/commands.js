@@ -142,6 +142,9 @@ const getCommands = (api, state) => {
         toggleBroadcast: () => {
             var isBroadcasting = state.getSystemState('short-range-comms').isBroadcasting
             api.sendCommand('set-short-range-broadcasting', {isBroadcasting: !isBroadcasting})
+        },
+        addDebugEntry: text => {
+            api.sendCommand('debug', { debugId: randomId(), description: text })
         }
     }
 }

@@ -1,6 +1,7 @@
 const initState = () => {
     const currentState = {
-        'clients': { clients: [] }
+        'clients': { clients: [] },
+        'debug': { entries: [] }
     }
 
     const findClient = clientId => {
@@ -40,6 +41,9 @@ const initState = () => {
             }
 
             currentState['long-range-comms'] = {...event.payload, cyphers, messages}
+        },
+        'debug': event => {
+            currentState['debug'].entries.unshift({...event.payload.lastEntry, timestamp: event.timestamp})
         }
     }
 

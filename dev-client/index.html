@@ -155,6 +155,15 @@
                 <button onclick="commands.powerUp('short-range-comms')">Power +</button>
             </div>
         </div>
+        
+        <div class="system">
+            <div>Debug</div>
+            <div>
+                <div id="debug"></div>
+                <input id="debug-text" placeholder="Describe the problem you saw...">
+                <button onclick="commands.addDebugEntry(getValue('debug-text'))">Add Entry</button>
+            </div>
+        </div>
 
         <script>
             var commands

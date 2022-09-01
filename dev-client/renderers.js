@@ -182,6 +182,13 @@ const getRenderFunctions = () => {
             `<br/><br/>Current frequency: ${roundToPrecision(data.currentFrequency, 3)}${showCurrentRanges}, Broadcasting: ${data.isBroadcasting}` +
             `<br/><br/>${renderPower(data)}`
     }
+    
+    const renderDebug = data => {
+        if (data.entries) {
+            return data.entries.map(x => `[${x.debugId}] ${renderTime(x.timestamp)} ${x.description}`).join('<br/>')
+        }
+        return 'No debug entries.'
+    }
 
     return {
         'systems': renderSystems,
@@ -195,6 +202,7 @@ const getRenderFunctions = () => {
         'sensors': renderSensors,
         'navigation': renderNavigation,
         'long-range-comms': renderLongRangeComms,
-        'short-range-comms': renderShortRangeComms
+        'short-range-comms': renderShortRangeComms,
+        'debug': renderDebug
     }
 }
