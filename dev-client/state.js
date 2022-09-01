@@ -9,7 +9,7 @@ const initState = () => {
     }
 
     const trackClientLastSeen = event => {
-        var client = findClient(event.clientId)
+        const client = findClient(event.clientId)
         if (client) {
             client.lastSeen = new Date(event.timestamp)
         }
@@ -20,7 +20,7 @@ const initState = () => {
         'clients': event => {
             currentState['clients'] = {
                 clients: event.payload.clients.map(c => {
-                    var old = findClient(c.clientId) || {}
+                    const old = findClient(c.clientId) || {}
                     return {...c, lastSeen: old.lastSeen}
                 })
             }
@@ -51,7 +51,7 @@ const initState = () => {
         findClient,
         processEvent: event => {
             trackClientLastSeen(event)
-            var processor = systemProcessors[event.system] || systemProcessors['default']
+            const processor = systemProcessors[event.system] || systemProcessors['default']
             processor(event)
         },
         getSystemState: system => currentState[system],

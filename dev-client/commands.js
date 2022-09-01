@@ -7,7 +7,7 @@ const getCommands = (api, state) => {
     return {
         logCurrentState: () => state.logCurrentState(),
         updateSystem: (system, action) => {
-            var parts = action.split(':')
+            const parts = action.split(':')
             api.sendCommand(`set-${parts[0]}`, {[system]: parts[1] === "true"})
         },
         speedDown: (system) => api.sendCommand(`set-${system}-speed`, {speed: state.getSystemState(system).currentSpeed - 1 }),
@@ -23,7 +23,7 @@ const getCommands = (api, state) => {
             api.sendCommand('set-thrusters-attitude', {...state, [axis]: state[axis] + amount})
         },
         toggleShields: () => {
-            var command = state.getSystemState('shields').raised ? 'lower-shields' : 'raise-shields'
+            const command = state.getSystemState('shields').raised ? 'lower-shields' : 'raise-shields'
             api.sendCommand(command, null)
         },
         loadWarhead: () => api.sendCommand(`load-warhead`, {kind: 'torpedo'}),
@@ -48,8 +48,8 @@ const getCommands = (api, state) => {
             })
         },
         moveContact: () => {
-            var contacts = state.getSystemState('sensors').contacts
-            var contact = contacts[randomInt(0, contacts.length)]
+            const contacts = state.getSystemState('sensors').contacts
+            const contact = contacts[randomInt(0, contacts.length)]
             api.sendCommand('update-sensor-contact', {
                 ...contact,
                 destinations: [
@@ -60,7 +60,7 @@ const getCommands = (api, state) => {
         },
         requestCourse: destination => api.sendCommand('request-course-calculation', {courseId: randomId(), destination}),
         calculateCourse: () => {
-            var requested = state.getSystemState('navigation').requestedCourseCalculations[0]
+            const requested = state.getSystemState('navigation').requestedCourseCalculations[0]
             api.sendCommand('course-calculated', {
                 courseId: requested.courseId,
                 destination: requested.destination,
@@ -79,8 +79,8 @@ const getCommands = (api, state) => {
         setEta: () => api.sendCommand('update-eta', {engineSystem: 'ftl-engines', speed: 4, arriveInMilliseconds: randomInt(30000, 60000)}),
         clearEta: () => api.sendCommand('clear-eta', {}),
         addRandomCypher: () => {
-            var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')
-            var mixed = letters.concat().sort((a, b) => randomInt(0, 3) - 1)
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')
+            const mixed = letters.concat().sort((a, b) => randomInt(0, 3) - 1)
             api.sendCommand('set-long-range-cypher', {
                 cypherId: randomId(),
                 name: 'Random Cypher ' + randomInt(0, 10000),
@@ -104,7 +104,7 @@ const getCommands = (api, state) => {
             const cyphers = state.getSystemState('long-range-comms').cyphers
             const cypher = cyphers[randomInt(0, cyphers.length)]
             let solved = 0
-            var updated = cypher.decodeSubstitutions.map(x => {
+            const updated = cypher.decodeSubstitutions.map(x => {
                 const match = cypher.encodeSubstitutions.find(y => y.to == x.change) || {change: x.change}
                 const isSolved = x.to === match.change
                 if (!isSolved && solved < 3) {
@@ -119,20 +119,20 @@ const getCommands = (api, state) => {
             })
         },
         addRandomFrequencyRange: () => {
-            var frequencyRanges = state.getSystemState('short-range-comms').frequencyRanges
-            var a = randomFloat(1000, 9999)
-            var b = randomFloat(1000, 9999)
+            const frequencyRanges = state.getSystemState('short-range-comms').frequencyRanges
+            const a = randomFloat(1000, 9999)
+            const b = randomFloat(1000, 9999)
             frequencyRanges.push({name: 'Band ' + frequencyRanges.length, min: Math.min(a, b), max: Math.max(a, b)})
             api.sendCommand('configure-short-range-frequencies', { frequencyRanges })
         },
         addRandomSignal: () => {
-            var activeSignals = state.getSystemState('short-range-comms').activeSignals
+            const activeSignals = state.getSystemState('short-range-comms').activeSignals
             activeSignals.push({name: `Signal ${randomInt(0, 9999)}`, frequency: randomFloat(1000, 9999)})
             api.sendCommand('set-short-range-signals', { activeSignals })
         },
         removeRandomSignal: () => {
-            var activeSignals = state.getSystemState('short-range-comms').activeSignals
-            var index = randomInt(0, activeSignals.length)
+            const activeSignals = state.getSystemState('short-range-comms').activeSignals
+            const index = randomInt(0, activeSignals.length)
             activeSignals = activeSignals.filter((_, i) => i !== index)
             api.sendCommand('set-short-range-signals', { activeSignals })
         },
@@ -140,7 +140,7 @@ const getCommands = (api, state) => {
             api.sendCommand('set-short-range-frequency', {frequency: randomFloat(1000, 9999)})
         },
         toggleBroadcast: () => {
-            var isBroadcasting = state.getSystemState('short-range-comms').isBroadcasting
+            const isBroadcasting = state.getSystemState('short-range-comms').isBroadcasting
             api.sendCommand('set-short-range-broadcasting', {isBroadcasting: !isBroadcasting})
         },
         addDebugEntry: text => {

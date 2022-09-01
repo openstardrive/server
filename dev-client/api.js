@@ -4,8 +4,8 @@ const startApi = async (processResults, onPollingStarted, onPollingPaused) => {
     let isInPoll = false;
     let cursor = 0;
 
-    var clientId = window.localStorage.getItem('clientId')
-    var clientSecret = window.localStorage.getItem('clientSecret')
+    let clientId = window.localStorage.getItem('clientId')
+    let clientSecret = window.localStorage.getItem('clientSecret')
 
     const tryFetch = async (url, data) => {
         try {
@@ -61,7 +61,7 @@ const startApi = async (processResults, onPollingStarted, onPollingPaused) => {
     }
     
     const startPolling = () => {
-        var seconds = parseInt(document.getElementById('pollingSeconds').value)
+        const seconds = parseInt(document.getElementById('pollingSeconds').value)
         pollInterval = setInterval(pollApi, seconds * 1000)
         onPollingStarted()
     }

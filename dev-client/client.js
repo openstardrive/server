@@ -27,12 +27,12 @@ const start = async () => {
 
     const processResult = (result) => {
         if (result.type == 'unrecognized-command') {
-            var client = state.findClient(result.clientId) || {name: 'UNKNOWN'}
+            const client = state.findClient(result.clientId) || {name: 'UNKNOWN'}
             console.warn(`Client ${client.name} sent a bad command`, result)
             return
         }
         if (result.type == 'error') {
-            var client = state.findClient(result.clientId) || {name: 'UNKNOWN'}
+            const client = state.findClient(result.clientId) || {name: 'UNKNOWN'}
             console.error(`Client ${client.name} had an error using ${result.system} system: ${result.payload}`)
             return
         }

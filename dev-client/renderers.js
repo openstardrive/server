@@ -28,8 +28,8 @@ const getRenderFunctions = () => {
     }
 
     const renderDamagedAndDisabled = data => {
-        var damaged = data.damaged ? '<span class="tag damaged">Damaged</span>' : ''
-        var disabled = data.disabled ? '<span class="tag disabled">Disabled</span>' : ''
+        const damaged = data.damaged ? '<span class="tag damaged">Damaged</span>' : ''
+        const disabled = data.disabled ? '<span class="tag disabled">Disabled</span>' : ''
         return `<div>${damaged}${disabled}</div>`
     }
 
@@ -52,8 +52,8 @@ const getRenderFunctions = () => {
     }
 
     const renderShields = data => {
-        var state = data.raised ? 'up' : 'down'
-        var strengths = ['forward', 'starboard', 'aft', 'port']
+        const state = data.raised ? 'up' : 'down'
+        const strengths = ['forward', 'starboard', 'aft', 'port']
             .map(x => x + ' ' + (data.sectionStrengths[x + 'Percent'] * 100) + '%')
             .join(', ')
         return renderDamagedAndDisabled(data) +
@@ -63,7 +63,7 @@ const getRenderFunctions = () => {
     }
 
     const renderWarheadLauncher = data => {
-        var fired = data.lastFiredWarhead
+        const fired = data.lastFiredWarhead
         return renderDamagedAndDisabled(data) +
             `# of Launchers: ${data.numberOfLaunchers}` +
             `, Loaded: [${data.loaded.join(', ')}]` +
@@ -75,7 +75,7 @@ const getRenderFunctions = () => {
     const toPercent = number => (Math.round(number * 100)) + '%'
 
     const renderEnergyBeams = data => {
-        var fired = data.lastFiredEnergyBeam
+        const fired = data.lastFiredEnergyBeam
         return renderDamagedAndDisabled(data) +
             `Banks: ${data.banks.map(x => `[${x.name} charged: ${toPercent(x.percentCharged)}, arc: ${x.arcDegrees}, ${x.frequency} GHz]`).join(' ')}` +
             '<br>Last fired: ' + (fired ? `${fired.name} beams ${toPercent(fired.percentDischarged)} at ${fired.target} [${renderTime(fired.firedAt)}]` : 'none') +
@@ -97,7 +97,7 @@ const getRenderFunctions = () => {
     }
 
     const renderSensors = data => {
-        var last = data.lastUpdatedScan
+        const last = data.lastUpdatedScan
         return renderDamagedAndDisabled(data) +
             `Active scans: ${data.activeScans.map(x => `<div>[${x.scanId} at ${renderTime(x.lastUpdated)}] ${x.scanFor}</div>`).join('')}` +
             `<br/>Last Updated Scan: `+ (last ? `[${last.scanId} at ${renderTime(last.lastUpdated)}] ${last.scanFor} : ${last.result}` : 'none') +
@@ -107,9 +107,9 @@ const getRenderFunctions = () => {
 
     const renderEtaMs = ms => {
         const pad = (i) => i < 10 ? `0${i}` : i
-        var min = Math.floor(ms / 60000)
-        var sec = Math.floor((ms % 60000) / 1000)
-        var remain = ms % 1000
+        const min = Math.floor(ms / 60000)
+        const sec = Math.floor((ms % 60000) / 1000)
+        const remain = ms % 1000
         return `${min}:${pad(sec)}.${remain}`
     }
 
