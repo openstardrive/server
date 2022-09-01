@@ -33,7 +33,7 @@ const start = async () => {
         }
         if (result.type == 'error') {
             const client = state.findClient(result.clientId) || {name: 'UNKNOWN'}
-            console.error(`Client ${client.name} had an error using ${result.system} system: ${result.payload}`)
+            console.warn(`Client ${client.name} had an error using ${result.system} system: ${result.payload}`)
             return
         }
         if (result.type !== 'state-updated') {
