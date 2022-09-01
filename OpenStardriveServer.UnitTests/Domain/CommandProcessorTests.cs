@@ -71,9 +71,9 @@ public class CommandProcessorTests : WithAnAutomocked<CommandProcessor>
         GetMock<ICommandRepository>().Setup(x => x.LoadPage(cursor, 100)).ReturnsAsync(commands);
             
         ClassUnderTest.SetCursorForTesting(cursor);
-        await ClassUnderTest.ProcessBatch();
+        var cursorAfter = await ClassUnderTest.ProcessBatch();
 
-        Assert.That(ClassUnderTest.GetCursorForTesting(), Is.EqualTo(17));
+        Assert.That(cursorAfter, Is.EqualTo(17));
         GetMock<ICommandResultRepository>().Verify(x => x.Save(Any<CommandResult>()), Times.Exactly(6));
         foreach (var command in commands)
         {

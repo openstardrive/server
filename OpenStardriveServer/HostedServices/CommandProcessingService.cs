@@ -21,10 +21,16 @@ public class CommandProcessingService : BackgroundService
     {
         logger.LogInformation("Starting command processor...");
         await Task.Yield();
+        var cursor = 0L;
         while (!stoppingToken.IsCancellationRequested)
         {
-            await commandProcessor.ProcessBatch();
-            await Task.Delay(200, stoppingToken);
+            var newCursor = await commandProcessor.ProcessBatch();
+            if (newCursor - cursor < 50)
+            {
+                await Task.Delay(200, stoppingToken);    
+            }
+
+            cursor = newCursor;
         }
         logger.LogInformation("Command processor shutdown");
     }

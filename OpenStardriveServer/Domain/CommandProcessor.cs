@@ -9,7 +9,7 @@ namespace OpenStardriveServer.Domain;
 
 public interface ICommandProcessor
 {
-    Task ProcessBatch();
+    Task<long> ProcessBatch();
 }
 
 public class CommandProcessor : ICommandProcessor
@@ -52,7 +52,7 @@ public class CommandProcessor : ICommandProcessor
         }
     }
 
-    public async Task ProcessBatch()
+    public async Task<long> ProcessBatch()
     {
         var commands = await commandRepository.LoadPage(cursor);
         foreach (var command in commands)
@@ -69,8 +69,9 @@ public class CommandProcessor : ICommandProcessor
             }
             cursor = command.RowId;
         }
+
+        return cursor;
     }
 
     public void SetCursorForTesting(long newCursor) => cursor = newCursor;
-    public long GetCursorForTesting() => cursor;
 }

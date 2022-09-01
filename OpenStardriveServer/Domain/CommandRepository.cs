@@ -8,7 +8,7 @@ public interface ICommandRepository
 {
     Task InitializeTable();
     Task Save(Command command);
-    Task<IEnumerable<Command>> LoadPage(long cursor = 0, int pageSize = 100);
+    Task<IEnumerable<Command>> LoadPage(long cursor = 0, int pageSize = 1000);
 }
 
 public class CommandRepository : ICommandRepository
@@ -34,7 +34,7 @@ public class CommandRepository : ICommandRepository
         await sqliteAdapter.ExecuteAsync(sql, command);
     }
         
-    public async Task<IEnumerable<Command>> LoadPage(long cursor = 0, int pageSize = 100)
+    public async Task<IEnumerable<Command>> LoadPage(long cursor = 0, int pageSize = 1000)
     {
         var sql = "SELECT RowId, CommandId, ClientId, Type, Payload, Timestamp" +
                   " FROM CommandLog WHERE ROWID > @cursor ORDER BY ROWID LIMIT @pageSize";
