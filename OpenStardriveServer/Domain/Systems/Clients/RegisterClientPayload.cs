@@ -9,4 +9,5 @@ public record RegisterClientPayload
     public string ClientSecret { get; init; }
         
     public string Name { get; init; }
+    public string ClientType { get; init; }
 }

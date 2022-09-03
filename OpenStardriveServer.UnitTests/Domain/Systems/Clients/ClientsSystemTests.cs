@@ -52,4 +52,31 @@ public class ClientsSystemTests : SystemsTest<ClientsSystem>
         Assert.That(result.Value.ClientId, Is.EqualTo(payload.ClientId));
         Assert.That(result.Value.Name, Is.EqualTo(payload.Name));
     }
+
+    [Test]
+    public void When_setting_an_operator()
+    {
+        var payload = new ClientOperatorPayload();
+        var expected = TransformResult<ClientsState>.StateChanged(new ClientsState());
+        GetMock<IClientsTransforms>().Setup(x => x.SetOperator(Any<ClientsState>(), payload)).Returns(expected);
+        TestCommandWithPayload("set-client-operator", payload, expected);
+    }
+    
+    [Test]
+    public void When_setting_current_screen()
+    {
+        var payload = new ClientCurrentScreenPayload();
+        var expected = TransformResult<ClientsState>.StateChanged(new ClientsState());
+        GetMock<IClientsTransforms>().Setup(x => x.SetCurrentScreen(Any<ClientsState>(), payload)).Returns(expected);
+        TestCommandWithPayload("set-client-screen", payload, expected);
+    }
+    
+    [Test]
+    public void When_disabling_a_client()
+    {
+        var payload = new DisableClientPayload();
+        var expected = TransformResult<ClientsState>.StateChanged(new ClientsState());
+        GetMock<IClientsTransforms>().Setup(x => x.DisableClient(Any<ClientsState>(), payload)).Returns(expected);
+        TestCommandWithPayload("set-client-disabled", payload, expected);
+    }
 }

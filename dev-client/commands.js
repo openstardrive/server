@@ -145,6 +145,26 @@ const getCommands = (api, state) => {
         },
         addDebugEntry: text => {
             api.sendCommand('debug', { debugId: randomId(), description: text })
+        },
+        disableClient: text => {
+            const clients = state.getSystemState('clients').clients
+            const clientId = clients[randomInt(0, clients.length)].clientId
+            api.sendCommand('set-client-disabled', { clientId, disabled: true, disabledMessage: text })
+        },
+        enableClient: () => {
+            const clients = state.getSystemState('clients').clients
+            const clientId = clients[randomInt(0, clients.length)].clientId
+            api.sendCommand('set-client-disabled', { clientId, disabled: false })
+        },
+        setOperator: text => {
+            const clients = state.getSystemState('clients').clients
+            const clientId = clients[randomInt(0, clients.length)].clientId
+            api.sendCommand('set-client-operator', { clientId, operator: text })
+        },
+        setClientScreen: text => {
+            const clients = state.getSystemState('clients').clients
+            const clientId = clients[randomInt(0, clients.length)].clientId
+            api.sendCommand('set-client-screen', { clientId, currentScreen: text })
         }
     }
 }

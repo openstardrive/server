@@ -27,7 +27,14 @@
 
         <div class="system">
             <div>Clients</div>
-            <span id="clients"></span>
+            <div>
+                <div id="clients"></div>
+                <input id="client-text" type="text">
+                <button onclick="commands.disableClient(getValue('client-text'))">Disable</button>
+                <button onclick="commands.enableClient()">Enable</button>
+                <button onclick="commands.setOperator(getValue('client-text'))">Set Operator</button>
+                <button onclick="commands.setClientScreen(getValue('client-text'))">Set Screen</button>
+            </div>
         </div>
 
         <div class="system">

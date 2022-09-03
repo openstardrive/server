@@ -8,7 +8,6 @@ body {
     border-radius: 5px;
     margin: 5px 2px;
     display: flex;
-    align-items: top;
 }
 
 .system > div {
@@ -25,8 +24,12 @@ body {
     width: 120px;
 }
 
+#clients {
+    display: flex;
+}
+
 .client {
-    display: inline-block;
+    display: block;
     border: 1px solid darkgray;
     padding: 2px 5px;
     margin: 2px;
@@ -43,6 +46,10 @@ body {
 
 .client.gone {
     background-color: lightgray;
+}
+
+.client > div {
+    font-size: 10pt;
 }
 
 button {

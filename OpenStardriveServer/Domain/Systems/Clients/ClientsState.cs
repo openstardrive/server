@@ -17,4 +17,9 @@ public record Client
     public string ClientSecret { get; init; }
         
     public string Name { get; init; }
+    public string ClientType { get; init; }
+    public string Operator { get; init; }
+    public string CurrentScreen { get; init; }
+    public bool Disabled { get; init; }
+    public string DisabledMessage { get; init; }
 }

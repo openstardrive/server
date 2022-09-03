@@ -24,7 +24,7 @@ const startApi = async (processResults, onPollingStarted, onPollingPaused) => {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({name: 'dev-client'})
+            body: JSON.stringify({name: 'dev-client', clientType: 'development'})
         });
     
         if (response.status == 200) {

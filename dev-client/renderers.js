@@ -17,7 +17,11 @@ const getRenderFunctions = () => {
             if (elapsedSeconds > 300) {
                 color = 'gone'
             }
-            return `<span class="client ${color}">${x.name}</span>`
+            const message = x.disabled && x.disabledMessage ? ` | ${x.disabledMessage}` : ''
+            const disabled = `<br/>Disabled: ${x.disabled}${message}`
+            const operator = x.operator ? `<br/>Operator: ${x.operator}` : ''
+            const screen = x.currentScreen ? `<br/>Screen: ${x.currentScreen}` : ''
+            return `<div class="client ${color}">${x.name}<div>${x.clientType}${disabled}${operator}${screen}</div></div>`
         }).join('')
     }
 

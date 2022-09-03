@@ -33,7 +33,7 @@ public class MainController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] RegisterClientRequest request)
     {
-        var result = await registerClientWorkflow.Register(request.Name);
+        var result = await registerClientWorkflow.Register(request.Name, request.ClientType);
         if (result.Status == RegisterClientResultStatus.InvalidName)
         {
             return BadRequest("Invalid client name");
@@ -67,6 +67,7 @@ public class MainController : ControllerBase
 public class RegisterClientRequest
 {
     public string Name { get; set; }
+    public string ClientType { get; set; }
 }
     
 public class PostCommandRequest

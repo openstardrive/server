@@ -1,12 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using OpenStardriveServer.Crypto;
+using OpenStardriveServer.Domain.Systems.Clients;
 
 namespace OpenStardriveServer.Domain.Workflows;
 
 public interface IRegisterClientWorkflow
 {
-    Task<RegisterClientResult> Register(string name);
+    Task<RegisterClientResult> Register(string name, string clientType);
 }
 
 public class RegisterClientWorkflow : IRegisterClientWorkflow
@@ -22,7 +23,7 @@ public class RegisterClientWorkflow : IRegisterClientWorkflow
         this.json = json;
     }
         
-    public async Task<RegisterClientResult> Register(string name)
+    public async Task<RegisterClientResult> Register(string name, string clientType)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -34,16 +35,17 @@ public class RegisterClientWorkflow : IRegisterClientWorkflow
             
         var clientId = Guid.NewGuid();
         var clientSecret = byteGenerator.GenerateAsBase64(32);
-            
+        
         var command = new Command
         {
             ClientId = clientId,
             Type = "register-client",
-            Payload = json.Serialize(new
+            Payload = json.Serialize(new RegisterClientPayload
             {
-                clientId,
-                clientSecret,
-                name,
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+                Name = name,
+                ClientType = clientType
             })
         };
         await commandRepository.Save(command);

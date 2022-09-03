@@ -22,7 +22,8 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients;
         {
             ClientId = Guid.NewGuid(),
             ClientSecret = "it's a secret to everybody",
-            Name = "Test Client"
+            Name = "Test Client",
+            ClientType = "test-client"
         };
 
         var result = ClassUnderTest.RegisterClient(priorState, payload);
@@ -35,6 +36,7 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients;
         Assert.That(result.NewState.Value.Clients[1].ClientId, Is.EqualTo(payload.ClientId));
         Assert.That(result.NewState.Value.Clients[1].ClientSecret, Is.EqualTo(payload.ClientSecret));
         Assert.That(result.NewState.Value.Clients[1].Name, Is.EqualTo(payload.Name));
+        Assert.That(result.NewState.Value.Clients[1].ClientType, Is.EqualTo(payload.ClientType));
     }
 
     [Test]
@@ -85,5 +87,122 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Clients;
             
         Assert.That(result.ResultType, Is.EqualTo(TransformResultType.Error));
         Assert.That(result.ErrorMessage, Is.EqualTo("Invalid name"));
+    }
+
+    [Test]
+    public void When_setting_operator()
+    {
+        var clientId = NewGuid();
+        var payload = new ClientOperatorPayload
+        {
+            ClientId = clientId,
+            Operator = "Allan"
+        };
+        var state = new ClientsState
+        {
+            Clients = new()
+            {
+                new() { ClientId = clientId }
+            }
+        };
+
+        var result = ClassUnderTest.SetOperator(state, payload);
+        
+        Assert.That(result.NewState.Value.Clients[0].Operator, Is.EqualTo(payload.Operator));
+    }
+    
+    
+    [Test]
+    public void When_setting_operator_but_no_matching_clientId()
+    {
+        var payload = new ClientOperatorPayload
+        {
+            ClientId = NewGuid(),
+            Operator = "Allan"
+        };
+        var state = new ClientsState();
+
+        var result = ClassUnderTest.SetOperator(state, payload);
+        
+        Assert.That(result.ErrorMessage, Is.EqualTo($"Unable to find client with clientId: {payload.ClientId}"));
+    }
+    
+    [Test]
+    public void When_setting_current_screen()
+    {
+        var clientId = NewGuid();
+        var payload = new ClientCurrentScreenPayload
+        {
+            ClientId = clientId,
+            CurrentScreen = "engines"
+        };
+        var state = new ClientsState
+        {
+            Clients = new()
+            {
+                new() { ClientId = clientId }
+            }
+        };
+
+        var result = ClassUnderTest.SetCurrentScreen(state, payload);
+        
+        Assert.That(result.NewState.Value.Clients[0].CurrentScreen, Is.EqualTo(payload.CurrentScreen));
+    }
+    
+    
+    [Test]
+    public void When_setting_current_screen_but_no_matching_clientId()
+    {
+        var payload = new ClientCurrentScreenPayload
+        {
+            ClientId = NewGuid(),
+            CurrentScreen = "shields"
+        };
+        var state = new ClientsState();
+
+        var result = ClassUnderTest.SetCurrentScreen(state, payload);
+        
+        Assert.That(result.ErrorMessage, Is.EqualTo($"Unable to find client with clientId: {payload.ClientId}"));
+    }
+    
+    [Test]
+    public void When_setting_disabled()
+    {
+        var clientId = NewGuid();
+        var payload = new DisableClientPayload
+        {
+            ClientId = clientId,
+            Disabled = true,
+            DisabledMessage = "SYSTEM OFFLINE"
+        };
+        var state = new ClientsState
+        {
+            Clients = new()
+            {
+                new() { ClientId = clientId }
+            }
+        };
+
+        var result = ClassUnderTest.DisableClient(state, payload);
+        
+        Assert.That(result.NewState.Value.Clients[0].Disabled, Is.EqualTo(payload.Disabled));
+        Assert.That(result.NewState.Value.Clients[0].DisabledMessage, Is.EqualTo(payload.DisabledMessage));
+    }
+    
+    
+    [Test]
+    public void When_setting_disabled_but_no_matching_clientId()
+    {
+        var payload = new DisableClientPayload
+        {
+            ClientId = NewGuid(),
+            Disabled = true,
+            DisabledMessage = "STATION OFFLINE"
+        };
+        var state = new ClientsState();
+
+        var result = ClassUnderTest.DisableClient(state, payload);
+        
+        Assert.That(result.ErrorMessage, Is.EqualTo($"Unable to find client with clientId: {payload.ClientId}"));
     }
 }
