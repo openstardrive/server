@@ -68,7 +68,7 @@ public class CommandProcessorTests : WithAnAutomocked<CommandProcessor>
             }
         };
         GetMock<ISystemsRegistry>().Setup(x => x.GetAllProcessors()).Returns(processors);
-        GetMock<ICommandRepository>().Setup(x => x.LoadPage(cursor, 100)).ReturnsAsync(commands);
+        GetMock<ICommandRepository>().Setup(x => x.LoadPage(cursor, 1000)).ReturnsAsync(commands);
             
         ClassUnderTest.SetCursorForTesting(cursor);
         var cursorAfter = await ClassUnderTest.ProcessBatch();
