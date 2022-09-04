@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Comms.ShortRange;
 
-public class ShortRangeSystem : SystemBase<ShortRangeState>
+public class ShortRangeSystem : SystemBase<ShortRangeState>, IPoweredSystem
 {
     public ShortRangeSystem(IJson json, IShortRangeTransforms transforms) : base(json)
     {
@@ -22,4 +22,6 @@ public class ShortRangeSystem : SystemBase<ShortRangeState>
             ["set-short-range-broadcasting"] = c => Update(c, transforms.SetBroadcasting(state, Payload<SetBroadcastingPayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }

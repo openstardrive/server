@@ -5,7 +5,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Sensors;
 
-public class SensorsSystem : SystemBase<SensorsState>
+public class SensorsSystem : SystemBase<SensorsState>, IPoweredSystem
 {
     public SensorsSystem(IJson json, ISensorsTransforms transforms) : base(json)
     {
@@ -27,4 +27,6 @@ public class SensorsSystem : SystemBase<SensorsState>
             [ChronometerCommand.Type] = c => Update(c, transforms.MoveContacts(state, Payload<ChronometerPayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }

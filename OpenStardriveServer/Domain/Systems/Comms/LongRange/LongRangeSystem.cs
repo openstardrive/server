@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Comms.LongRange;
 
-public class LongRangeSystem : SystemBase<LongRangeState>
+public class LongRangeSystem : SystemBase<LongRangeState>, IPoweredSystem
 {
     public LongRangeSystem(IJson json, ILongRangeTransforms transforms) : base(json)
     {
@@ -21,4 +21,6 @@ public class LongRangeSystem : SystemBase<LongRangeState>
             ["send-long-range-message"] = c => Update(c, transforms.SendLongRangeMessage(state, Payload<LongRangeMessagePayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }

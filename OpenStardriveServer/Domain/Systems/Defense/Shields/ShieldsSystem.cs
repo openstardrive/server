@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.Shields;
 
-public class ShieldsSystem : SystemBase<ShieldsState>
+public class ShieldsSystem : SystemBase<ShieldsState>, IPoweredSystem
 {
     public ShieldsSystem(IShieldTransforms transforms, IJson json) : base(json)
     {
@@ -22,4 +22,6 @@ public class ShieldsSystem : SystemBase<ShieldsState>
             ["set-shield-strengths"] = c => Update(c, transforms.SetSectionStrengths(state, Payload<ShieldStrengthPayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }

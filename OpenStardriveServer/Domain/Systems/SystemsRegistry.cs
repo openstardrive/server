@@ -10,6 +10,7 @@ public interface ISystemsRegistry
     Maybe<ISystem> GetSystemByName(string systemName);
     Maybe<T> GetSystemByNameAs<T>(string systemName) where T : class;
     Dictionary<string, List<Func<Command, CommandResult>>> GetAllProcessors();
+    List<IPoweredSystem> GetAllPoweredSystems();
 }
 
 public class SystemsRegistry : ISystemsRegistry
@@ -39,6 +40,13 @@ public class SystemsRegistry : ISystemsRegistry
     public Dictionary<string, List<Func<Command, CommandResult>>> GetAllProcessors()
     {
         return allProcessors ??= BuildAllProcessors();
+    }
+
+    public List<IPoweredSystem> GetAllPoweredSystems()
+    {
+        return allSystems.Select(x => x as IPoweredSystem)
+            .Where(x => x is not null)
+            .ToList();
     }
 
     private Dictionary<string, List<Func<Command, CommandResult>>> BuildAllProcessors()

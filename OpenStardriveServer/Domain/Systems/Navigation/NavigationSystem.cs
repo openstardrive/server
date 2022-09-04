@@ -5,7 +5,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Navigation;
 
-public class NavigationSystem : SystemBase<NavigationState>
+public class NavigationSystem : SystemBase<NavigationState>, IPoweredSystem
 {
     public NavigationSystem(IJson json, INavigationTransforms transforms) : base(json)
     {
@@ -27,4 +27,6 @@ public class NavigationSystem : SystemBase<NavigationState>
             [ChronometerCommand.Type] = c => Update(c, transforms.Travel(state, Payload<ChronometerPayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }

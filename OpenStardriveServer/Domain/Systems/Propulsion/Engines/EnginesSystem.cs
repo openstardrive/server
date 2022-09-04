@@ -11,7 +11,7 @@ public interface IEnginesSystem : ISystem
     int CurrentSpeed { get; }
 }
 
-public abstract class EnginesSystem : SystemBase<EnginesState>, IEnginesSystem
+public abstract class EnginesSystem : SystemBase<EnginesState>, IEnginesSystem, IPoweredSystem
 {
     protected EnginesSystem(string systemName, EnginesState initialState, IEnginesTransforms transforms, IJson json) : base (json)
     {
@@ -32,6 +32,7 @@ public abstract class EnginesSystem : SystemBase<EnginesState>, IEnginesSystem
 
     public int MaxSpeed => state.SpeedConfig.MaxSpeed;
     public int CurrentSpeed => state.CurrentSpeed;
+    public int CurrentPower => state.CurrentPower;
 }
 
 public class FtlEnginesSystem : EnginesSystem

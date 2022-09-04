@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.WarheadLauncher;
 
-public class WarheadLauncherSystem : SystemBase<WarheadLauncherState>
+public class WarheadLauncherSystem : SystemBase<WarheadLauncherState>, IPoweredSystem
 {
     public WarheadLauncherSystem(IWarheadLauncherTransforms transforms, IJson json) : base(json)
     {
@@ -21,4 +21,6 @@ public class WarheadLauncherSystem : SystemBase<WarheadLauncherState>
             ["set-warhead-inventory"] = c => Update(c, transforms.SetInventory(state, Payload<WarheadInventoryPayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }

@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Propulsion.Thrusters;
 
-public class ThrustersSystem : SystemBase<ThrustersState>
+public class ThrustersSystem : SystemBase<ThrustersState>, IPoweredSystem
 {
     public ThrustersSystem(IThrusterTransforms transforms, IJson json) : base(json)
     {
@@ -20,4 +20,6 @@ public class ThrustersSystem : SystemBase<ThrustersState>
             ["set-disabled"] = c => Update(c, transforms.SetDisabled(state, SystemName, Payload<DisabledSystemsPayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }

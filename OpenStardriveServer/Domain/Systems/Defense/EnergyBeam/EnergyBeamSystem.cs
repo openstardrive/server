@@ -4,7 +4,7 @@ using OpenStardriveServer.Domain.Systems.Standard;
 
 namespace OpenStardriveServer.Domain.Systems.Defense.EnergyBeam;
 
-public class EnergyBeamSystem : SystemBase<EnergyBeamState>
+public class EnergyBeamSystem : SystemBase<EnergyBeamState>, IPoweredSystem
 {
     public EnergyBeamSystem(IEnergyBeamTransforms transforms, IJson json) : base(json)
     {
@@ -22,4 +22,6 @@ public class EnergyBeamSystem : SystemBase<EnergyBeamState>
             ["configure-all-energy-beams"] = c => Update(c, transforms.ConfigureAllBanks(state, Payload<ConfigureAllEnergyBeamBanksPayload>(c)))
         };
     }
+
+    public int CurrentPower => state.CurrentPower;
 }
