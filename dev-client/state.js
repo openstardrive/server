@@ -1,7 +1,8 @@
 const initState = () => {
     const currentState = {
         'clients': { clients: [] },
-        'debug': { entries: [] }
+        'debug': { entries: [] },
+        'power': { systems: {} }
     }
 
     const findClient = clientId => {
@@ -44,6 +45,19 @@ const initState = () => {
         },
         'debug': event => {
             currentState['debug'].entries.unshift({...event.payload.lastEntry, timestamp: event.timestamp})
+        },
+        'power': event => {
+            currentState['power'] = {...event.payload, systems: currentState['power'].systems}
+        }
+    }
+    
+    const trackPowerUsage = event => {
+        if (event.payload && (event.payload.currentPower || event.payload.requiredPower))
+        {
+            currentState['power'].systems[event.system] = {
+                currentPower: event.payload.currentPower,
+                requiredPower: event.payload.requiredPower
+            }
         }
     }
 
@@ -51,6 +65,7 @@ const initState = () => {
         findClient,
         processEvent: event => {
             trackClientLastSeen(event)
+            trackPowerUsage(event)
             const processor = systemProcessors[event.system] || systemProcessors['default']
             processor(event)
         },

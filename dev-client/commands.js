@@ -165,6 +165,54 @@ const getCommands = (api, state) => {
             const clients = state.getSystemState('clients').clients
             const clientId = clients[randomInt(0, clients.length)].clientId
             api.sendCommand('set-client-screen', { clientId, currentScreen: text })
+        },
+        configurePower: () => {
+            api.sendCommand('configure-power', {
+                targetOutput: 60,
+                reactorDrift: 5,
+                numberOfBatteries: 4,
+                maxBatteryCharge: 250,
+                currentBatteryCharge: 200,
+                updateRateInMilliseconds: 5000
+            })
+            const powerPayload = {
+                'navigation': 3,
+                'thrusters': 4,
+                'shields': 10,
+                'warhead-launcher': 5,
+                'energy-beams': 10,
+                'sensors': 7,
+                'long-range-comms': 3,
+                'short-range-comms': 5
+            }
+            api.sendCommand('set-required-power', powerPayload)
+            api.sendCommand('set-power', powerPayload)
+        },
+        damageBattery: () => {
+            const batteries = state.getSystemState('power').batteries
+                .map((x, i) => ({...x, i})).filter(x => !x.damaged)
+            const index = randomInt(0, batteries.length)
+            api.sendCommand('set-battery-damage', { batteryIndex: batteries[index].i, isDamaged: true })
+        },
+        repairBattery: () => {
+            const batteries = state.getSystemState('power').batteries
+                .map((x, i) => ({...x, i})).filter(x => x.damaged)
+            const index = randomInt(0, batteries.length)
+            api.sendCommand('set-battery-damage', { batteryIndex: batteries[index].i, isDamaged: false })
+        },
+        randomBatteryCharge: () => {
+            const batteries = state.getSystemState('power').batteries
+            const batteryIndex = randomInt(0, batteries.length)
+            const charge = randomInt(0, 250)
+            api.sendCommand('set-battery-charge', { batteryIndex, charge })
+        },
+        bumpReactorOutput: amount => {
+            const config = state.getSystemState('power').config
+            api.sendCommand('configure-power', {...config, targetOutput: config.targetOutput + amount})
+        },
+        bumpReactorDrift: amount => {
+            const config = state.getSystemState('power').config
+            api.sendCommand('configure-power', {...config, reactorDrift: config.reactorDrift + amount})
         }
     }
 }

@@ -162,6 +162,21 @@
                 <button onclick="commands.powerUp('short-range-comms')">Power +</button>
             </div>
         </div>
+
+        <div class="system">
+            <div>Power</div>
+            <div>
+                <div id="power"></div>
+                <button onclick="commands.configurePower()">Configure</button>
+                <button onclick="commands.damageBattery()">Damage Battery</button>
+                <button onclick="commands.repairBattery()">Repair Battery</button>
+                <button onclick="commands.randomBatteryCharge()">Random Battery Charge</button>
+                <button onclick="commands.bumpReactorOutput(-1)">Output -</button>
+                <button onclick="commands.bumpReactorOutput(1)">Output +</button>
+                <button onclick="commands.bumpReactorDrift(-1)">Drift -</button>
+                <button onclick="commands.bumpReactorDrift(1)">Drift +</button>
+            </div>
+        </div>
         
         <div class="system">
             <div>Debug</div>

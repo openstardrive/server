@@ -45,7 +45,10 @@ const getRenderFunctions = () => {
         return renderDamagedAndDisabled(data) +
             `Speed: ${data.currentSpeed}/${data.speedConfig.maxSpeed}` +
             `, Heat: ${data.currentHeat}/${data.heatConfig.maxHeat}` +
-            `, ${renderPower(data)}`
+            `, ${renderPower(data)}` +
+            `<br/><br/>Speed Config: ${JSON.stringify(data.speedConfig)}` +
+            `<br/>Heat Config: ${JSON.stringify(data.heatConfig)}` +
+            `<br/>Speed Power Requirements: ${JSON.stringify(data.speedPowerRequirements)}`
     }
 
     const renderThrusters = data => {
@@ -193,6 +196,29 @@ const getRenderFunctions = () => {
         }
         return 'No debug entries.'
     }
+    
+    const calculateTotalDraw = systems => {
+        return Object.keys(systems).reduce((acc, key) => acc + systems[key].currentPower, 0)
+    }
+    
+    const renderSystemsPower = systems => {
+         return Object.keys(systems).map(key => `<br/>${key}: ${systems[key].currentPower}/${systems[key].requiredPower}`).join('')
+    }
+    
+    const renderBattery = (battery, maxCharge) => {
+        const damaged = battery.damaged ? ' Damaged' : ''
+        return `${battery.charge}/${maxCharge} (${toPercent(battery.charge / maxCharge)})${damaged}`
+    }
+    
+    const renderPowerSystem = data => {
+        const draw = calculateTotalDraw(data.systems)
+        const diff = data.reactorOutput - draw
+        return `Reactor Output: ${data.reactorOutput}` + 
+            `<br/><br/>Batteries: ${data.batteries.map(x => renderBattery(x, data.config.maxBatteryCharge)).join(', ')}` +
+            `<br/><br/>Draw: ${draw} (${(diff > 0 ? '+' + diff : diff)})` +
+            `<br/><br/>Systems: ${renderSystemsPower(data.systems)}` +
+            `<br/><br/>Config: ${JSON.stringify(data.config, null, 2)}`
+    }
 
     return {
         'systems': renderSystems,
@@ -207,6 +233,7 @@ const getRenderFunctions = () => {
         'navigation': renderNavigation,
         'long-range-comms': renderLongRangeComms,
         'short-range-comms': renderShortRangeComms,
-        'debug': renderDebug
+        'debug': renderDebug,
+        'power': renderPowerSystem
     }
 }
