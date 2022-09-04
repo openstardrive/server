@@ -9,7 +9,7 @@ public record EnginesState : StandardSystemBaseState
     public EngineSpeedConfig SpeedConfig { get; init; }
     public int CurrentHeat { get; init; }
     public EngineHeatConfig HeatConfig { get; init; }
-    public SpeedPowerRequirement[] SpeedPowerRequirements = Array.Empty<SpeedPowerRequirement>();
+    public SpeedPowerRequirement[] SpeedPowerRequirements { get; init; } = Array.Empty<SpeedPowerRequirement>();
 }
 
 public record EngineSpeedConfig
