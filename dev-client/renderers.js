@@ -219,6 +219,13 @@ const getRenderFunctions = () => {
             `<br/><br/>Systems: ${renderSystemsPower(data.systems)}` +
             `<br/><br/>Config: ${JSON.stringify(data.config, null, 2)}`
     }
+    
+    const renderAlert = data => {
+        return data.allLevels.map(x => {
+            const alpha = x.level == data.current.level ? 'ff' : '33' 
+            return `<div class="alert-level" style="background-color: ${x.color}${alpha};">${x.level}: ${x.name}</div>`
+        }).join(' ')
+    }
 
     return {
         'systems': renderSystems,
@@ -234,6 +241,7 @@ const getRenderFunctions = () => {
         'long-range-comms': renderLongRangeComms,
         'short-range-comms': renderShortRangeComms,
         'debug': renderDebug,
-        'power': renderPowerSystem
+        'power': renderPowerSystem,
+        'alert': renderAlert
     }
 }

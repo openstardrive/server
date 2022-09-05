@@ -213,6 +213,10 @@ const getCommands = (api, state) => {
         bumpReactorDrift: amount => {
             const config = state.getSystemState('power').config
             api.sendCommand('configure-power', {...config, reactorDrift: config.reactorDrift + amount})
+        },
+        setAlert: change => {
+            const level = state.getSystemState('alert').current.level + change
+            api.sendCommand('set-alert-level', { level })
         }
     }
 }
