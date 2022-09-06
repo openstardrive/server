@@ -226,6 +226,10 @@ const getRenderFunctions = () => {
             return `<div class="alert-level" style="background-color: ${x.color}${alpha};">${x.level}: ${x.name}</div>`
         }).join(' ')
     }
+    
+    const renderLifeSupport = data => {
+        return renderDamagedAndDisabled(data) + renderPower(data)
+    }
 
     return {
         'systems': renderSystems,
@@ -242,6 +246,7 @@ const getRenderFunctions = () => {
         'short-range-comms': renderShortRangeComms,
         'debug': renderDebug,
         'power': renderPowerSystem,
-        'alert': renderAlert
+        'alert': renderAlert,
+        'life-support': renderLifeSupport
     }
 }

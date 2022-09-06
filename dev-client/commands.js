@@ -168,7 +168,7 @@ const getCommands = (api, state) => {
         },
         configurePower: () => {
             api.sendCommand('configure-power', {
-                targetOutput: 60,
+                targetOutput: 68,
                 reactorDrift: 5,
                 numberOfBatteries: 4,
                 maxBatteryCharge: 250,
@@ -183,7 +183,8 @@ const getCommands = (api, state) => {
                 'energy-beams': 10,
                 'sensors': 7,
                 'long-range-comms': 3,
-                'short-range-comms': 5
+                'short-range-comms': 5,
+                'life-support': 5
             }
             api.sendCommand('set-required-power', powerPayload)
             api.sendCommand('set-power', powerPayload)
