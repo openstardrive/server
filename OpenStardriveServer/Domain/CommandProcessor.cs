@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using OpenStardriveServer.Domain.Systems;
@@ -44,6 +45,10 @@ public class CommandProcessor : ICommandProcessor
         try
         {
             return x(command);
+        }
+        catch (JsonException)
+        {
+            return CommandResult.Error(command, "unknown", "Could not parse command payload from JSON");
         }
         catch (Exception e)
         {
