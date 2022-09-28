@@ -286,6 +286,8 @@ public class EnginesTransformsTests : StandardTransformsTest<EnginesTransforms, 
     [TestCase(0, 10, 150_000, 5_000)]
     [TestCase(2_000, 10, 60_000, 4_000)]
     [TestCase(0, 8, 150_000, 4_000)]
+    [TestCase(0, 8, 300_000, 8_000)]
+    [TestCase(0, 8, 353_000, 9_400)]
     [TestCase(0, 6, 150_000, 3_000)]
     [TestCase(0, 6, 300_000, 6_000)]
     [TestCase(0, 6, 340_000, 6_800)]
@@ -302,6 +304,8 @@ public class EnginesTransformsTests : StandardTransformsTest<EnginesTransforms, 
     [TestCase(0, 2, 60_000, 400)]
     [TestCase(0, 2, 300_000, 2_000)]
     [TestCase(0, 2, 360_000, 2_333)]
+    [TestCase(0, 7, 391_000, 9_100)]
+    [TestCase(7_000, 7, 1_000, 7_023)]
     public void When_heating_up(int currentHeat, int currentSpeed, int elapsedMilliseconds, int expectedHeat)
     {
         var state = EnginesStateDefaults.Testing with { CurrentHeat = currentHeat, CurrentSpeed = currentSpeed };

@@ -158,7 +158,8 @@ public class EnginesTransforms : IEnginesTransforms
     {
         if (state.CurrentSpeed > state.SpeedConfig.CruisingSpeed)
         {
-            return (int) (state.HeatConfig.MaxHeat * MaxSpeedRatio(state));
+            var diff = state.HeatConfig.MaxHeat - state.HeatConfig.CruisingHeat;
+            return state.HeatConfig.CruisingHeat + (int)(diff * MaxSpeedRatio(state));
         }
 
         if (state.CurrentSpeed > 0)
