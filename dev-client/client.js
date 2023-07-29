@@ -15,7 +15,7 @@ const start = async () => {
 
         results.map(x => x.system).filter((v, i, a) => a.indexOf(v) === i)
             .filter(x => !!x && x !== 'unknown')
-            .concat('clients')
+            .concat('clients', 'power')
             .forEach(system => {
                 if (renderMap[system]) {
                     document.getElementById(system).innerHTML = renderMap[system](state.getSystemState(system))
