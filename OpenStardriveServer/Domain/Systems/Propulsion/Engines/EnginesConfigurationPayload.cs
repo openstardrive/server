@@ -7,5 +7,5 @@ public record EnginesConfigurationPayload
     public EngineSpeedConfig SpeedConfig { get; init; }
     public EngineHeatConfig HeatConfig { get; init; }
     
-    public SpeedPowerRequirement[] SpeedPowerRequirements = Array.Empty<SpeedPowerRequirement>();
+    public SpeedPowerRequirement[] SpeedPowerRequirements { get; init; } = Array.Empty<SpeedPowerRequirement>();
 }
