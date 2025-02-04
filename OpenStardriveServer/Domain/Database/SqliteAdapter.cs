@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.Data.Sqlite;
 
 namespace OpenStardriveServer.Domain.Database;
 
@@ -22,13 +22,13 @@ public class SqliteAdapter : ISqliteAdapter
 
     public async Task ExecuteAsync(string sql, object param = null)
     {
-        await using var connection = new SQLiteConnection(database.ConnectionString);
+        await using var connection = new SqliteConnection(database.ConnectionString);
         await connection.ExecuteAsync(sql, param);
     }
         
     public async Task<IEnumerable<TResult>> QueryAsync<TResult>(string query, object param = null)
     {
-        await using var connection = new SQLiteConnection(database.ConnectionString);
+        await using var connection = new SqliteConnection(database.ConnectionString);
         return await connection.QueryAsync<TResult>(query, param);
     }
 }
