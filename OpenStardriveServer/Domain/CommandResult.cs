@@ -31,7 +31,7 @@ public class CommandResult
         Type = type;
         System = system;
         Payload = Json.Instance.Serialize(payload);
-        Timestamp = command.TimeStamp;
+        Timestamp = command.Timestamp;
     }
 
     public long RowId { get; set; }

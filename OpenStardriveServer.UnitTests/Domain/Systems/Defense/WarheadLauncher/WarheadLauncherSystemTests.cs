@@ -35,7 +35,7 @@ public class WarheadLauncherSystemTests : SystemsTest<WarheadLauncherSystem>
         var payload = new FireWarheadPayload { Kind = "torpedo" };
         TestCommandWithPayload("fire-warhead", payload, expected, command =>
         {
-            GetMock<IWarheadLauncherTransforms>().Setup(x => x.Fire(Any<WarheadLauncherState>(), payload, command.TimeStamp)).Returns(expected);
+            GetMock<IWarheadLauncherTransforms>().Setup(x => x.Fire(Any<WarheadLauncherState>(), payload, command.Timestamp)).Returns(expected);
         });
     }
     

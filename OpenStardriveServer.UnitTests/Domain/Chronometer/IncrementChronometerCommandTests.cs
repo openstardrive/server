@@ -24,7 +24,7 @@ public class IncrementChronometerCommandTests : WithAnAutomocked<IncrementChrono
 
         Assert.That(savedCommand, Is.Not.Null);
         Assert.That(savedCommand.Type, Is.EqualTo(ChronometerCommand.Type));
-        Assert.That(savedCommand.TimeStamp, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
+        Assert.That(savedCommand.Timestamp, Is.EqualTo(DateTimeOffset.UtcNow).Within(TimeSpan.FromSeconds(1)));
         Assert.That(savedCommand.Payload, Is.EqualTo("test-json"));
 
         Assert.That(serializedData.ElapsedMilliseconds, Is.EqualTo(1000).Within(500));

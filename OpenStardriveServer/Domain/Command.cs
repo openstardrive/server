@@ -9,5 +9,5 @@ public class Command
     public Guid ClientId { get; set; }
     public string Type { get; set; }
     public string Payload { get; set; }
-    public DateTimeOffset TimeStamp { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
 }

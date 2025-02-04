@@ -16,7 +16,7 @@ public class CommandRepositoryTests : WithAServiceLocatedClassUnderTest<CommandR
             ClientId = Guid.NewGuid(),
             Type = "round-trip-test",
             Payload = "any payload",
-            TimeStamp = DateTimeOffset.UtcNow.AddMinutes(-5)
+            Timestamp = DateTimeOffset.UtcNow.AddMinutes(-5)
         };
         await ClassUnderTest.Save(command);
 
@@ -27,7 +27,7 @@ public class CommandRepositoryTests : WithAServiceLocatedClassUnderTest<CommandR
         Assert.That(found.ClientId, Is.EqualTo(command.ClientId));
         Assert.That(found.Type, Is.EqualTo(command.Type));
         Assert.That(found.Payload, Is.EqualTo(command.Payload));
-        Assert.That(found.TimeStamp, Is.EqualTo(command.TimeStamp));
+        Assert.That(found.Timestamp, Is.EqualTo(command.Timestamp));
     }
 
     [Test]
