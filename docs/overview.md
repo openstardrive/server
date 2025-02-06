@@ -10,9 +10,9 @@ This prototype server was used to explore an event-sourced model for managing th
 It is designed to be run locally, not behind a load balancer, due to how it keeps system state in memory.
 It also makes heavy use of immutable state and the "maybe" monad (concepts from functional programming).
 The event logs are stored in an SQLite database.
-The code was written w/ a test-driven approach.
+The code was written with a test-driven approach.
 
-The intent is for a variety of clients to be able to connect to the server and all interact w/ the simulation state.
+The intent is for a variety of clients to be able to connect to the server and all interact with the simulation state.
 Some clients would be crew stations while others are staff controls (e.g. the Flight Director).
 The main viewscreen could be another client.
 Other clients might control lighting or sound effects, or could connect to engineering panel circuitry.
@@ -41,19 +41,21 @@ Systems can process these to update time-based changes, like altering engine hea
 An illustration of the data flow:
 
 ```mermaid
-flowchart TB
+flowchart
    Client --sends command--> api[Server Api]
-   Chronometer-->db1
-   api-->db1[(Command Log)]
-   db1-->processor[Command Processor]
-   processor-->System1
-   processor-->System2
-   processor-->System3
-   System1-->db2[(Command Results Log)]
-   System2-->db2
-   System3-->db2
-   db2-->api
-   api--recieves results-->Client
+   api--receives results-->Client
+   subgraph Server
+      Chronometer-->db1
+      api-->db1[(Command Log)]
+      db1-->processor[Command Processor]
+      processor-->System1
+      processor-->System2
+      processor-->System3
+      System1-->db2[(Command Results Log)]
+      System2-->db2
+      System3-->db2
+      db2-->api
+   end
 ```
 
 
