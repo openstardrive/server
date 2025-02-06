@@ -19,8 +19,8 @@ const getCommands = (api, state) => {
             api.sendCommand(`set-thrusters-velocity`, {x: parts[0], y: parts[1], z: parts[2]})
         },
         setThrusterAttitude: (axis, amount) => {
-            const state = state.getSystemState('thrusters').attitude
-            api.sendCommand('set-thrusters-attitude', {...state, [axis]: state[axis] + amount})
+            const currentState = state.getSystemState('thrusters').attitude
+            api.sendCommand('set-thrusters-attitude', {...currentState, [axis]: currentState[axis] + amount})
         },
         toggleShields: () => {
             const command = state.getSystemState('shields').raised ? 'lower-shields' : 'raise-shields'
