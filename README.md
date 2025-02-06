@@ -1,8 +1,9 @@
 # OpenStardrive Server
 
 This is the server component for the OpenStardrive simulation software.
-It runs on [.NET Core 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
+It runs on [.NET Core 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 
+For more details, please look at the [overview of how the server works](./docs/overview.md).
 
 ## Running the Server
 
