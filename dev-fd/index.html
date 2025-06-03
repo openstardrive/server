@@ -8,17 +8,56 @@
     </head>
     <body>
         <div id="content">
-            <div id="sensorScans">
-                <span>Sensors</span>
-                <div id="incomingScanContainer">
-                    I'm a scanny box
+            <div id="rowOne">
+                <div id="sensorScans">
+                    <span>Sensors</span>
+                    <div id="incomingScanContainer">
+                        I'm a scanny box
+                    </div>
+                    <div id="responseContainer">
+                        <textarea name="scanResponse" id="scanResponse"></textarea>
+                    </div>
+                    <div id="sensorButtonContainer">
+                        <button id="sendResponse" class="primaryButton">Send Response</button>
+                        <button id="sendData" class="alertButton">Send Processed Data</button>
+                    </div>
                 </div>
-                <div id="responseContainer">
-                    <textarea name="scanResponse" id="scanResponse"></textarea>
-                </div>
-                <div id="sensorButtonContainer">
-                    <button id="sendResponse" class="primaryButton">Send Response</button>
-                    <button id="sendData" class="alertButton">Send Processed Data</button>
+    
+                <div id="navigation">
+                    <span>Navigation</span>
+                    <div id="navigationContainer">
+                        <div id="courseInformation">
+                            <div id="currentCourse">
+                                <span>Current Course: </span>
+                                <span id="courseValue">None</span>
+                            </div>
+                        </div>
+                        <div id="requestedCourseContainer">
+                            <span>Requested Course: </span>
+                            <div id="requestedCourse">None</div>
+                        </div>
+                        <div id="courseCalculation">
+                            <div id="coordinates">
+                                <div class="coordinateContainer">
+                                    <span>X: </span>
+                                    <textarea name="xCoordinate" id="xCoordinate" class="coordinate"></textarea>
+                                </div>
+                                <div class="coordinateContainer">
+                                    <span>Y: </span>
+                                    <textarea name="yCoordinate" id="yCoordinate" class="coordinate"></textarea>
+                                </div>
+                                <div class="coordinateContainer">
+                                    <span>Z: </span>
+                                    <textarea name="zCoordinate" id="zCoordinate" class="coordinate"></textarea>
+                                </div>
+                            </div>
+                            <div id="navigationButtons">
+                                <button id="randomCourse" class="primaryButton">Send Random Course</button>
+                                <button id="setCourse" class="alertButton">Send Course</button>
+                                <button id="clearCourse" class="warningButton">Clear Course</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
