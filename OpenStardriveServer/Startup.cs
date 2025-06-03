@@ -45,6 +45,11 @@ public class Startup
             RequestPath = "/dev-fd"
         });
 
+        app.UseDefaultFiles(new DefaultFilesOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-client")),
+            RequestPath = "/dev-client"
+        });
+
         app.UseStaticFiles();
 
         app.UseStaticFiles(new StaticFileOptions {
