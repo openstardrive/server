@@ -1,6 +1,8 @@
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using OpenStardriveServer.Domain.Database;
 using OpenStardriveServer.HostedServices;
@@ -30,6 +32,20 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
+
+        app.UseDefaultFiles();
+
+        app.UseDefaultFiles(new DefaultFilesOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-engineering")),
+            RequestPath = "/dev-engineering"
+        });
+
+        app.UseStaticFiles();
+
+        app.UseStaticFiles(new StaticFileOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-engineering")),
+            RequestPath = "/dev-engineering"
+        });
 
         app.UseRouting();
         app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().Build());
