@@ -62,6 +62,11 @@ public class Startup
             RequestPath = "/dev-fd"
         });
 
+        app.UseStaticFiles(new StaticFileOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-client")),
+            RequestPath = "/dev-client"
+        });
+
         app.UseRouting();
         app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().Build());
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
