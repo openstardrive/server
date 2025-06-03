@@ -184,3 +184,31 @@ body {
     justify-content: center;
     margin-left: 10px;
 }
+
+#currentETA {
+    display: flex;
+    flex-direction: row;
+}
+
+#etaValue {
+    margin-left: 5px;
+}
+
+#enginesAndETA {
+    display: flex;
+    flex-direction: column;
+}
+
+.etaInput {
+    background-color: #ccc;
+    border-radius: 3px;
+    border: none;
+    width: 12vh;
+}
+
+#etaButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

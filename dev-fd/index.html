@@ -60,32 +60,50 @@
                     </div>
                 </div>
 
-                <div id="engines">
-                    <span>Engines</span>
-                    <div id="currentSpeed">
-                        <span>Current Speed: </span>
-                        <span id="speedValue">Full Stop</span>
+                <div id="enginesAndETA">
+                    <div id="engines">
+                        <span>Engines</span>
+                        <div id="currentSpeed">
+                            <span>Current Speed: </span>
+                            <span id="speedValue">Full Stop</span>
+                        </div>
+                        <div id="speedAdjustment">
+                            <select name="speedOptions" id="speedOptions">
+                                <option value="fullStop">Full Stop</option>
+                                <option value="ftl-1">FTL - 1</option>
+                                <option value="ftl-2">FTL - 2</option>
+                                <option value="ftl-3">FTL - 3</option>
+                                <option value="ftl-4">FTL - 4</option>
+                                <option value="ftl-5">FTL - 5</option>
+                                <option value="ftl-6">FTL - 6</option>
+                                <option value="ftl-7">FTL - 7</option>
+                                <option value="ftl-8">FTL - 8</option>
+                                <option value="ftl-9">FTL - 9</option>
+                                <option value="ftl-10">FTL - 10</option>
+                                <option value="sublight-1">Sublight - 1</option>
+                                <option value="sublight-2">Sublight - 2</option>
+                                <option value="sublight-3">Sublight - 3</option>
+                                <option value="sublight-4">Sublight - 4</option>
+                                <option value="sublight-5">Sublight - 5</option>
+                            </select>
+                            <button id="changeSpeed" class="alertButton">Change Speed</button>
+                        </div>
                     </div>
-                    <div id="speedAdjustment">
-                        <select name="speedOptions" id="speedOptions">
-                            <option value="fullStop">Full Stop</option>
-                            <option value="ftl-1">FTL - 1</option>
-                            <option value="ftl-2">FTL - 2</option>
-                            <option value="ftl-3">FTL - 3</option>
-                            <option value="ftl-4">FTL - 4</option>
-                            <option value="ftl-5">FTL - 5</option>
-                            <option value="ftl-6">FTL - 6</option>
-                            <option value="ftl-7">FTL - 7</option>
-                            <option value="ftl-8">FTL - 8</option>
-                            <option value="ftl-9">FTL - 9</option>
-                            <option value="ftl-10">FTL - 10</option>
-                            <option value="sublight-1">Sublight - 1</option>
-                            <option value="sublight-2">Sublight - 2</option>
-                            <option value="sublight-3">Sublight - 3</option>
-                            <option value="sublight-4">Sublight - 4</option>
-                            <option value="sublight-5">Sublight - 5</option>
-                        </select>
-                        <button id="changeSpeed" class="alertButton">Change Speed</button>
+                    <div id="eta">
+                        <span>ETA</span>
+                        <div id="etaContainer">
+                            <div id="currentETA">
+                                <span>Current ETA: </span>
+                                <div id="etaValue">None</div>
+                            </div>
+                            <input type="number" id="hours" name="hours" min="0" placeholder="Hours" class="etaInput">
+                            <input type="number" id="minutes" name="minutes" min="0" placeholder="Minutes" class="etaInput">
+                            <input type="number" id="seconds" name="seconds" min="0" placeholder="Seconds" class="etaInput">
+                            <div id="etaButtons">
+                                <button id="clearEta" class="warningButton">Clear ETA</button>
+                                <button id="setEta" class="alertButton">Set ETA</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
