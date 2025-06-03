@@ -161,7 +161,7 @@ body {
     resize: none;
     overflow-y: auto;
     padding: 5px;
-    height: 1.5rem;
+    height: 1.75rem;
     margin: 5px;
 }
 
@@ -184,4 +184,3 @@ body {
     justify-content: center;
     margin-left: 10px;
 }
-
