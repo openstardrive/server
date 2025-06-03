@@ -40,11 +40,21 @@ public class Startup
             RequestPath = "/dev-engineering"
         });
 
+        app.UseDefaultFiles(new DefaultFilesOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-fd")),
+            RequestPath = "/dev-fd"
+        });
+
         app.UseStaticFiles();
 
         app.UseStaticFiles(new StaticFileOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-engineering")),
             RequestPath = "/dev-engineering"
+        });
+
+        app.UseStaticFiles(new StaticFileOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-fd")),
+            RequestPath = "/dev-fd"
         });
 
         app.UseRouting();
