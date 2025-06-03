@@ -33,8 +33,6 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseDefaultFiles();
-
         app.UseDefaultFiles(new DefaultFilesOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-engineering")),
             RequestPath = "/dev-engineering"
@@ -49,8 +47,6 @@ public class Startup
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-client")),
             RequestPath = "/dev-client"
         });
-
-        app.UseStaticFiles();
 
         app.UseStaticFiles(new StaticFileOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-engineering")),
