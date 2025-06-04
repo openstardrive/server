@@ -125,6 +125,27 @@ body {
     transform: scale(1.05);
 }
 
+.secondaryButton {
+    border: none;
+    background-color: #e38b20;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 5px;
+    padding-left: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 5px;
+}
+
+.secondaryButton:hover {
+    background-color: #d67c00;
+    transform: scale(1.05);
+}
+
 #navigation {
     display: flex;
     flex-direction: column;
@@ -211,4 +232,39 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+#listOfSystems {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 30vh;
+    background-color: #007B9E;
+    border-radius: 3px;
+}
+
+.system {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 5px;
+}
+
+#powerAdjustment {
+    background-color: #ccc;
+    border-radius: 3px;
+    border: none;
+    width: 10vh;
+}
+
+.systemName {
+    width: 15vh;
+}
+
+.currentPower {
+    margin: 5px;
+}
+
+.maxPower {
+    margin: 5px;
 }
