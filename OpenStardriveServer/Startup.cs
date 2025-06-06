@@ -43,6 +43,8 @@ public class Startup
             RequestPath = "/dev-fd"
         });
 
+        System.Console.WriteLine(env.ContentRootPath);
+
         app.UseDefaultFiles(new DefaultFilesOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-client")),
             RequestPath = "/dev-client"
@@ -55,7 +57,13 @@ public class Startup
 
         app.UseStaticFiles(new StaticFileOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-fd")),
-            RequestPath = "/dev-fd"
+            RequestPath = "/dev-fd",
+            OnPrepareResponse = ctx => {
+                // Disable caching for development
+                ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                ctx.Context.Response.Headers["Pragma"] = "no-cache";
+                ctx.Context.Response.Headers["Expires"] = "0";
+            }
         });
 
         app.UseStaticFiles(new StaticFileOptions {

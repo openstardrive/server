@@ -61,8 +61,7 @@ const startApi = async (processResults, onPollingStarted, onPollingPaused) => {
     }
     
     const startPolling = () => {
-        const seconds = parseInt(document.getElementById('pollingSeconds').value)
-        pollInterval = setInterval(pollApi, seconds * 1000)
+        pollInterval = setInterval(pollApi, 1000)
         onPollingStarted()
     }
     
