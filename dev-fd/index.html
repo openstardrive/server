@@ -38,15 +38,15 @@
                             <div id="coordinates">
                                 <div class="coordinateContainer">
                                     <span>X: </span>
-                                    <textarea name="xCoordinate" id="xCoordinate" class="coordinate"></textarea>
+                                    <input type="number" min="0" name="xCoordinate" id="xCoordinate" class="coordinate">
                                 </div>
                                 <div class="coordinateContainer">
                                     <span>Y: </span>
-                                    <textarea name="yCoordinate" id="yCoordinate" class="coordinate"></textarea>
+                                    <input type="number" min="0" name="yCoordinate" id="yCoordinate" class="coordinate">
                                 </div>
                                 <div class="coordinateContainer">
                                     <span>Z: </span>
-                                    <textarea name="zCoordinate" id="zCoordinate" class="coordinate"></textarea>
+                                    <input type="number" min="0" name="zCoordinate" id="zCoordinate" class="coordinate">
                                 </div>
                             </div>
                             <div id="navigationButtons">
@@ -60,7 +60,7 @@
                                 <option value="ftl">FTL</option>
                                 <option value="sublight">Sublight</option>
                             </select>
-                            <input id="courseEtaInput" type="number" placeholder="Minutes">
+                            <input id="courseEtaInput" type="number" min="0" placeholder="Minutes">
                         </div>
                     </div>
                 </div>

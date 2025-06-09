@@ -183,30 +183,28 @@ var init = async () => {
             z: parseFloat(z)
         };
 
-        const ftl = systems['ftl-engines'];
-        const sublight = systems['sublight-engines'];
-        let etaPayload = {};
-        if (ftl.currentSpeed > 0) {
-            etaPayload = {
-                engineSystem: 'ftl-engines',
-                speed: ftl.currentSpeed,
-                arriveInMilliseconds: 600000
-            }
-        }
-        else if (sublight.currentSpeed > 0) {
-            etaPayload = {
-                engineSystem: 'sublight-engines',
-                speed: sublight.currentSpeed,
-                arriveInMilliseconds: 600000
-            }
+        let engineSystems;
+        let arriveInMilliseconds;
+
+        if (document.getElementById("courseEtaInput").value === '') {
+            arriveInMilliseconds = 5 * 60000;
         }
         else {
-            etaPayload = {
-                engineSystem: 'sublight-engines',
-                speed: 0,
-                arriveInMilliseconds: 0
-            }
+            arriveInMilliseconds = parseFloat(document.getElementById("courseEtaInput").value * 60000);
         }
+
+        if (document.getElementById("navigationEtaEngineOptions").value == 'ftl') {
+            engineSystems = 'ftl-engines';
+        }
+        else {
+            engineSystems = 'sublight-engines';
+        }
+
+        const etaPayload = {
+            engineSystem: engineSystems,
+            speed: 1,
+            arriveInMilliseconds: arriveInMilliseconds
+        };
 
         api.sendCommand("course-calculated", {
             courseId: courseId,
@@ -215,6 +213,20 @@ var init = async () => {
             eta: etaPayload
         });
         document.getElementById("requestedCourse").style.backgroundColor = "#2c5364";
+    });
+
+    document.getElementById("randomCourse").addEventListener("click", () => {
+        var randomX = (Math.random() * 1000).toFixed(3);
+        var randomY = (Math.random() * 1000).toFixed(3);
+        var randomZ = (Math.random() * 1000).toFixed(3);
+        document.getElementById("xCoordinate").value = randomX;
+        document.getElementById("yCoordinate").value = randomY;
+        document.getElementById("zCoordinate").value = randomZ;
+    });
+
+    document.getElementById("clearCourse").addEventListener("click", () => {
+        const navigation = systems['navigation'];
+        api.sendCommand("clear-course", navigation);
     });
 }
 
