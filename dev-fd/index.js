@@ -38,7 +38,7 @@ var processResults = (results, cursor) => {
     }
     if (systemsUpdated.has('navigation')) {
         const navigation = systems['navigation'];
-        document.getElementById("courseValue").innerText = navigation.currentCourse ? navigation.currentCourse : "No course set";
+        document.getElementById("courseValue").innerText = navigation.currentCourse ? navigation.currentCourse.destination : "None";
         const requestedCourses = navigation.requestedCourseCalculations ? navigation.requestedCourseCalculations : [];
         if (requestedCourses.length > 0) {
             document.getElementById("requestedCourse").style.backgroundColor = "#f44336";
