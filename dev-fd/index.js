@@ -24,6 +24,19 @@ var processResults = (results, cursor) => {
             document.getElementById("speedValue").innerText = `Sublight - ${sublightSpeed}`;
         }
     }
+    if (systemsUpdated.has('sensors')) {
+        const sensors = systems['sensors'];
+        const activeScans = sensors ? sensors.activeScans : [];
+        if (activeScans.length > 0) {
+            console.log(activeScans[0]);
+            document.getElementById("incomingScanContainer").style.backgroundColor = "#f44336";
+            document.getElementById("incomingScanContainer").innerText = activeScans[0].scanFor;
+        }
+        else if (activeScans.length === 0) {
+            document.getElementById("incomingScanContainer").style.backgroundColor = "#2c5364";
+            document.getElementById("incomingScanContainer").innerText = "No active scans";
+        }
+    }
 };
 
 var onPollingPaused = () => {
