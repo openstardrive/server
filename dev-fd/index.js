@@ -51,7 +51,6 @@ var init = async () => {
     const api = await startApi(processResults, onPollingStarted, onPollingPaused);
 
     document.getElementById("changeSpeed").addEventListener("click", () => {
-        console.log(api);
         const givenSpeed = document.getElementById("speedOptions").value;
         switch (givenSpeed) {
             case 'fullStop':
@@ -120,6 +119,20 @@ var init = async () => {
                 break;
             default:
                 console.log('Unknown state.');
+        }
+    });
+
+    document.getElementById("sendResponse").addEventListener("click", () => {
+        const sensors = systems['sensors'];
+        const givenResponse = document.getElementById("scanResponse").value;
+        if (sensors.activeScans.length > 0) {
+            const scan = sensors.activeScans[0];
+            const scanID = scan.scanId;
+            api.sendCommand("set-sensor-scan-result", {
+                scanId: scanID,
+                result: givenResponse
+            });
+            document.getElementById("incomingScanContainer").style.backgroundColor = "#2c5364";
         }
     });
 }
