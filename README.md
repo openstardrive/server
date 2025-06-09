@@ -18,6 +18,9 @@ Once the server is running, you can connect clients to interact with it.
 The [dev-client](./dev-client/README.md) directory contains an example client used during development
 of the software.
 
+## Running Local Clients
+
+To run a local client after the server is opened, point your browser at localhost:5002/name-of-client-folder/
 
 ## License
 
