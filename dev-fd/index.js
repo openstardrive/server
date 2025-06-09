@@ -46,7 +46,7 @@ var processResults = (results, cursor) => {
         }
         else {
             document.getElementById("requestedCourse").style.backgroundColor = "#2c5364";
-            document.getElementById("requestedCourse").innerText = "No course calculations in progress";
+            document.getElementById("requestedCourse").innerText = "None";
         }
     }
 };
@@ -146,6 +146,66 @@ var init = async () => {
             });
             document.getElementById("incomingScanContainer").style.backgroundColor = "#2c5364";
         }
+    });
+
+    document.getElementById("setCourse").addEventListener("click", () => {
+        const navigation = systems['navigation'];
+        const x = document.getElementById("xCoordinate").value;
+        const y = document.getElementById("yCoordinate").value;
+        const z = document.getElementById("zCoordinate").value;
+        if (!x || !y || !z) {
+            alert("Please enter coordinates.");
+            return;
+        }
+
+        const requestedCourses = navigation.requestedCourseCalculations || [];
+        if (requestedCourses.length == 0) {
+            alert("No course calculations in progress.");
+            return;
+        }
+
+        const course = requestedCourses[0];
+        const destination = course.destination;
+        const courseId = course.courseId;
+
+        const coordinates = {
+            x: parseFloat(x),
+            y: parseFloat(y),
+            z: parseFloat(z)
+        };
+
+        const ftl = systems['ftl-engines'];
+        const sublight = systems['sublight-engines'];
+        let etaPayload = {};
+        if (ftl.currentSpeed > 0) {
+            etaPayload = {
+                engineSystem: 'ftl-engines',
+                speed: ftl.currentSpeed,
+                arriveInMilliseconds: 600000
+            }
+        }
+        else if (sublight.currentSpeed > 0) {
+            etaPayload = {
+                engineSystem: 'sublight-engines',
+                speed: sublight.currentSpeed,
+                arriveInMilliseconds: 600000
+            }
+        }
+        else {
+            etaPayload = {
+                engineSystem: 'sublight-engines',
+                speed: 0,
+                arriveInMilliseconds: 0
+            }
+        }
+
+        api.sendCommand("course-calculated", {
+            courseId: courseId,
+            destination: destination,
+            coordinates: coordinates,
+            eta: etaPayload
+        });
+        document.getElementById("requestedCourse").style.backgroundColor = "#2c5364";
     });
 }
 
