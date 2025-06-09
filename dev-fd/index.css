@@ -238,7 +238,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 30vh;
+    height: 25vh;
     background-color: #007B9E;
     border-radius: 3px;
 }
