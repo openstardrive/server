@@ -57,6 +57,9 @@ var processResults = (results, cursor) => {
             document.getElementById("requestedCourse").style.backgroundColor = "#2c5364";
             document.getElementById("requestedCourse").innerText = "None";
         }
+
+        console.log(navigation);
+        document.getElementById("navgiationRequiredPower").innerHTML = navigation.requiredPower;
     }
 };
 
