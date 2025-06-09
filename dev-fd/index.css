@@ -181,6 +181,7 @@ body {
     background-color: #ccc;
     resize: none;
     overflow-y: auto;
+    border-radius: 3px;
     padding: 5px;
     height: 1.75rem;
     margin: 5px;
@@ -215,6 +216,10 @@ body {
     margin-left: 5px;
 }
 
+#engines {
+    margin-bottom: 20px;
+}
+
 #enginesAndETA {
     display: flex;
     flex-direction: column;
@@ -238,7 +243,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 25vh;
+    height: 30vh;
     background-color: #007B9E;
     border-radius: 3px;
 }
@@ -267,4 +272,20 @@ body {
 
 .maxPower {
     margin: 5px;
+}
+
+#courseEtaInput {
+    background-color: #ccc;
+    border-radius: 3px;
+    border: none;
+    width: 12vh;
+    margin-left: 15px;
+}
+
+#courseEtaContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
 }

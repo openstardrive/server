@@ -55,6 +55,13 @@
                                 <button id="clearCourse" class="warningButton">Clear Course</button>
                             </div>
                         </div>
+                        <div id="courseEtaContainer">
+                            <select name="navigationEtaEngineOptions" id="navigationEtaEngineOptions">
+                                <option value="ftl">FTL</option>
+                                <option value="sublight">Sublight</option>
+                            </select>
+                            <input id="courseEtaInput" type="number" placeholder="Minutes">
+                        </div>
                     </div>
                 </div>
 
@@ -98,6 +105,10 @@
                             <input type="number" id="minutes" name="minutes" min="0" placeholder="Minutes" class="etaInput">
                             <input type="number" id="seconds" name="seconds" min="0" placeholder="Seconds" class="etaInput">
                             <div id="etaButtons">
+                                <select name="etaEngineOptions" id="etaEngineOptions">
+                                    <option value="ftl">FTL</option>
+                                    <option value="sublight">Sublight</option>
+                                </select>
                                 <button id="clearEta" class="warningButton">Clear ETA</button>
                                 <button id="setEta" class="alertButton">Set ETA</button>
                             </div>
