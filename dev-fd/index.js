@@ -28,13 +28,25 @@ var processResults = (results, cursor) => {
         const sensors = systems['sensors'];
         const activeScans = sensors ? sensors.activeScans : [];
         if (activeScans.length > 0) {
-            console.log(activeScans[0]);
             document.getElementById("incomingScanContainer").style.backgroundColor = "#f44336";
             document.getElementById("incomingScanContainer").innerText = activeScans[0].scanFor;
         }
         else if (activeScans.length === 0) {
             document.getElementById("incomingScanContainer").style.backgroundColor = "#2c5364";
             document.getElementById("incomingScanContainer").innerText = "No active scans";
+        }
+    }
+    if (systemsUpdated.has('navigation')) {
+        const navigation = systems['navigation'];
+        document.getElementById("courseValue").innerText = navigation.currentCourse ? navigation.currentCourse : "No course set";
+        const requestedCourses = navigation.requestedCourseCalculations ? navigation.requestedCourseCalculations : [];
+        if (requestedCourses.length > 0) {
+            document.getElementById("requestedCourse").style.backgroundColor = "#f44336";
+            document.getElementById("requestedCourse").innerText = requestedCourses[0].destination;
+        }
+        else {
+            document.getElementById("requestedCourse").style.backgroundColor = "#2c5364";
+            document.getElementById("requestedCourse").innerText = "No course calculations in progress";
         }
     }
 };
