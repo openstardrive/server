@@ -228,6 +228,36 @@ var init = async () => {
         const navigation = systems['navigation'];
         api.sendCommand("clear-course", navigation);
     });
+
+    document.getElementById("clearEta").addEventListener("click", () => {
+        const navigation = systems['navigation'];
+        api.sendCommand("clear-eta", navigation);
+    });
+
+    document.getElementById("setEta").addEventListener("click", () => {
+        const hours = document.getElementById("hours").value;
+        const minutes = document.getElementById("minutes").value;
+        const seconds = document.getElementById("seconds").value;
+        if (!hours && !minutes && !seconds) {
+            alert("Please enter at least one time unit.");
+            return;
+        }
+        const totalMilliseconds = (parseInt(hours) || 0) * 3600000 + (parseInt(minutes) || 0) * 60000 + (parseInt(seconds) || 0) * 1000;
+        
+        var engineSystems;
+        if (document.getElementById("etaEngineOptions").value == 'ftl') {
+            engineSystems = 'ftl-engines';
+        }
+        else {
+            engineSystems = 'sublight-engines';
+        }
+
+        api.sendCommand("update-eta" , {
+            engineSystem: engineSystems,
+            speed: 1,
+            arriveInMilliseconds: totalMilliseconds
+        })
+    });
 }
 
 init();
