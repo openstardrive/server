@@ -14,6 +14,15 @@ var processResults = (results, cursor) => {
     if (systemsUpdated.has('ftl-engines') || systemsUpdated.has('sublight-engines')) {
         const sublightSpeed = systems['sublight-engines'] ? systems['sublight-engines'].currentSpeed : 0;
         const ftlSpeed = systems['ftl-engines'] ? systems['ftl-engines'].currentSpeed : 0;
+        const etaMilliseconds = navigation.currentCourse && navigation.currentCourse.eta ? navigation.currentCourse.eta.travelTimes[0].arriveInMilliseconds : null;
+        if (etaMilliseconds !== null) {
+            const seconds = Math.floor((etaMilliseconds / 1000) % 60);
+            const minutes = Math.floor((etaMilliseconds / (1000 * 60)) % 60);
+            const hours = Math.floor((etaMilliseconds / (1000 * 60 * 60)) % 24);
+            document.getElementById("etaValue").innerText = `${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            document.getElementById("etaValue").innerText = "No ETA available";
+        }
         if (ftlSpeed == 0 && sublightSpeed == 0) {
             document.getElementById("speedValue").innerText = "Full Stop";
         }
@@ -39,6 +48,15 @@ var processResults = (results, cursor) => {
     if (systemsUpdated.has('navigation')) {
         const navigation = systems['navigation'];
         document.getElementById("courseValue").innerText = navigation.currentCourse ? navigation.currentCourse.destination : "None";
+        const etaMilliseconds = navigation.currentCourse && navigation.currentCourse.eta ? navigation.currentCourse.eta.travelTimes[0].arriveInMilliseconds : null;
+        if (etaMilliseconds !== null) {
+            const seconds = Math.floor((etaMilliseconds / 1000) % 60);
+            const minutes = Math.floor((etaMilliseconds / (1000 * 60)) % 60);
+            const hours = Math.floor((etaMilliseconds / (1000 * 60 * 60)) % 24);
+            document.getElementById("etaValue").innerText = `${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            document.getElementById("etaValue").innerText = "No ETA available";
+        }
         const requestedCourses = navigation.requestedCourseCalculations ? navigation.requestedCourseCalculations : [];
         if (requestedCourses.length > 0) {
             document.getElementById("requestedCourse").style.backgroundColor = "#f44336";
