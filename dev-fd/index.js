@@ -63,10 +63,10 @@ var processResults = (results, cursor) => {
         document.getElementById("sensorRequiredPower").innerText = sensors.requiredPower;
 
         if (sensors.damaged === true) {
-            document.getElementById("sensorName").style.color = "#f44336";
+            document.getElementById("sensorsName").style.color = "#f44336";
         }
         else {
-            document.getElementById("sensorName").style.color = "white";
+            document.getElementById("sensorsName").style.color = "white";
         }
     }
     if (systemsUpdated.has('navigation')) {
@@ -112,46 +112,42 @@ var onPollingStarted = () => {
 };
 
 var enginesSpeedCheck = () => {
+    const ftlEngines = systems['ftl-engines'];
+    const sublightEngines = systems['sublight-engines'];
     const ftlCurrentPower = systems['ftl-engines'].currentPower;
     const sublightCurrentPower = systems['sublight-engines'].currentPower;
     const select = document.getElementById("speedOptions");
-    if (ftlCurrentPower < 10) {
-        Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = true;
+    if (ftlCurrentPower < 10 || ftlEngines.damaged === true) {
+        for (let i = 1; i <= 10; i++) {
+            Array.from(select.options).find(opt => opt.value === `ftl-${i}`).disabled = true;
+        }
     }
     else {
-        Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = false;
-        if (ftlCurrentPower < 12) {
-            Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
+        for (let i = 1; i <= 6; i++) {
+            Array.from(select.options).find(opt => opt.value === `ftl-${i}`).disabled = false;
+        }
+
+        if (ftlCurrentPower < 12 || ftlEngines.damaged === true) {
+            for (let i = 7; i <= 10; i++) {
+                Array.from(select.options).find(opt => opt.value === `ftl-${i}`).disabled = true;
+            }
         }
         else {
             Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = false;
-            if (ftlCurrentPower < 15) {
-                Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = true;
-                Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
-                Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
+            if (ftlCurrentPower < 15 || ftlEngines.damaged === true) {
+                for (let i = 8; i <= 10; i++) {
+                    Array.from(select.options).find(opt => opt.value === `ftl-${i}`).disabled = true;
+                }
             }
             else {
                 Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = false;
-                if (ftlCurrentPower < 18) {
+                if (ftlCurrentPower < 18 || ftlEngines.damaged === true) {
                     Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
                     Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
                 }
                 else {
                     Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = false;
-                    if (ftlCurrentPower < 20) {
+                    if (ftlCurrentPower < 20 || ftlEngines.damaged === true) {
                         Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
                     }
                     else {
@@ -160,65 +156,23 @@ var enginesSpeedCheck = () => {
                 }
             }
         }
-
-        if (systems['ftl-engines'].damaged === true) {
-            Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
-            Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
-        }
-        else {
-            Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = false;
-            Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = false;
-        }
     }
 
-    if (sublightCurrentPower < 5) {
-        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = true;
+    if (sublightCurrentPower < 5 || sublightEngines.damaged === true) {
+        for (let i = 1; i <= 5; i++) {
+            Array.from(select.options).find(opt => opt.value === `sublight-${i}`).disabled = true;
+        }
     }
     else {
-        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = false;
-        if (sublightCurrentPower < 8) {
+        for (let i = 1; i <= 4; i++) {
+            Array.from(select.options).find(opt => opt.value === `sublight-${i}`).disabled = false;
+        }
+        if (sublightCurrentPower < 8 || sublightEngines.damaged === true) {
             Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = true;
         }
         else {
             Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = false;
         }
-    }
-
-    if (systems['sublight-engines'].damaged === true) {
-        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = true;
-        Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = true;
-    }
-    else {
-        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = false;
-        Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = false;
     }
 }
 
