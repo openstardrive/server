@@ -238,7 +238,7 @@ body {
 }
 
 #engines {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #enginesAndETA {
@@ -324,7 +324,7 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 45vh;
+    width: 40vh;
 }
 
 #currentAlert {
@@ -371,4 +371,22 @@ body {
 #alert3:hover {
     background-color: #4CAF50;
     transform: scale(1.05);
+}
+
+#thrusterStatusContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#attitudeStatus {
+    margin-right: 10px;
+}
+
+.shieldContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
