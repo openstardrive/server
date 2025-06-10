@@ -324,7 +324,7 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 40vh;
+    width: 45vh;
 }
 
 #currentAlert {
@@ -389,4 +389,40 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+#warheadsContainer {
+    margin-top: 10px;
+    width: 45vh;
+}
+
+#currentlyLoadedContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+#torpedoType {
+    background-color: #ccc;
+    border: none;
+    border-radius: 3px;
+}
+
+#currentlyLoadedTorpedo {
+    margin-left: 10px;
+}
+
+#numTorpedos {
+    background-color: #ccc;
+    border: none;
+    border-radius: 3px;
+    width: 7vh;
+}
+
+#availableTorpedosContainer {
+    background-color: #008CBA;
+    border-radius: 3px;
+    border: none;
+    overflow-y: auto;
+    height: 9vh;
+    padding: 5px;
 }
