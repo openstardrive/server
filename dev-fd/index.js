@@ -28,6 +28,8 @@ var processResults = (results, cursor) => {
         document.getElementById("ftlRequiredPower").innerText = systems['ftl-engines'].requiredPower;
         document.getElementById("sublightCurrentPower").innerText = systems['sublight-engines'].currentPower;
         document.getElementById("sublightRequiredPower").innerText = systems['sublight-engines'].requiredPower;
+
+        enginesSpeedCheck();
     }
     if (systemsUpdated.has('sensors')) {
         const sensors = systems['sensors'];
@@ -78,6 +80,77 @@ var onPollingPaused = () => {
 var onPollingStarted = () => {
     console.log('Polling started');
 };
+
+var enginesSpeedCheck = () => {
+    const ftlCurrentPower = systems['ftl-engines'].currentPower;
+    const sublightCurrentPower = systems['sublight-engines'].currentPower;
+    const select = document.getElementById("speedOptions");
+    if (ftlCurrentPower < 10) {
+        Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = true;
+    }
+    else {
+        Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = false;
+        if (ftlCurrentPower < 12) {
+            Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
+        }
+        else {
+            Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = false;
+            if (ftlCurrentPower < 15) {
+                Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = true;
+                Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
+                Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
+            }
+            else {
+                Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = false;
+                if (ftlCurrentPower < 18) {
+                    Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
+                    Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
+                }
+                else {
+                    Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = false;
+                    if (ftlCurrentPower < 20) {
+                        Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
+                    }
+                    else {
+                        Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = false;
+                    }
+                }
+            }
+        }
+    }
+
+    if (sublightCurrentPower < 5) {
+        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = true;
+    }
+    else {
+        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = false;
+        if (sublightCurrentPower < 8) {
+            Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = true;
+        }
+        else {
+            Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = false;
+        }
+    }
+}
 
 var init = async () => {
     const api = await startApi(processResults, onPollingStarted, onPollingPaused);
@@ -269,6 +342,8 @@ var init = async () => {
             arriveInMilliseconds: totalMilliseconds
         })
     });
+
+    enginesSpeedCheck();
 }
 
 init();
