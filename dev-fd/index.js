@@ -23,6 +23,11 @@ var processResults = (results, cursor) => {
         else {
             document.getElementById("speedValue").innerText = `Sublight - ${sublightSpeed}`;
         }
+
+        document.getElementById("ftlCurrentPower").innerText = systems['ftl-engines'].currentPower;
+        document.getElementById("ftlRequiredPower").innerText = systems['ftl-engines'].requiredPower;
+        document.getElementById("sublightCurrentPower").innerText = systems['sublight-engines'].currentPower;
+        document.getElementById("sublightRequiredPower").innerText = systems['sublight-engines'].requiredPower;
     }
     if (systemsUpdated.has('sensors')) {
         const sensors = systems['sensors'];
@@ -35,6 +40,9 @@ var processResults = (results, cursor) => {
             document.getElementById("incomingScanContainer").style.backgroundColor = "#2c5364";
             document.getElementById("incomingScanContainer").innerText = "No active scans";
         }
+
+        document.getElementById("sensorCurrentPower").innerText = sensors.currentPower;
+        document.getElementById("sensorRequiredPower").innerText = sensors.requiredPower;
     }
     if (systemsUpdated.has('navigation')) {
         const navigation = systems['navigation'];
@@ -58,8 +66,8 @@ var processResults = (results, cursor) => {
             document.getElementById("requestedCourse").innerText = "None";
         }
 
-        console.log(navigation);
-        document.getElementById("navgiationRequiredPower").innerHTML = navigation.requiredPower;
+        document.getElementById("navigationCurrentPower").innerText = navigation.currentPower;
+        document.getElementById("navigationRequiredPower").innerText = navigation.requiredPower;
     }
 };
 
