@@ -12,6 +12,8 @@ var processResults = (results, cursor) => {
         };
     });
     if (systemsUpdated.has('ftl-engines') || systemsUpdated.has('sublight-engines')) {
+        const ftlEngines = systems['ftl-engines'];
+        const sublightEngines = systems['sublight-engines'];
         const sublightSpeed = systems['sublight-engines'] ? systems['sublight-engines'].currentSpeed : 0;
         const ftlSpeed = systems['ftl-engines'] ? systems['ftl-engines'].currentSpeed : 0;
         if (ftlSpeed == 0 && sublightSpeed == 0) {
@@ -24,10 +26,24 @@ var processResults = (results, cursor) => {
             document.getElementById("speedValue").innerText = `Sublight - ${sublightSpeed}`;
         }
 
-        document.getElementById("ftlCurrentPower").innerText = systems['ftl-engines'].currentPower;
-        document.getElementById("ftlRequiredPower").innerText = systems['ftl-engines'].requiredPower;
-        document.getElementById("sublightCurrentPower").innerText = systems['sublight-engines'].currentPower;
-        document.getElementById("sublightRequiredPower").innerText = systems['sublight-engines'].requiredPower;
+        document.getElementById("ftlCurrentPower").innerText = ftlEngines.currentPower;
+        document.getElementById("ftlRequiredPower").innerText = ftlEngines.requiredPower;
+        document.getElementById("sublightCurrentPower").innerText = sublightEngines.currentPower;
+        document.getElementById("sublightRequiredPower").innerText = sublightEngines.requiredPower;
+
+        if (ftlEngines.damaged === true) {
+            document.getElementById("ftlName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("ftlName").style.color = "white";
+        }
+
+        if (sublightEngines.damaged === true) {
+            document.getElementById("sublightName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("sublightName").style.color = "white";
+        }
 
         enginesSpeedCheck();
     }
@@ -45,6 +61,13 @@ var processResults = (results, cursor) => {
 
         document.getElementById("sensorCurrentPower").innerText = sensors.currentPower;
         document.getElementById("sensorRequiredPower").innerText = sensors.requiredPower;
+
+        if (sensors.damaged === true) {
+            document.getElementById("sensorName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("sensorName").style.color = "white";
+        }
     }
     if (systemsUpdated.has('navigation')) {
         const navigation = systems['navigation'];
@@ -70,6 +93,13 @@ var processResults = (results, cursor) => {
 
         document.getElementById("navigationCurrentPower").innerText = navigation.currentPower;
         document.getElementById("navigationRequiredPower").innerText = navigation.requiredPower;
+
+        if (navigation.damaged === true) {
+            document.getElementById("navigationName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("navigationName").style.color = "white";
+        }
     }
 };
 
@@ -130,6 +160,31 @@ var enginesSpeedCheck = () => {
                 }
             }
         }
+
+        if (systems['ftl-engines'].damaged === true) {
+            Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = true;
+            Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = true;
+        }
+        else {
+            Array.from(select.options).find(opt => opt.value === 'ftl-1').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-2').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-3').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-4').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-5').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-6').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-7').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-8').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-9').disabled = false;
+            Array.from(select.options).find(opt => opt.value === 'ftl-10').disabled = false;
+        }
     }
 
     if (sublightCurrentPower < 5) {
@@ -149,6 +204,21 @@ var enginesSpeedCheck = () => {
         else {
             Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = false;
         }
+    }
+
+    if (systems['sublight-engines'].damaged === true) {
+        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = true;
+        Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = true;
+    }
+    else {
+        Array.from(select.options).find(opt => opt.value === 'sublight-1').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'sublight-2').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'sublight-3').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'sublight-4').disabled = false;
+        Array.from(select.options).find(opt => opt.value === 'sublight-5').disabled = false;
     }
 }
 
@@ -347,7 +417,6 @@ var init = async () => {
         const ftlEngines = systems['ftl-engines'];
         const currentPower = ftlEngines.currentPower;
         const increasedPower = currentPower + 1;
-        console.log(increasedPower);
         api.sendCommand(`set-power`, {'ftl-engines': increasedPower});
     });
 
@@ -355,7 +424,6 @@ var init = async () => {
         const ftlEngines = systems['ftl-engines'];
         const currentPower = ftlEngines.currentPower;
         const decreasedPower = currentPower - 1;
-        console.log(decreasedPower);
         api.sendCommand(`set-power`, {'ftl-engines': decreasedPower});
     });
 
@@ -363,7 +431,6 @@ var init = async () => {
         const sublightEngines = systems['sublight-engines'];
         const currentPower = sublightEngines.currentPower;
         const increasedPower = currentPower + 1;
-        console.log(increasedPower);
         api.sendCommand(`set-power`, {'sublight-engines': increasedPower});
     });
 
@@ -371,8 +438,79 @@ var init = async () => {
         const sublightEngines = systems['sublight-engines'];
         const currentPower = sublightEngines.currentPower;
         const decreasedPower = currentPower - 1;
-        console.log(decreasedPower);
         api.sendCommand(`set-power`, {'sublight-engines': decreasedPower});
+    });
+
+    document.getElementById("navigationRepairSystem").addEventListener("click", () => {
+        const navigation = systems['navigation'];
+        if (navigation.damaged) {
+            api.sendCommand("set-damaged", {'navigation': false});
+        } else {
+            alert("Navigation system is not damaged.");
+        }
+    });
+
+    document.getElementById("navigationDamageSystem").addEventListener("click", () => {
+        const navigation = systems['navigation'];
+        if (!navigation.damaged) {
+            api.sendCommand("set-damaged", {'navigation': true});
+        } else {
+            alert("Navigation system is already damaged.");
+        }
+    });
+
+    document.getElementById("sensorRepairSystem").addEventListener("click", () => {
+        const sensors = systems['sensors'];
+        if (sensors.damaged) {
+            api.sendCommand("set-damaged", {'sensors': false});
+        } else {
+            alert("Sensors system is not damaged.");
+        }
+    });
+
+    document.getElementById("sensorDamageSystem").addEventListener("click", () => {
+        const sensors = systems['sensors'];
+        if (!sensors.damaged) {
+            api.sendCommand("set-damaged", {'sensors': true});
+        } else {
+            alert("Sensors system is already damaged.");
+        }
+    });
+
+    document.getElementById("ftlRepairSystem").addEventListener("click", () => {
+        const ftlEngines = systems['ftl-engines'];
+        if (ftlEngines.damaged) {
+            api.sendCommand("set-damaged", {'ftl-engines': false});
+        } else {
+            alert("FTL engines system is not damaged.");
+        }
+    });
+
+    document.getElementById("ftlDamageSystem").addEventListener("click", () => {
+        const ftlEngines = systems['ftl-engines'];
+        if (!ftlEngines.damaged) {
+            api.sendCommand("set-damaged", {'ftl-engines': true});
+        } else {
+            alert("FTL engines system is already damaged.");
+        }
+    });
+
+    document.getElementById("sublightRepairSystem").addEventListener("click", () => {
+        const sublightEngines = systems['sublight-engines'];
+        if (sublightEngines.damaged) {
+            api.sendCommand("set-damaged", {'sublight-engines': false});
+        } else {
+            alert("Sublight engines system is not damaged.");
+        }
+    });
+
+    document.getElementById("sublightDamageSystem").addEventListener("click", () => {
+        const sublightEngines = systems['sublight-engines'];
+        if (!sublightEngines.damaged) {
+            api.sendCommand("set-damaged", {'sublight-engines': true});
+        } else {
+            alert("Sublight engines system is already damaged.");
+        }
     });
 }
 
