@@ -218,6 +218,62 @@
                     </div>
                 </div>
             </div>
+            <div id="rowTwo">
+                <div id="alertStatus">
+                    <span>Alert Status</span>
+                    <div id="alertContainer">
+                        <span>Current Alert: </span>
+                        <div id="currentAlert"></div>
+                        <div id="alertButtonContainer">
+                            <button id="alert1" class="alertStatusButton">1</button>
+                            <button id="alert2" class="alertStatusButton">2</button>
+                            <button id="alert3" class="alertStatusButton">3</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="thrusterSystem">
+                    <span>Thrusters</span>
+                    <div id="thrusterStatusContainer">
+                        <div id="velocityStatusContainer">
+                            <span>Velocity</span>
+                            <div id="velocityStatus">
+                                <span>X: </span>
+                                <div id="currentXVelocity"></div>
+                                <span>Y: </span>
+                                <div id="currentYVelocity"></div>
+                                <span>Z: </span>
+                                <div id="currentZVelocity"></div>
+                            </div>
+                            <span>Attitude</span>
+                            <div id="attitudeStatus">
+                                <span>Yaw: </span>
+                                <div id="currentYawAttitude"></div>
+                                <span>Pitch: </span>
+                                <div id="currentPitchAttitude"></div>
+                                <span>Roll: </span>
+                                <div id="currentRollAttitude"></div>
+                            </div>
+                        </div>
+                        <div id="updateThrustersContainer">
+                            <span>Velocity</span>
+                            <div id="velocityInputContainer">
+                                <input type="number" id="xVelocity" name="xVelocity" min="-100" max="100" placeholder="X">
+                                <input type="number" id="yVelocity" name="yVelocity" min="-100" max="100" placeholder="Y">
+                                <input type="number" id="zVelocity" name="zVelocity" min="-100" max="100" placeholder="Z">
+                                <button class="alertButton">Update</button>
+                            </div>
+                            <span>Attitude</span>
+                            <div id="altitudeInputContainer">
+                                <input type="number" id="yawAttitude" name="yawAttitude" min="-180" max="180" placeholder="Yaw">
+                                <input type="number" id="pitchAttitude" name="pitchAttitude" min="-180" max="180" placeholder="Pitch">
+                                <input type="number" id="rollAttitude" name="rollAttitude" min="-180" max="180" placeholder="Roll">
+                                <button class="alertButton">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src="api.js"></script>

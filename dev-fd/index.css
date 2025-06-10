@@ -311,3 +311,64 @@ body {
     justify-content: center;
     margin-top: 5px;
 }
+
+#rowTwo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#alertContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 45vh;
+}
+
+#currentAlert {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+.alertStatusButton {
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#alert1 {
+    background-color: #f44336;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#alert1:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+#alert2 {
+    background-color: #ddba1d;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#alert2:hover {
+    background-color: #c6a00f;
+    transform: scale(1.05);
+}
+
+#alert3 {
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#alert3:hover {
+    background-color: #4CAF50;
+    transform: scale(1.05);
+}
