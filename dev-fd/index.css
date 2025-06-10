@@ -419,10 +419,25 @@ body {
 }
 
 #availableTorpedosContainer {
-    background-color: #008CBA;
+    background-color: #007B9E;
     border-radius: 3px;
     border: none;
     overflow-y: auto;
     height: 9vh;
     padding: 5px;
+}
+
+#energyBeamsContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #007B9E;
+    border-radius: 3px;
+    border: none;
+    padding: 10px;
+}
+
+#forwardEnergyBeamContainer {
+    margin-left: 20px;
 }
