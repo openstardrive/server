@@ -83,6 +83,11 @@ body {
     transform: scale(1.05);
 }
 
+.alertButton:disabled {
+    background-color: #3e8e41;
+    cursor: not-allowed;
+}
+
 .primaryButton {
     border: none;
     background-color: #008CBA;
@@ -102,6 +107,11 @@ body {
 .primaryButton:hover {
     background-color: #007B9E;
     transform: scale(1.05);
+}
+
+.primaryButton:disabled {
+    background-color: #005f73;
+    cursor: not-allowed;
 }
 
 .warningButton {
@@ -125,6 +135,11 @@ body {
     transform: scale(1.05);
 }
 
+.warningButton:disabled {
+    background-color: #b71c1c;
+    cursor: not-allowed;
+}
+
 .secondaryButton {
     border: none;
     background-color: #e38b20;
@@ -144,6 +159,11 @@ body {
 .secondaryButton:hover {
     background-color: #d67c00;
     transform: scale(1.05);
+}
+
+.secondaryButton:disabled {
+    background-color: #b36b00;
+    cursor: not-allowed;
 }
 
 #navigation {

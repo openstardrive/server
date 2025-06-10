@@ -343,7 +343,37 @@ var init = async () => {
         })
     });
 
-    enginesSpeedCheck();
+    document.getElementById("ftlPowerUp").addEventListener("click", () => {
+        const ftlEngines = systems['ftl-engines'];
+        const currentPower = ftlEngines.currentPower;
+        const increasedPower = currentPower + 1;
+        console.log(increasedPower);
+        api.sendCommand(`set-power`, {'ftl-engines': increasedPower});
+    });
+
+    document.getElementById("ftlPowerDown").addEventListener("click", () => {
+        const ftlEngines = systems['ftl-engines'];
+        const currentPower = ftlEngines.currentPower;
+        const decreasedPower = currentPower - 1;
+        console.log(decreasedPower);
+        api.sendCommand(`set-power`, {'ftl-engines': decreasedPower});
+    });
+
+    document.getElementById("sublightPowerUp").addEventListener("click", () => {
+        const sublightEngines = systems['sublight-engines'];
+        const currentPower = sublightEngines.currentPower;
+        const increasedPower = currentPower + 1;
+        console.log(increasedPower);
+        api.sendCommand(`set-power`, {'sublight-engines': increasedPower});
+    });
+
+    document.getElementById("sublightPowerDown").addEventListener("click", () => {
+        const sublightEngines = systems['sublight-engines'];
+        const currentPower = sublightEngines.currentPower;
+        const decreasedPower = currentPower - 1;
+        console.log(decreasedPower);
+        api.sendCommand(`set-power`, {'sublight-engines': decreasedPower});
+    });
 }
 
 init();
