@@ -391,11 +391,6 @@ body {
     justify-content: space-between;
 }
 
-#warheadsContainer {
-    margin-top: 10px;
-    width: 45vh;
-}
-
 #currentlyLoadedContainer {
     display: flex;
     flex-direction: row;
@@ -429,6 +424,8 @@ body {
     overflow-y: auto;
     height: 12vh;
     padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 #energyBeamsContainer {
@@ -453,4 +450,26 @@ body {
 #lastFiredContainer {
     display: flex;
     flex-direction: row;
+}
+
+#inboundHailList {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 10vh;
+    background-color: #007B9E;
+    border-radius: 3px;
+    padding: 5px;
+    width: 30vh;
+}
+
+#outboundHailList {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 10vh;
+    background-color: #007B9E;
+    border-radius: 3px;
+    padding: 5px;
+    width: 30vh;
 }
