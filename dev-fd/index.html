@@ -371,10 +371,11 @@
                 </div>
 
                 <div id="shortRangeContainer">
+                    <span>Short Range Communications</span>
                     <div id="outboundHailContainer">
                         <span>Outbound Hails</span>
                         <div id="outboundHailListContainer">
-                            <select id="outboundHailList" multiple>
+                            <select id="outboundHailList" class="hailList" multiple>
                                 <!-- Crew hails will be dynamically added here -->
                             </select>
                         </div>
@@ -382,7 +383,7 @@
                     <div id="inboundHailContainer">
                         <span>Inbound Hails</span>
                         <div id="inboundHailListContainer">
-                            <select id="inboundHailList" multiple>
+                            <select id="inboundHailList" class="hailList" multiple>
                                 <!-- Inbound hails will be dynamically added here -->
                             </select>
                         </div>
@@ -402,6 +403,35 @@
             </div>
 
             <div id="rowThree">
+                <div id="longRangeContainer">
+                    <span>Long Range Communications</span>
+                    <div id="messageContainer">
+                        <div id="pastMessages">
+                            <div id="listOfPastMessages">
+                                <span>Past Messages</span>
+                                <ul id="pastMessagesList">
+                                    <!-- Past messages will be dynamically added here -->
+                                </ul>
+                            </div>
+                            <div id="pastMessageDisplay"></div>
+                        </div>
+                        <div id="messageComposerContainer">
+                            <span>Message Composer</span>
+                            <div id="messageComposer">
+                                <div id="senderAndRecipient">
+                                    <input type="text" id="messageRecipient" placeholder="Recipient">
+                                    <input type="text" id="messageSender" placeholder="Sender">
+                                </div>
+                                <textarea id="messageContent" placeholder="Type your message here..."></textarea>
+                                <div id="messageSendContainer">
+                                    <label for="isOutbound">Outbound:</label>
+                                    <input type="checkbox" id="isOutbound">
+                                    <button id="sendMessageButton" class="alertButton">Send Message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

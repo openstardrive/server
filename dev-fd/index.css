@@ -202,6 +202,7 @@ body {
     resize: none;
     overflow-y: auto;
     border-radius: 3px;
+    border: none;
     padding: 5px;
     height: 1.75rem;
     margin: 5px;
@@ -452,24 +453,71 @@ body {
     flex-direction: row;
 }
 
-#inboundHailList {
-    display: flex;
-    flex-direction: column;
+.hailList {
     overflow-y: auto;
     height: 10vh;
     background-color: #007B9E;
     border-radius: 3px;
     padding: 5px;
     width: 30vh;
+    border: none;
 }
 
-#outboundHailList {
+#messageContainer {
     display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    height: 10vh;
-    background-color: #007B9E;
+    flex-direction: row;
+}
+
+#pastMessages {
+    display: flex;
+    flex-direction: row;
+}
+
+#pastMessageDisplay {
+    border: none;
     border-radius: 3px;
-    padding: 5px;
-    width: 30vh;
+    width: 40vh;
+    height: 25vh;
+    background-color: #007B9E;
+    margin-left: 10px;
+    margin-right: 10px;
+    overflow-y: auto;
+}
+
+#messageRecipient {
+    background-color: #ccc;
+    border-radius: 3px;
+    border: none;
+}
+
+#messageComposer {
+    display: flex;
+    flex-direction: column;;
+}
+
+#messageSender {
+    background-color: #ccc;
+    border-radius: 3px;
+    border: none;
+    margin-left: 5px;
+}
+
+#messageContent {
+    background-color: #ccc;
+    border-radius: 3px;
+    border: none;
+    width: 46.5vh;
+    height: 15vh;
+    margin-top: 5px;
+}
+
+#messageSendContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#isOutbound {
+    margin: 5px;
 }
