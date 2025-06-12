@@ -219,7 +219,7 @@
                 </div>
             </div>
             <div id="rowTwo">
-                <div id="alertAndWarheadContainer">
+                <div id="alertAndEnergyBeamsContainer">
                     <div id="alertStatus">
                         <span>Alert Status</span>
                         <div id="alertContainer">
@@ -233,60 +233,64 @@
                         </div>
                     </div>
 
-                    <div id="warheadsContainer">
-                        <span>Warheads</span>
-                        <div id="currentlyLoadedContainer">
-                            <span>Currently Loaded: </span>
-                            <div id="currentlyLoadedTorpedo">None</div>
-                        </div>
-                        <span>Available Weapons: </span>
-                        <div id="availableTorpedosContainer">
-                            <span class="typeOfTorpedo">Photon Torpedo - </span>
-                            <div id="numPhotonTorpedos"></div>
-                            <span class="typeOfTorpedo">Quantum Torpedo - </span>
-                            <div id="numQuantumTorpedos"></div>
-                        </div>
-                        <div id="addTorpedoContainer">
-                            <input type="text" id="torpedoType" placeholder="Enter Torpedo Type">
-                            <input type="number" id="numTorpedos" placeholder="Num">
-                            <button class="alertButton" id="addTorpedoButton">Add</button>
+                    <div id="energyBeams">
+                        <span>Energy Beams</span>
+                        <div id="energyBeamsContainer">
+                            <div id="aftEnergyBeamContainer">
+                                <span>Aft Energy Bank</span>
+                                <div id="aftChargedStatus">
+                                    <span>Charged: </span>
+                                    <div id="aftCharged"></div>
+                                </div>
+                                <div id="aftArcStatus">
+                                    <span>Arc: </span>
+                                    <div id="aftArc"></div>
+                                </div>
+                                <div id="aftGHz">
+                                    <span>GHz: </span>
+                                    <div id="aftGHz"></div>
+                                </div>
+                            </div>
+                            <div id="forwardEnergyBeamContainer">
+                                <span>Forward Energy Bank</span>
+                                <div id="forwardChargedStatus">
+                                    <span>Charged: </span>
+                                    <div id="forwardCharged"></div>
+                                </div>
+                                <div id="forwardArcStatus">
+                                    <span>Arc: </span>
+                                    <div id="forwardArc"></div>
+                                </div>
+                                <div id="forwardGHz">
+                                    <span>GHz: </span>
+                                    <div id="forwardGHz"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="energyBeams">
-                    <span>Energy Beams</span>
-                    <div id="energyBeamsContainer">
-                        <div id="aftEnergyBeamContainer">
-                            <span>Aft Energy Bank</span>
-                            <div id="aftChargedStatus">
-                                <span>Charged: </span>
-                                <div id="aftCharged"></div>
-                            </div>
-                            <div id="aftArcStatus">
-                                <span>Arc: </span>
-                                <div id="aftArc"></div>
-                            </div>
-                            <div id="aftGHz">
-                                <span>GHz: </span>
-                                <div id="aftGHz"></div>
-                            </div>
-                        </div>
-                        <div id="forwardEnergyBeamContainer">
-                            <span>Forward Energy Bank</span>
-                            <div id="forwardChargedStatus">
-                                <span>Charged: </span>
-                                <div id="forwardCharged"></div>
-                            </div>
-                            <div id="forwardArcStatus">
-                                <span>Arc: </span>
-                                <div id="forwardArc"></div>
-                            </div>
-                            <div id="forwardGHz">
-                                <span>GHz: </span>
-                                <div id="forwardGHz"></div>
-                            </div>
-                        </div>
+                <div id="warheadsContainer">
+                    <span>Warheads</span>
+                    <div id="currentlyLoadedContainer">
+                        <span>Currently Loaded: </span>
+                        <div id="currentlyLoadedTorpedo">None</div>
+                    </div>
+                    <div id="lastFiredContainer">
+                        <span>Last Fired: </span>
+                        <div id="lastFiredTorpedo">None</div>
+                    </div>
+                    <span>Available Weapons: </span>
+                    <div id="availableTorpedosContainer">
+                        <span class="typeOfTorpedo">Photon Torpedo - </span>
+                        <div id="numPhotonTorpedos"></div>
+                        <span class="typeOfTorpedo">Quantum Torpedo - </span>
+                        <div id="numQuantumTorpedos"></div>
+                    </div>
+                    <div id="addTorpedoContainer">
+                        <input type="text" id="torpedoType" placeholder="Enter Torpedo Type">
+                        <input type="number" id="numTorpedos" placeholder="Num">
+                        <button class="alertButton" id="addTorpedoButton">Add</button>
                     </div>
                 </div>
 

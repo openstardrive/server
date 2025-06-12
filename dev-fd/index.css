@@ -401,6 +401,10 @@ body {
     flex-direction: row;
 }
 
+#lastFiredTorpedo {
+    margin-left: 10px;
+}
+
 #torpedoType {
     background-color: #ccc;
     border: none;
@@ -423,7 +427,7 @@ body {
     border-radius: 3px;
     border: none;
     overflow-y: auto;
-    height: 9vh;
+    height: 12vh;
     padding: 5px;
 }
 
@@ -440,4 +444,13 @@ body {
 
 #forwardEnergyBeamContainer {
     margin-left: 20px;
+}
+
+#energyBeams {
+    margin-top: 30px;
+}
+
+#lastFiredContainer {
+    display: flex;
+    flex-direction: row;
 }
