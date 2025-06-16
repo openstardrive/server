@@ -472,9 +472,21 @@ body {
     margin-top: 30px;
 }
 
-#lastFiredContainer {
+#lastFiredEnergyBeam {
+    margin-left: 5px;
+}
+
+.lastFiredContainer {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    background-color: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.flash-red {
+    background-color: #f44336;
 }
 
 .hailList {

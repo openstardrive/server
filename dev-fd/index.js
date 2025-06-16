@@ -1,5 +1,7 @@
 var systems = {}
 
+var previousEnergyFired;
+
 var processResults = (results, cursor) => {
     var systemsUpdated = new Set();
     results.forEach(result => {
@@ -122,6 +124,18 @@ var processResults = (results, cursor) => {
         }
         else {
             document.getElementById("energyBeamsName").style.color = "white";
+        }
+
+        const lastFired = energyBeams.lastFiredEnergyBeam;
+        if (lastFired && (!previousEnergyFired || previousEnergyFired.firedAt !== lastFired.firedAt)) {
+            document.getElementById("lastFiredEnergyBeam").innerText = `${lastFired.name} fired at ${lastFired.target ? lastFired.target : "no target"} at ${new Date(lastFired.firedAt).toLocaleTimeString()}`;
+            const lastFiredContainer = document.getElementById("lastEnergyBeamFiredContainer");
+            lastFiredContainer.classList.add("flash-red");
+            previousEnergyFired = lastFired;
+
+            setTimeout(() => {
+                lastFiredContainer.classList.remove("flash-red");
+            }, 3000);
         }
     }
     if (systemsUpdated.has('warhead-launcher')) {
