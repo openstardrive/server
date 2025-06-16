@@ -328,9 +328,13 @@ body {
     width: 45vh;
 }
 
+#currentAlertContainer {
+    display: flex;
+    flex-direction: row;
+}
+
 #currentAlert {
-    padding-left: 5px;
-    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .alertStatusButton {

@@ -173,6 +173,13 @@ var processResults = (results, cursor) => {
             document.getElementById("longRangeCommsName").style.color = "white";
         }
     }
+    if (systemsUpdated.has('alert')) {
+        const alertSystem = systems['alert'];
+        const alertLevel = alertSystem.current.level;
+        const alertName = alertSystem.current.name;
+        const alertMessage = `${alertLevel} - ${alertName}` || "No current Level";
+        document.getElementById("currentAlert").innerText = alertMessage;
+    }
 };
 
 var onPollingPaused = () => {
@@ -833,6 +840,21 @@ var init = async () => {
         } else {
             alert("Long range comms system is already damaged.");
         }
+    });
+
+    document.getElementById("alert1").addEventListener("click", () => {
+        const alertSystem = systems['alert'];
+        api.sendCommand("set-alert-level", {level: 1});
+    });
+
+    document.getElementById("alert2").addEventListener("click", () => {
+        const alertSystem = systems['alert'];
+        api.sendCommand("set-alert-level", {level: 2});
+    });
+
+    document.getElementById("alert3").addEventListener("click", () => {
+        const alertSystem = systems['alert'];
+        api.sendCommand("set-alert-level", {level: 3});
     });
 }
 
