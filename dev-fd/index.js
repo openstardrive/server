@@ -101,6 +101,78 @@ var processResults = (results, cursor) => {
             document.getElementById("navigationName").style.color = "white";
         }
     }
+    if (systemsUpdated.has('energy-beams')) {
+        const energyBeams = systems['energy-beams'];
+        document.getElementById("energyBeamsCurrentPower").innerText = energyBeams.currentPower;
+        document.getElementById("energyBeamsRequiredPower").innerText = energyBeams.requiredPower;
+
+        if (energyBeams.damaged === true) {
+            document.getElementById("energyBeamsName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("energyBeamsName").style.color = "white";
+        }
+    }
+    if (systemsUpdated.has('warhead-launcher')) {
+        const warhead = systems['warhead-launcher'];
+        document.getElementById("warheadCurrentPower").innerText = warhead.currentPower;
+        document.getElementById("warheadRequiredPower").innerText = warhead.requiredPower;
+
+        if (warhead.damaged === true) {
+            document.getElementById("warheadLauncherName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("warheadLauncherName").style.color = "white";
+        }
+    }
+    if (systemsUpdated.has('shields')) {
+        const shields = systems['shields'];
+        document.getElementById("shieldsCurrentPower").innerText = shields.currentPower;
+        document.getElementById("shieldsRequiredPower").innerText = shields.requiredPower;
+
+        if (shields.damaged === true) {
+            document.getElementById("shieldsName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("shieldsName").style.color = "white";
+        }
+    }
+    if (systemsUpdated.has('thrusters')) {
+        const thrusters = systems['thrusters'];
+        document.getElementById("thrustersCurrentPower").innerText = thrusters.currentPower;
+        document.getElementById("thrustersRequiredPower").innerText = thrusters.requiredPower;
+
+        if (thrusters.damaged === true) {
+            document.getElementById("thrustersName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("thrustersName").style.color = "white";
+        }
+    }
+    if (systemsUpdated.has('short-range-comms')) {
+        const shortRangeComms = systems['short-range-comms'];
+        document.getElementById("shortRangeCommsCurrentPower").innerText = shortRangeComms.currentPower;
+        document.getElementById("shortRangeCommsRequiredPower").innerText = shortRangeComms.requiredPower;
+
+        if (shortRangeComms.damaged === true) {
+            document.getElementById("shortRangeCommsName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("shortRangeCommsName").style.color = "white";
+        }
+    }
+    if (systemsUpdated.has('long-range-comms')) {
+        const longRangeComms = systems['long-range-comms'];
+        document.getElementById("longRangeCommsCurrentPower").innerText = longRangeComms.currentPower;
+        document.getElementById("longRangeCommsRequiredPower").innerText = longRangeComms.requiredPower;
+
+        if (longRangeComms.damaged === true) {
+            document.getElementById("longRangeCommsName").style.color = "#f44336";
+        }
+        else {
+            document.getElementById("longRangeCommsName").style.color = "white";
+        }
+    }
 };
 
 var onPollingPaused = () => {
@@ -178,6 +250,42 @@ var enginesSpeedCheck = () => {
 
 var init = async () => {
     const api = await startApi(processResults, onPollingStarted, onPollingPaused);
+
+    function displayAllPowerLevels() {
+        const ftlEngines = systems['ftl-engines'];
+        const sublightEngines = systems['sublight-engines'];
+        const sensors = systems['sensors'];
+        const navigation = systems['navigation'];
+        const energyBeams = systems['energy-beams'];
+        const warhead = systems['warhead-launcher'];
+        const shields = systems['shields'];
+        const thrusters = systems['thrusters'];
+        const shortRangeComms = systems['short-range-comms'];
+        const longRangeComms = systems['long-range-comms'];
+
+        document.getElementById("ftlCurrentPower").innerText = ftlEngines ? ftlEngines.currentPower : 0;
+        document.getElementById("ftlRequiredPower").innerText = ftlEngines ? ftlEngines.requiredPower : 0;
+        document.getElementById("sublightCurrentPower").innerText = sublightEngines ? sublightEngines.currentPower : 0;
+        document.getElementById("sublightRequiredPower").innerText = sublightEngines ? sublightEngines.requiredPower : 0;
+        document.getElementById("sensorCurrentPower").innerText = sensors ? sensors.currentPower : 0;
+        document.getElementById("sensorRequiredPower").innerText = sensors ? sensors.requiredPower : 0;
+        document.getElementById("navigationCurrentPower").innerText = navigation ? navigation.currentPower : 0;
+        document.getElementById("navigationRequiredPower").innerText = navigation ? navigation.requiredPower : 0;
+        document.getElementById("energyBeamsCurrentPower").innerText = energyBeams ? energyBeams.currentPower : 0;
+        document.getElementById("energyBeamsRequiredPower").innerText = energyBeams ? energyBeams.requiredPower : 0;
+        document.getElementById("warheadCurrentPower").innerText = warhead ? warhead.currentPower : 0;
+        document.getElementById("warheadRequiredPower").innerText = warhead ? warhead.requiredPower : 0;
+        document.getElementById("shieldsCurrentPower").innerText = shields ? shields.currentPower : 0;
+        document.getElementById("shieldsRequiredPower").innerText = shields ? shields.requiredPower : 0;
+        document.getElementById("thrustersCurrentPower").innerText = thrusters ? thrusters.currentPower : 0;
+        document.getElementById("thrustersRequiredPower").innerText = thrusters ? thrusters.requiredPower : 0;
+        document.getElementById("shortRangeCommsCurrentPower").innerText = shortRangeComms ? shortRangeComms.currentPower : 0;
+        document.getElementById("shortRangeCommsRequiredPower").innerText = shortRangeComms ? shortRangeComms.requiredPower : 0;
+        document.getElementById("longRangeCommsCurrentPower").innerText = longRangeComms ? longRangeComms.currentPower : 0;
+        document.getElementById("longRangeCommsRequiredPower").innerText = longRangeComms ? longRangeComms.requiredPower : 0;
+    }
+
+    displayAllPowerLevels();
 
     document.getElementById("changeSpeed").addEventListener("click", () => {
         const givenSpeed = document.getElementById("speedOptions").value;
@@ -377,6 +485,10 @@ var init = async () => {
     document.getElementById("ftlPowerDown").addEventListener("click", () => {
         const ftlEngines = systems['ftl-engines'];
         const currentPower = ftlEngines.currentPower;
+        if (currentPower == 0) {
+            alert("FTL engines power is already at minimum.");
+            return;
+        }
         const decreasedPower = currentPower - 1;
         api.sendCommand(`set-power`, {'ftl-engines': decreasedPower});
     });
@@ -391,8 +503,156 @@ var init = async () => {
     document.getElementById("sublightPowerDown").addEventListener("click", () => {
         const sublightEngines = systems['sublight-engines'];
         const currentPower = sublightEngines.currentPower;
+        if (currentPower == 0) {
+            alert("FTL engines power is already at minimum.");
+            return;
+        }
         const decreasedPower = currentPower - 1;
         api.sendCommand(`set-power`, {'sublight-engines': decreasedPower});
+    });
+
+    document.getElementById("navigationPowerUp").addEventListener("click", () => {
+        const navigation = systems['navigation'];
+        const currentPower = navigation.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'navigation': increasedPower});
+    });
+
+    document.getElementById("navigationPowerDown").addEventListener("click", () => {
+        const navigation = systems['navigation'];
+        const currentPower = navigation.currentPower;
+        if (currentPower == 0) {
+            alert("Navigation power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'navigation': decreasedPower});
+    });
+
+    document.getElementById("sensorPowerUp").addEventListener("click", () => {
+        const sensors = systems['sensors'];
+        const currentPower = sensors.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'sensors': increasedPower});
+    });
+
+    document.getElementById("sensorPowerDown").addEventListener("click", () => {
+        const sensors = systems['sensors'];
+        const currentPower = sensors.currentPower;
+        if (currentPower == 0) {
+            alert("Sensors power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'sensors': decreasedPower});
+    });
+
+    document.getElementById("energyBeamsPowerUp").addEventListener("click", () => {
+        const energyBeams = systems['energy-beams'];
+        const currentPower = energyBeams.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'energy-beams': increasedPower});
+    });
+
+    document.getElementById("energyBeamsPowerDown").addEventListener("click", () => {
+        const energyBeams = systems['energy-beams'];
+        const currentPower = energyBeams.currentPower;
+        if (currentPower == 0) {
+            alert("Energy beams power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'energy-beams': decreasedPower});
+    });
+
+    document.getElementById("warheadPowerUp").addEventListener("click", () => {
+        const warhead = systems['warhead-launcher'];
+        const currentPower = warhead.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'warhead': increasedPower});
+    });
+
+    document.getElementById("warheadPowerDown").addEventListener("click", () => {
+        const warhead = systems['warhead-launcher'];
+        const currentPower = warhead.currentPower;
+        if (currentPower == 0) {
+            alert("Warhead power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'warhead': decreasedPower});
+    });
+
+    document.getElementById("shieldsPowerUp").addEventListener("click", () => {
+        const shields = systems['shields'];
+        const currentPower = shields.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'shields': increasedPower});
+    });
+
+    document.getElementById("shieldsPowerDown").addEventListener("click", () => {
+        const shields = systems['shields'];
+        const currentPower = shields.currentPower;
+        if (currentPower == 0) {
+            alert("Shields power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'shields': decreasedPower});
+    });
+
+    document.getElementById("thrustersPowerUp").addEventListener("click", () => {
+        const thrusters = systems['thrusters'];
+        const currentPower = thrusters.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'thrusters': increasedPower});
+    });
+
+    document.getElementById("thrustersPowerDown").addEventListener("click", () => {
+        const thrusters = systems['thrusters'];
+        const currentPower = thrusters.currentPower;
+        if (currentPower == 0) {
+            alert("Thrusters power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'thrusters': decreasedPower});
+    });
+
+    document.getElementById("shortRangeCommsPowerUp").addEventListener("click", () => {
+        const shortRangeComms = systems['short-range-comms'];
+        const currentPower = shortRangeComms.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'short-range-comms': increasedPower});
+    });
+
+    document.getElementById("shortRangeCommsPowerDown").addEventListener("click", () => {
+        const shortRangeComms = systems['short-range-comms'];
+        const currentPower = shortRangeComms.currentPower;
+        if (currentPower == 0) {
+            alert("Short range comms power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'short-range-comms': decreasedPower});
+    });
+
+    document.getElementById("longRangeCommsPowerUp").addEventListener("click", () => {
+        const longRangeComms = systems['long-range-comms'];
+        const currentPower = longRangeComms.currentPower;
+        const increasedPower = currentPower + 1;
+        api.sendCommand(`set-power`, {'long-range-comms': increasedPower});
+    });
+
+    document.getElementById("longRangeCommsPowerDown").addEventListener("click", () => {
+        const longRangeComms = systems['long-range-comms'];
+        const currentPower = longRangeComms.currentPower;
+        if (currentPower == 0) {
+            alert("Long range comms power is already at minimum.");
+            return;
+        }
+        const decreasedPower = currentPower - 1;
+        api.sendCommand(`set-power`, {'long-range-comms': decreasedPower});
     });
 
     document.getElementById("navigationRepairSystem").addEventListener("click", () => {
@@ -464,6 +724,114 @@ var init = async () => {
             api.sendCommand("set-damaged", {'sublight-engines': true});
         } else {
             alert("Sublight engines system is already damaged.");
+        }
+    });
+
+    document.getElementById("energyBeamsRepairSystem").addEventListener("click", () => {
+        const energyBeams = systems['energy-beams'];
+        if (energyBeams.damaged) {
+            api.sendCommand("set-damaged", {'energy-beams': false});
+        } else {
+            alert("Energy beams system is not damaged.");
+        }
+    });
+
+    document.getElementById("energyBeamsDamageSystem").addEventListener("click", () => {
+        const energyBeams = systems['energy-beams'];
+        if (!energyBeams.damaged) {
+            api.sendCommand("set-damaged", {'energy-beams': true});
+        } else {
+            alert("Energy beams system is already damaged.");
+        }
+    });
+
+    document.getElementById("warheadRepairSystem").addEventListener("click", () => {
+        const warhead = systems['warhead-launcher'];
+        if (warhead.damaged) {
+            api.sendCommand("set-damaged", {'warhead-launcher': false});
+        } else {
+            alert("Warhead system is not damaged.");
+        }
+    });
+
+    document.getElementById("warheadDamageSystem").addEventListener("click", () => {
+        const warhead = systems['warhead-launcher'];
+        if (!warhead.damaged) {
+            api.sendCommand("set-damaged", {'warhead-launcher': true});
+        } else {
+            alert("Warhead system is already damaged.");
+        }
+    });
+
+    document.getElementById("shieldsRepairSystem").addEventListener("click", () => {
+        const shields = systems['shields'];
+        if (shields.damaged) {
+            api.sendCommand("set-damaged", {'shields': false});
+        } else {
+            alert("Shields system is not damaged.");
+        }
+    });
+
+    document.getElementById("shieldsDamageSystem").addEventListener("click", () => {
+        const shields = systems['shields'];
+        if (!shields.damaged) {
+            api.sendCommand("set-damaged", {'shields': true});
+        } else {
+            alert("Shields system is already damaged.");
+        }
+    });
+
+    document.getElementById("thrustersRepairSystem").addEventListener("click", () => {
+        const thrusters = systems['thrusters'];
+        if (thrusters.damaged) {
+            api.sendCommand("set-damaged", {'thrusters': false});
+        } else {
+            alert("Thrusters system is not damaged.");
+        }
+    });
+
+    document.getElementById("thrustersDamageSystem").addEventListener("click", () => {
+        const thrusters = systems['thrusters'];
+        if (!thrusters.damaged) {
+            api.sendCommand("set-damaged", {'thrusters': true});
+        } else {
+            alert("Thrusters system is already damaged.");
+        }
+    });
+
+    document.getElementById("shortRangeCommsRepairSystem").addEventListener("click", () => {
+        const shortRangeComms = systems['short-range-comms'];
+        if (shortRangeComms.damaged) {
+            api.sendCommand("set-damaged", {'short-range-comms': false});
+        } else {
+            alert("Short range comms system is not damaged.");
+        }
+    });
+
+    document.getElementById("shortRangeCommsDamageSystem").addEventListener("click", () => {
+        const shortRangeComms = systems['short-range-comms'];
+        if (!shortRangeComms.damaged) {
+            api.sendCommand("set-damaged", {'short-range-comms': true});
+        } else {
+            alert("Short range comms system is already damaged.");
+        }
+    });
+
+    document.getElementById("longRangeCommsRepairSystem").addEventListener("click", () => {
+        const longRangeComms = systems['long-range-comms'];
+        if (longRangeComms.damaged) {
+            api.sendCommand("set-damaged", {'long-range-comms': false});
+        } else {
+            alert("Long range comms system is not damaged.");
+        }
+    });
+
+    document.getElementById("longRangeCommsDamageSystem").addEventListener("click", () => {
+        const longRangeComms = systems['long-range-comms'];
+        if (!longRangeComms.damaged) {
+            api.sendCommand("set-damaged", {'long-range-comms': true});
+        } else {
+            alert("Long range comms system is already damaged.");
         }
     });
 }

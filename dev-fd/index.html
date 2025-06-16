@@ -125,7 +125,7 @@
                             <div>/</div>
                             <div class="requiredPower" id="navigationRequiredPower"></div>
                             <div id="systemActions">
-                                <button id="navgiationPowerDown" class="secondaryButton">➖</button>
+                                <button id="navigationPowerDown" class="secondaryButton">➖</button>
                                 <button id="navigationPowerUp" class="alertButton">➕</button>
                                 <button id="navigationRepairSystem" class="primaryButton">Repair</button>
                                 <button id="navigationDamageSystem" class="warningButton">Break</button>
@@ -167,52 +167,76 @@
                                 <button id="sublightDamageSystem" class="warningButton">Break</button>
                             </div>
                         </div>
-                        <div class="system" id="placeholderSystem">
-                            <span class="systemName">Placeholder System</span>
-                            <div class="currentPower">0</div>
+                        <div class="system" id="energy-beams">
+                            <span class="systemName" id="energyBeamsName">Energy Beams</span>
+                            <div class="currentPower" id="energyBeamsCurrentPower"></div>
                             <div>/</div>
-                            <div class="requiredPower">10</div>
+                            <div class="requiredPower" id="energyBeamsRequiredPower">10</div>
                             <div id="systemActions">
-                                <button id="powerDown" class="secondaryButton">➖</button>
-                                <button id="powerUp" class="alertButton">➕</button>
-                                <button id="repairSystem" class="primaryButton">Repair</button>
-                                <button id="damageSystem" class="warningButton">Break</button>
+                                <button id="energyBeamsPowerDown" class="secondaryButton">➖</button>
+                                <button id="energyBeamsPowerUp" class="alertButton">➕</button>
+                                <button id="energyBeamsRepairSystem" class="primaryButton">Repair</button>
+                                <button id="energyBeamsDamageSystem" class="warningButton">Break</button>
                             </div>
                         </div>
-                        <div class="system" id="placeholderSystem">
-                            <span class="systemName">Placeholder System</span>
-                            <div class="currentPower">0</div>
+                        <div class="system" id="warhead-launcher">
+                            <span class="systemName" id="warheadLauncherName">Warhead Launcher</span>
+                            <div class="currentPower" id="warheadCurrentPower">0</div>
                             <div>/</div>
-                            <div class="requiredPower">10</div>
+                            <div class="requiredPower" id="warheadRequiredPower">10</div>
                             <div id="systemActions">
-                                <button id="powerDown" class="secondaryButton">➖</button>
-                                <button id="powerUp" class="alertButton">➕</button>
-                                <button id="repairSystem" class="primaryButton">Repair</button>
-                                <button id="damageSystem" class="warningButton">Break</button>
+                                <button id="warheadPowerDown" class="secondaryButton">➖</button>
+                                <button id="warheadPowerUp" class="alertButton">➕</button>
+                                <button id="warheadRepairSystem" class="primaryButton">Repair</button>
+                                <button id="warheadDamageSystem" class="warningButton">Break</button>
                             </div>
                         </div>
-                        <div class="system" id="placeholderSystem">
-                            <span class="systemName">Placeholder System</span>
-                            <div class="currentPower">0</div>
+                        <div class="system" id="shields">
+                            <span class="systemName" id="shieldsName">Shields</span>
+                            <div class="currentPower" id="shieldsCurrentPower">0</div>
                             <div>/</div>
-                            <div class="requiredPower">10</div>
+                            <div class="requiredPower" id="shieldsRequiredPower">10</div>
                             <div id="systemActions">
-                                <button id="powerDown" class="secondaryButton">➖</button>
-                                <button id="powerUp" class="alertButton">➕</button>
-                                <button id="repairSystem" class="primaryButton">Repair</button>
-                                <button id="damageSystem" class="warningButton">Break</button>
+                                <button id="shieldsPowerDown" class="secondaryButton">➖</button>
+                                <button id="shieldsPowerUp" class="alertButton">➕</button>
+                                <button id="shieldsRepairSystem" class="primaryButton">Repair</button>
+                                <button id="shieldsDamageSystem" class="warningButton">Break</button>
                             </div>
                         </div>
-                        <div class="system" id="placeholderSystem">
-                            <span class="systemName">Placeholder System</span>
-                            <div class="currentPower">0</div>
+                        <div class="system" id="thrusters">
+                            <span class="systemName" id="thrustersName">Thrusters</span>
+                            <div class="currentPower" id="thrustersCurrentPower">0</div>
                             <div>/</div>
-                            <div class="requiredPower">10</div>
+                            <div class="requiredPower" id="thrustersRequiredPower">10</div>
                             <div id="systemActions">
-                                <button id="powerDown" class="secondaryButton">➖</button>
-                                <button id="powerUp" class="alertButton">➕</button>
-                                <button id="repairSystem" class="primaryButton">Repair</button>
-                                <button id="damageSystem" class="warningButton">Break</button>
+                                <button id="thrustersPowerDown" class="secondaryButton">➖</button>
+                                <button id="thrustersPowerUp" class="alertButton">➕</button>
+                                <button id="thrustersRepairSystem" class="primaryButton">Repair</button>
+                                <button id="thrustersDamageSystem" class="warningButton">Break</button>
+                            </div>
+                        </div>
+                        <div class="system" id="short-range-comms">
+                            <span class="systemName" id="shortRangeCommsName">Short Range Communications</span>
+                            <div class="currentPower" id="shortRangeCommsCurrentPower">0</div>
+                            <div>/</div>
+                            <div class="requiredPower" id="shortRangeCommsRequiredPower">10</div>
+                            <div id="systemActions">
+                                <button id="shortRangeCommsPowerDown" class="secondaryButton">➖</button>
+                                <button id="shortRangeCommsPowerUp" class="alertButton">➕</button>
+                                <button id="shortRangeCommsRepairSystem" class="primaryButton">Repair</button>
+                                <button id="shortRangeCommsDamageSystem" class="warningButton">Break</button>
+                            </div>
+                        </div>
+                        <div class="system" id="long-range-comms">
+                            <span class="systemName" id="longRangeCommsName">Long Range Communications</span>
+                            <div class="currentPower" id="longRangeCommsCurrentPower">0</div>
+                            <div>/</div>
+                            <div class="requiredPower" id="longRangeCommsRequiredPower">10</div>
+                            <div id="systemActions">
+                                <button id="longRangeCommsPowerDown" class="secondaryButton">➖</button>
+                                <button id="longRangeCommsPowerUp" class="alertButton">➕</button>
+                                <button id="longRangeCommsRepairSystem" class="primaryButton">Repair</button>
+                                <button id="longRangeCommsDamageSystem" class="warningButton">Break</button>
                             </div>
                         </div>
                     </div>
