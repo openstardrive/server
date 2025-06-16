@@ -103,6 +103,17 @@ var processResults = (results, cursor) => {
     }
     if (systemsUpdated.has('energy-beams')) {
         const energyBeams = systems['energy-beams'];
+        const forwardBank = energyBeams.banks[0];
+        const aftBank = energyBeams.banks[1];
+
+        document.getElementById("forwardCharged").innerText = `${Math.round(forwardBank.percentCharged * 100)}%`;
+        document.getElementById("forwardArc").innerText = forwardBank.arcDegrees;
+        document.getElementById("forwardGHz").innerText = forwardBank.frequency;
+
+        document.getElementById("aftCharged").innerText = `${Math.round(aftBank.percentCharged * 100)}%`;
+        document.getElementById("aftArc").innerText = aftBank.arcDegrees;
+        document.getElementById("aftGHz").innerText = aftBank.frequency;
+
         document.getElementById("energyBeamsCurrentPower").innerText = energyBeams.currentPower;
         document.getElementById("energyBeamsRequiredPower").innerText = energyBeams.requiredPower;
 

@@ -448,6 +448,26 @@ body {
     margin-left: 20px;
 }
 
+#forwardChargedStatus, #forwardArcStatus, #forwardGHzContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#aftChargedStatus, #aftArcStatus, #aftGHzContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#forwardCharged, #forwardArc, #forwardGHz {
+    margin-left: 5px;
+}
+
+#aftCharged, #aftArc, #aftGHz {
+    margin-left: 5px;
+}
+
 #energyBeams {
     margin-top: 30px;
 }
