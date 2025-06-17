@@ -2,6 +2,8 @@ var systems = {}
 
 var previousEnergyFired;
 
+var warheadInventory = [];
+
 var processResults = (results, cursor) => {
     var systemsUpdated = new Set();
     results.forEach(result => {
@@ -149,6 +151,16 @@ var processResults = (results, cursor) => {
         else {
             document.getElementById("warheadLauncherName").style.color = "white";
         }
+
+        const availableTorpedosContainer = document.getElementById("availableTorpedosContainer");
+        const inventory = warhead.inventory || [];
+        warheadInventory = inventory;
+        availableTorpedosContainer.innerHTML = '';
+        inventory.forEach(torpedo => {
+            const torpedoElement = document.createElement('div');
+            torpedoElement.innerHTML = `<span class="typeOfTorpedo">${torpedo.kind} - </span><div id="num${torpedo.kind}Torpedos">${torpedo.number}</div>`;
+            availableTorpedosContainer.appendChild(torpedoElement);
+        });
     }
     if (systemsUpdated.has('shields')) {
         const shields = systems['shields'];
@@ -880,6 +892,26 @@ var init = async () => {
     document.getElementById("alert3").addEventListener("click", () => {
         const alertSystem = systems['alert'];
         api.sendCommand("set-alert-level", {level: 3});
+    });
+
+    document.getElementById("addTorpedoButton").addEventListener("click", () => {
+        const torpedoType = document.getElementById("torpedoType").value;
+        const numTorpedos = document.getElementById("numTorpedos").value;
+        if (!torpedoType || !numTorpedos) {
+            alert("Please select a torpedo type and enter the number of torpedos.");
+            return;
+        }
+
+        const inventoryAddition = {
+            kind: torpedoType,
+            number: parseInt(numTorpedos)
+        }
+
+        warheadInventory.push(inventoryAddition);
+
+        api.sendCommand("set-warhead-inventory", {
+            inventory: warheadInventory
+        });
     });
 }
 
