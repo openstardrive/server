@@ -113,11 +113,17 @@
                     </div>
                 </div>
             </div>
-            <div id="signalCalibration"></div>
+            <div id="signalCalibration">
+                <input type="range" id="powerSlider" class="slider" min="0" max="100" value="50" />
+                <div id="circleDisplay" class="circle-display">
+                  <span id="circleText">50%</span>
+                </div>
+            </div>
         </div>
         <div id="columnTwo">
             <div id="capacitorChargeConduits"></div>
         </div>
+
         <script src="index.js"></script>
     </body>
 </html>
