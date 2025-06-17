@@ -43,7 +43,10 @@ public class Startup
             RequestPath = "/dev-fd"
         });
 
-        System.Console.WriteLine(env.ContentRootPath);
+        app.UseDefaultFiles(new DefaultFilesOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-software-panel")),
+            RequestPath = "/dev-software-panel"
+        });
 
         app.UseDefaultFiles(new DefaultFilesOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-client")),
@@ -69,6 +72,11 @@ public class Startup
         app.UseStaticFiles(new StaticFileOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-client")),
             RequestPath = "/dev-client"
+        });
+
+        app.UseStaticFiles(new StaticFileOptions {
+            FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-software-panel")),
+            RequestPath = "/dev-software-panel"
         });
 
         app.UseRouting();
