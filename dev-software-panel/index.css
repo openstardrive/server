@@ -1,0 +1,83 @@
+body {
+    background: #060a15;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+  
+.panel {
+    background: #101820;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+  
+.switch {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    perspective: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.base {
+    width: 40px;
+    height: 40px;
+    background: #222;
+    border: 3px solid #0ff;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    box-shadow: inset 0 0 10px #0ff3;
+}
+  
+.lever {
+    width: 16px;
+    height: 50px;
+    border-radius: 8px / 50%;
+    background: radial-gradient(circle at 50% 80%, #ccc 10%, #444 90%);
+    position: absolute;
+    transform: translateY(-50%) rotateX(180deg);
+    transform-origin: bottom center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 4px rgba(0, 255, 255, 0.3);
+    z-index: 2;
+}
+
+.switch.on .lever {
+  transform: translateY(-50%) rotateX(0deg);
+}
+
+.led {
+    width: 12px;
+    height: 12px;
+    background: #111;
+    border: 2px solid #222;
+    border-radius: 50%;
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: inset 0 0 3px #000;
+    transition: background 0.2s, box-shadow 0.2s;
+    z-index: 3;
+}
+  
+.switch.on .led {
+    background: #0f0;
+    box-shadow: 0 0 8px #0f0, inset 0 0 2px #0f0;
+    animation: ledPulse 2.0s infinite ease-in-out;
+}
+ 
+@keyframes ledPulse {
+    0%, 100% {
+      box-shadow: 0 0 5px #0f0, 0 0 10px #0f0, inset 0 0 3px #0f0;
+    }
+    50% {
+      box-shadow: 0 0 15px #0f0, 0 0 25px #0f0, inset 0 0 4px #0f0;
+    }
+}
