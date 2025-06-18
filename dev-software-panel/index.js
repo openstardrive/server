@@ -12,6 +12,6 @@ if (!slider || !circleText || !circleDisplay) {
     slider.addEventListener('input', () => {
         const value = slider.value;
         circleText.textContent = `${value}%`;
-        circleDisplay.style.background = `conic-gradient(#0ff ${value}%, #111 0%)`;
-    });
+        circleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+    });      
 }

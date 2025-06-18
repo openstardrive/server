@@ -5,6 +5,12 @@ body {
     flex-direction: row;
     margin: 0;
 }
+
+#columnOne {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
   
 .switch {
     width: 100px;
@@ -126,6 +132,12 @@ body {
     text-shadow: 0 0 2px #0ff;
 }
 
+#signalCalibration {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 /* Slider styled to match dark panel with cyan glow */
 .slider {
     width: 220px;
@@ -147,9 +159,9 @@ body {
 .slider::-webkit-slider-thumb {
     appearance: none;
     width: 24px;
-    height: 24px;
-    background: radial-gradient(circle at center, #0ff, #008080);
-    border-radius: 50%;
+    height: 48px;
+    background: linear-gradient(to bottom, #0ff, #008080);
+    border-radius: 3px;
     border: 2px solid #0ff;
     box-shadow: 0 0 12px #0ff, inset 0 0 6px #0ff;
     cursor: pointer;
@@ -160,20 +172,19 @@ body {
 .slider::-moz-range-thumb {
     width: 24px;
     height: 24px;
-    background: radial-gradient(circle at center, #0ff, #008080);
-    border-radius: 50%;
+    background: linear-gradient(to bottom, #0ff, #008080);
+    border-radius: 3px;
     border: 2px solid #0ff;
     box-shadow: 0 0 12px #0ff, inset 0 0 6px #0ff;
     cursor: pointer;
     transition: background 0.3s ease;
 }
   
-/* Circular percentage display matching the switch's cyan theme */
 .circle-display {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: conic-gradient(#0ff 50%, #111 0%);
+    background: conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%);
     box-shadow:
       0 0 15px #0ff,
       inset 0 0 12px #0ff;
@@ -187,4 +198,17 @@ body {
     color: #0ff;
     user-select: none;
     transition: background 0.3s ease;
+}
+
+#leftSignalCalibrationContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    margin-left: 10px;
+}
+
+.slider {
+    transform: rotate(270deg);
+    transform-origin: center;
 }
