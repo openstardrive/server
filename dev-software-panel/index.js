@@ -142,3 +142,90 @@ document.getElementById('gvd-i').addEventListener('click', () => {
       });
     }
 });
+
+document.getElementById('rcx-e').addEventListener('click', () => {
+    const rcxLeds = [
+      document.getElementById('rcx-e-1'),
+      document.getElementById('rcx-e-2'),
+      document.getElementById('rcx-e-3')
+    ];
+  
+    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const isOn = rcxLeds.some(led => led.classList.contains('on'));
+  
+    // Reset classes
+    rcxLeds.forEach(led => {
+      led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+    });
+  
+    if (!isOn) {
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+  
+      rcxLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      });
+    }
+});
+
+document.getElementById('lec-e').addEventListener('click', () => {
+    const lecLeds = [
+      document.getElementById('lec-e-1'),
+      document.getElementById('lec-e-2'),
+      document.getElementById('lec-e-3')
+    ];
+  
+    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const isOn = lecLeds.some(led => led.classList.contains('on'));
+  
+    // Reset classes
+    lecLeds.forEach(led => {
+      led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+    });
+  
+    if (!isOn) {
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+  
+      lecLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      });
+    }
+});
+
+document.getElementById('gvd-e').addEventListener('click', () => {
+    const gvdLeds = [
+      document.getElementById('gvd-e-1'),
+      document.getElementById('gvd-e-2'),
+      document.getElementById('gvd-e-3')
+    ];
+  
+    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const isOn = gvdLeds.some(led => led.classList.contains('on'));
+  
+    // Reset classes
+    gvdLeds.forEach(led => {
+      led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+    });
+  
+    if (!isOn) {
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+  
+      gvdLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      });
+    }
+});
