@@ -285,12 +285,14 @@ body {
     position: absolute;
     width: 12px;
     height: 12px;
-    background: #0f0;
+    background: #898484;
+    border: 2px solid #222;
     border-radius: 50%;
-    box-shadow: 0 0 6px #0f0;
+    box-shadow: inset 0 0 3px #000;
     top: 50%;
     left: 50%;
     transform-origin: center;
+    transition: background 0.2s, box-shadow 0.2s;
     z-index: 1;
 }  
   
@@ -353,4 +355,79 @@ body {
 
 #configurePositronicInterface:hover {
     background: #686565;
+}
+
+.led-red {
+    background: #f00;
+    box-shadow: 0 0 6px #f00;
+    animation: redLedPulse 2.0s infinite ease-in-out;
+}
+  
+.led-yellow {
+    background: #ff0;
+    box-shadow: 0 0 6px #ff0;
+    animation: yellowLedPulse 2.0s infinite ease-in-out;
+}
+  
+.led-green {
+    background: #0f0;
+    box-shadow: 0 0 6px #0f0;
+    animation: greenLedPulse 2.0s infinite ease-in-out;
+}
+  
+.led-blue {
+    background: #00f;
+    box-shadow: 0 0 6px #00f;
+    animation: blueLedPulse 2.0s infinite ease-in-out;
+}
+  
+.led-purple {
+    background: #a0f;
+    box-shadow: 0 0 6px #a0f;
+    animation: purpleLedPulse 2.0s infinite ease-in-out;
+}
+
+@keyframes redLedPulse {
+    0%, 100% {
+      box-shadow: 0 0 5px #f00, 0 0 10px #f00, inset 0 0 3px #f00;
+    }
+    50% {
+      box-shadow: 0 0 15px #f00, 0 0 25px #f00, inset 0 0 4px #f00;
+    }
+}
+
+@keyframes yellowLedPulse {
+    0%, 100% {
+      box-shadow: 0 0 5px #ff0, 0 0 10px #ff0, inset 0 0 3px #ff0;
+    }
+    50% {
+      box-shadow: 0 0 15px #ff0, 0 0 25px #ff0, inset 0 0 4px #ff0;
+    }
+}
+
+@keyframes greenLedPulse {
+    0%, 100% {
+      box-shadow: 0 0 5px #0f0, 0 0 10px #0f0, inset 0 0 3px #0f0;
+    }
+    50% {
+      box-shadow: 0 0 15px #0f0, 0 0 25px #0f0, inset 0 0 4px #0f0;
+    }
+}
+
+@keyframes blueLedPulse {
+    0%, 100% {
+      box-shadow: 0 0 5px #00f, 0 0 10px #00f, inset 0 0 3px #00f;
+    }
+    50% {
+      box-shadow: 0 0 15px #00f, 0 0 25px #00f, inset 0 0 4px #00f;
+    }
+}
+
+@keyframes purpleLedPulse {
+    0%, 100% {
+      box-shadow: 0 0 5px #a0f, 0 0 10px #a0f, inset 0 0 3px #a0f;
+    }
+    50% {
+      box-shadow: 0 0 15px #a0f, 0 0 25px #a0f, inset 0 0 4px #a0f;
+    }
 }
