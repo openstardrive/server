@@ -150,8 +150,19 @@ body {
     cursor: pointer;
     outline: none;
     transition: box-shadow 0.3s ease;
+    transform: rotate(270deg);
+    transform-origin: center;
 }
-  
+
+.slider-wrapper {
+    width: 100px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+} 
+ 
 .slider:hover {
     box-shadow: inset 0 0 12px #0ff;
 }
@@ -200,21 +211,25 @@ body {
     transition: background 0.3s ease;
 }
 
-#leftSignalCalibrationContainer {
+#internalSignalCalibrationContainer,
+#externalSignalCalibrationContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     height: 100%;
     margin-left: 10px;
-}
-
-.slider {
-    transform: rotate(270deg);
-    transform-origin: center;
 }
 
 #signalCalibrationContainer {
     display: flex;
     flex-direction: row;
     height: 100%;
+    justify-content: center;
+    align-items: center;
+    border:#898484 2px solid;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
