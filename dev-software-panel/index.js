@@ -2,16 +2,30 @@ function toggleSwitch(element) {
     element.classList.toggle("on");
 }
 
-const slider = document.getElementById('powerSlider');
-const circleText = document.getElementById('circleText');
-const circleDisplay = document.getElementById('circleDisplay');
+const internalSlider = document.getElementById('internalSignalSlider');
+const internalCircleText = document.getElementById('internalCircleText');
+const internalCircleDisplay = document.getElementById('internalCircleDisplay');
 
-if (!slider || !circleText || !circleDisplay) {
-    console.error('Missing elements:', { slider, circleText, circleDisplay });
+if (!internalSlider || !internalCircleText || !internalCircleDisplay) {
+    console.error('Missing internal elements:', { internalSlider, internalCircleText, internalCircleDisplay });
 } else {
-    slider.addEventListener('input', () => {
-        const value = slider.value;
-        circleText.textContent = `${value}%`;
-        circleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+    internalSlider.addEventListener('input', () => {
+        const value = internalSlider.value;
+        internalCircleText.textContent = `${value}%`;
+        internalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+    });      
+}
+
+const externalSlider = document.getElementById('externalSignalSlider');
+const externalCircleText = document.getElementById('externalCircleText');
+const externalCircleDisplay = document.getElementById('externalCircleDisplay');
+
+if (!externalSlider || !externalCircleText || !externalCircleDisplay) {
+    console.error('Missing External elements:', { externalSlider, externalCircleText, externalCircleDisplay });
+} else {
+    externalSlider.addEventListener('input', () => {
+        const value = externalSlider.value;
+        externalCircleText.textContent = `${value}%`;
+        externalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
     });      
 }

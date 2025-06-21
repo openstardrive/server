@@ -114,12 +114,21 @@
                 </div>
             </div>
             <div id="signalCalibration">
-                <div id="leftSignalCalibrationContainer">
-                    <div id="circleDisplay" class="circle-display">
-                        <span id="circleText">0%</span>
+                <span class="sectionHeading" id="signalCalibrationHeading">Signal Calibration</span>
+                <div id="signalCalibrationContainer">
+                  <div id="internalSignalCalibrationContainer">
+                    <div id="internalCircleDisplay" class="circle-display">
+                      <span id="internalCircleText" class="circle-text">0%</span>
                     </div>
-                    <input type="range" id="powerSlider" class="slider" min="0" max="100" value="0" />
-                </div>                 
+                    <input type="range" id="internalSignalSlider" class="slider" min="0" max="100" value="0" />
+                  </div>
+                  <div id="externalSignalCalibrationContainer">
+                    <input type="range" id="externalSignalSlider" class="slider" min="0" max="100" value="0" />
+                    <div id="externalCircleDisplay" class="circle-display">
+                      <span id="externalCircleText" class="circle-text">0%</span>
+                    </div>
+                  </div>  
+                </div>             
             </div>
         </div>
         <div id="columnTwo">

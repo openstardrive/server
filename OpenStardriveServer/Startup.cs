@@ -82,7 +82,13 @@ public class Startup
 
         app.UseStaticFiles(new StaticFileOptions {
             FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "../dev-software-panel")),
-            RequestPath = "/dev-software-panel"
+            RequestPath = "/dev-software-panel",
+            OnPrepareResponse = ctx => {
+                // Disable caching for development
+                ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                ctx.Context.Response.Headers["Pragma"] = "no-cache";
+                ctx.Context.Response.Headers["Expires"] = "0";
+            }
         });
 
         app.UseRouting();
