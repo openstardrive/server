@@ -117,13 +117,28 @@
                 <span class="sectionHeading" id="signalCalibrationHeading">Signal Calibration</span>
                 <div id="signalCalibrationContainer">
                   <div id="internalSignalCalibrationContainer">
-                    <div id="internalCircleDisplay" class="circle-display">
-                      <span id="internalCircleText" class="circle-text">0%</span>
+                    
+                    <div class="circle-wrapper">
+                      <div id="internalCircleDisplay" class="circle-display">
+                        <span id="internalCircleText" class="circle-text">0%</span>
+                      </div>
+                    
+                      <!-- Use .ring-led instead of .led -->
+                      <div class="ring-led ring-led-1"></div>
+                      <div class="ring-led ring-led-2"></div>
+                      <div class="ring-led ring-led-3"></div>
+                      <div class="ring-led ring-led-4"></div>
+                      <div class="ring-led ring-led-5"></div>
+                      <div class="ring-led ring-led-6"></div>
+                      <div class="ring-led ring-led-7"></div>
+                      <div class="ring-led ring-led-8"></div>
+                      <div class="ring-led ring-led-9"></div>
                     </div>
+
                     <div class="slider-wrapper">
                       <input type="range" id="internalSignalSlider" class="slider" min="0" max="100" value="0" />
                     </div>
-                  </div>
+                  </div>                  
                   <div id="externalSignalCalibrationContainer">
                     <div class="slider-wrapper">
                       <input type="range" id="externalSignalSlider" class="slider" min="0" max="100" value="0" />

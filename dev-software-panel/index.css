@@ -233,3 +233,63 @@ body {
     margin-right: 10px;
     margin-left: 10px;
 }
+
+.circle-wrapper {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.circle-display {
+    width: 100px;
+    height: 100px;
+    background: conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%);
+    border-radius: 50%;
+    border: 2px solid #0ff;
+    box-shadow: 0 0 15px #0ff, inset 0 0 12px #0ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #0ff;
+    user-select: none;
+    transition: background 0.3s ease;
+}
+  
+.circle-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+    font-weight: bold;
+}
+
+.ring-led {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #0f0;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #0f0;
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+    z-index: 1;
+}  
+  
+.ring-led-1 { transform: rotate(0deg)   translate(100px) rotate(0deg)   translate(-50%, -50%); }
+.ring-led-2 { transform: rotate(40deg)  translate(100px) rotate(-40deg) translate(-50%, -50%); }
+.ring-led-3 { transform: rotate(80deg)  translate(100px) rotate(-80deg) translate(-50%, -50%); }
+.ring-led-4 { transform: rotate(120deg) translate(100px) rotate(-120deg) translate(-50%, -50%); }
+.ring-led-5 { transform: rotate(160deg) translate(100px) rotate(-160deg) translate(-50%, -50%); }
+.ring-led-6 { transform: rotate(200deg) translate(100px) rotate(-200deg) translate(-50%, -50%); }
+.ring-led-7 { transform: rotate(240deg) translate(100px) rotate(-240deg) translate(-50%, -50%); }
+.ring-led-8 { transform: rotate(280deg) translate(100px) rotate(-280deg) translate(-50%, -50%); }
+.ring-led-9 { transform: rotate(320deg) translate(100px) rotate(-320deg) translate(-50%, -50%); }
