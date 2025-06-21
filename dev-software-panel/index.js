@@ -229,3 +229,56 @@ document.getElementById('gvd-e').addEventListener('click', () => {
       });
     }
 });
+
+function createArcTicks(containerId, count = 10) {
+    const container = document.getElementById(containerId);
+    const radius = 80;
+  
+    for (let i = 0; i <= count; i++) {
+      const angle = map(i, 0, count, -90, 90);
+      const percent = Math.round((i / count) * 100);
+      const isLabeled = percent % 20 === 0;
+  
+      const tick = document.createElement('div');
+      tick.classList.add('tick');
+      if (isLabeled) tick.classList.add('tick-labeled');
+      tick.style.transform = `rotate(${angle}deg) translateY(-${radius}px)`;
+      container.appendChild(tick);
+  
+      if (isLabeled) {
+        const label = document.createElement('div');
+        label.classList.add('tick-label');
+        label.innerText = `${percent}%`;
+        label.style.transform = `rotate(${angle}deg) translateY(-${radius + 20}px) rotate(${-angle}deg)`;
+        container.appendChild(label);
+      }
+    }
+}
+  
+function map(val, inMin, inMax, outMin, outMax) {
+    return ((val - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+}
+
+createArcTicks('ticksArc');
+
+let gaugeValue = 0;
+  
+function updateGauge(value) {
+    const needle = document.getElementById('needle');
+    const label = document.getElementById('gaugeValue');
+    const clamped = Math.max(0, Math.min(100, value));
+    const angle = map(clamped, 0, 100, -90, 90);
+    needle.style.transform = `rotate(${angle}deg)`;
+    label.textContent = `${clamped}%`;
+}
+  
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      gaugeValue += 10;
+      updateGauge(gaugeValue);
+    } else if (e.key === 'ArrowLeft') {
+      gaugeValue -= 10;
+      updateGauge(gaugeValue);
+    }
+});
+  
