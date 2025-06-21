@@ -56,23 +56,6 @@ if (!externalSlider || !externalCircleText || !externalCircleDisplay) {
     });      
 }
 
-// .switch.on .led {
-//     background: #0f0;
-//     box-shadow: 0 0 8px #0f0, inset 0 0 2px #0f0;
-//     animation: ledPulse 2.0s infinite ease-in-out;
-// }
-
-// @keyframes ledPulse {
-//     0%, 100% {
-//       box-shadow: 0 0 5px #0f0, 0 0 10px #0f0, inset 0 0 3px #0f0;
-//     }
-//     50% {
-//       box-shadow: 0 0 15px #0f0, 0 0 25px #0f0, inset 0 0 4px #0f0;
-//     }
-// }
-
-const rcxIButton = document.getElementById('rcx-i');
-
 document.getElementById('rcx-i').addEventListener('click', () => {
     const rcxLeds = [
       document.getElementById('rcx-i-1'),
@@ -100,5 +83,62 @@ document.getElementById('rcx-i').addEventListener('click', () => {
         led.classList.add('on', colorClass);
       });
     }
-  });
+});
+
+document.getElementById('lec-i').addEventListener('click', () => {
+    const lecLeds = [
+      document.getElementById('lec-i-1'),
+      document.getElementById('lec-i-2'),
+      document.getElementById('lec-i-3')
+    ];
   
+    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const isOn = lecLeds.some(led => led.classList.contains('on'));
+  
+    // Reset classes
+    lecLeds.forEach(led => {
+      led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+    });
+  
+    if (!isOn) {
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+  
+      lecLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      });
+    }
+});
+
+document.getElementById('gvd-i').addEventListener('click', () => {
+    const gvdLeds = [
+      document.getElementById('gvd-i-1'),
+      document.getElementById('gvd-i-2'),
+      document.getElementById('gvd-i-3')
+    ];
+  
+    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const isOn = gvdLeds.some(led => led.classList.contains('on'));
+  
+    // Reset classes
+    gvdLeds.forEach(led => {
+      led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+    });
+  
+    if (!isOn) {
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+  
+      gvdLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      });
+    }
+});
