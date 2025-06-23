@@ -29,6 +29,7 @@ document.getElementById('configurePositronicInterface').addEventListener('click'
       switchElement.classList.remove("on");
     }
   });
+  channel.postMessage({ type: 'resetSwitches' });
 });
 
 const internalSlider = document.getElementById('internalSignalSlider');
@@ -42,6 +43,7 @@ if (!internalSlider || !internalCircleText || !internalCircleDisplay) {
     const value = internalSlider.value;
     internalCircleText.textContent = `${value}%`;
     internalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+    channel.postMessage({ type: 'internalSignal', value: value });
   });      
 }
 
@@ -56,6 +58,7 @@ if (!externalSlider || !externalCircleText || !externalCircleDisplay) {
     const value = externalSlider.value;
     externalCircleText.textContent = `${value}%`;
     externalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+    channel.postMessage({ type: 'externalSignal', value: value });
   });      
 }
 
@@ -86,6 +89,9 @@ document.getElementById('rcx-i').addEventListener('click', () => {
         led.classList.add('on', colorClass);
       });
     }
+
+    console.log(signalValue);
+    channel.postMessage({ type: 'rcx-i', value: signalValue });
 });
 
 document.getElementById('lec-i').addEventListener('click', () => {
@@ -115,6 +121,8 @@ document.getElementById('lec-i').addEventListener('click', () => {
         led.classList.add('on', colorClass);
       });
     }
+    
+    channel.postMessage({ type: 'lec-i', value: signalValue });
 });
 
 document.getElementById('gvd-i').addEventListener('click', () => {
@@ -144,6 +152,8 @@ document.getElementById('gvd-i').addEventListener('click', () => {
         led.classList.add('on', colorClass);
       });
     }
+
+    channel.postMessage({ type: 'gvd-i', value: signalValue });
 });
 
 document.getElementById('rcx-e').addEventListener('click', () => {
@@ -173,6 +183,8 @@ document.getElementById('rcx-e').addEventListener('click', () => {
         led.classList.add('on', colorClass);
       });
     }
+
+    channel.postMessage({ type: 'rcx-e', value: signalValue });
 });
 
 document.getElementById('lec-e').addEventListener('click', () => {
@@ -202,6 +214,8 @@ document.getElementById('lec-e').addEventListener('click', () => {
         led.classList.add('on', colorClass);
       });
     }
+
+    channel.postMessage({ type: 'lec-e', value: signalValue });
 });
 
 document.getElementById('gvd-e').addEventListener('click', () => {
@@ -230,6 +244,8 @@ document.getElementById('gvd-e').addEventListener('click', () => {
         led.classList.add('on', colorClass);
       });
     }
+    
+    channel.postMessage({ type: 'gvd-e', value: signalValue });
 });
 
 function createArcTicks(containerId, count = 10) {
@@ -311,6 +327,8 @@ document.getElementById('configureSignalCalibration').addEventListener('click', 
   document.getElementById('externalCircleText').textContent = '0%';
   document.getElementById('internalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
   document.getElementById('externalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
+
+  channel.postMessage({ type: 'resetCalibration' });
 });
 
 document.getElementById('alphaMinus5').addEventListener('click', () => {
