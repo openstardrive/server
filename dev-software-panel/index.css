@@ -518,3 +518,34 @@ body {
     transform: translateX(-50%);
     box-shadow: 0 0 8px #0ff;
 }
+
+#rowTwo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.capacitorButton {
+    width: 55px;
+    height: 55px;
+    border-radius: 5px;
+    background: #898484;
+    color: white;
+    font-weight: bold;
+    border: 3px solid rgb(206, 209, 209);
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+    margin: 5px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.capacitorButton:hover {
+    background: #686565;
+}
+
+.capacitorContainer {
+    display: flex;
+    flex-direction: row;
+}

@@ -258,7 +258,8 @@ function map(val, inMin, inMax, outMin, outMax) {
   return ((val - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
-createArcTicks('ticksArc');
+createArcTicks('alphaTicksArc');
+createArcTicks('bravoTicksArc');
 
 let gaugeValue = 0;
   
