@@ -2,15 +2,15 @@ const positronicSwitches = [];
 
 function addPositronicSwitches() {
     for (let i = 1; i<= 6; i++) {
-        const alphaSwitch = document.getElementById(`alpha-${i}`);
-        const betaSwitch = document.getElementById(`bravo-${i}`);
-        if (!alphaSwitch || !betaSwitch) {
-            console.error("not all switches found for pair", i);
-        }
-        else {
-            positronicSwitches.push(alphaSwitch);
-            positronicSwitches.push(betaSwitch);
-        }
+      const alphaSwitch = document.getElementById(`alpha-${i}`);
+      const betaSwitch = document.getElementById(`bravo-${i}`);
+      if (!alphaSwitch || !betaSwitch) {
+        console.error("not all switches found for pair", i);
+      }
+      else {
+        positronicSwitches.push(alphaSwitch);
+        positronicSwitches.push(betaSwitch);
+      }
     }
 }
 
@@ -21,11 +21,11 @@ function toggleSwitch(element) {
 }
 
 document.getElementById('configurePositronicInterface').addEventListener('click', () => {
-    positronicSwitches.forEach(switchElement => {
-        if (switchElement.classList.contains("on")) {
-            switchElement.classList.remove("on");
-        }
-    });
+  positronicSwitches.forEach(switchElement => {
+    if (switchElement.classList.contains("on")) {
+      switchElement.classList.remove("on");
+    }
+  });
 });
 
 const internalSlider = document.getElementById('internalSignalSlider');
@@ -33,13 +33,13 @@ const internalCircleText = document.getElementById('internalCircleText');
 const internalCircleDisplay = document.getElementById('internalCircleDisplay');
 
 if (!internalSlider || !internalCircleText || !internalCircleDisplay) {
-    console.error('Missing internal elements:', { internalSlider, internalCircleText, internalCircleDisplay });
+  console.error('Missing internal elements:', { internalSlider, internalCircleText, internalCircleDisplay });
 } else {
-    internalSlider.addEventListener('input', () => {
-        const value = internalSlider.value;
-        internalCircleText.textContent = `${value}%`;
-        internalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
-    });      
+  internalSlider.addEventListener('input', () => {
+    const value = internalSlider.value;
+    internalCircleText.textContent = `${value}%`;
+    internalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+  });      
 }
 
 const externalSlider = document.getElementById('externalSignalSlider');
@@ -47,13 +47,13 @@ const externalCircleText = document.getElementById('externalCircleText');
 const externalCircleDisplay = document.getElementById('externalCircleDisplay');
 
 if (!externalSlider || !externalCircleText || !externalCircleDisplay) {
-    console.error('Missing External elements:', { externalSlider, externalCircleText, externalCircleDisplay });
+  console.error('Missing External elements:', { externalSlider, externalCircleText, externalCircleDisplay });
 } else {
-    externalSlider.addEventListener('input', () => {
-        const value = externalSlider.value;
-        externalCircleText.textContent = `${value}%`;
-        externalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
-    });      
+  externalSlider.addEventListener('input', () => {
+    const value = externalSlider.value;
+    externalCircleText.textContent = `${value}%`;
+    externalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+  });      
 }
 
 document.getElementById('rcx-i').addEventListener('click', () => {
@@ -150,7 +150,7 @@ document.getElementById('rcx-e').addEventListener('click', () => {
       document.getElementById('rcx-e-3')
     ];
   
-    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const signalValue = parseInt(document.getElementById('externalSignalSlider').value, 10);
     const isOn = rcxLeds.some(led => led.classList.contains('on'));
   
     // Reset classes
@@ -179,7 +179,7 @@ document.getElementById('lec-e').addEventListener('click', () => {
       document.getElementById('lec-e-3')
     ];
   
-    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const signalValue = parseInt(document.getElementById('externalSignalSlider').value, 10);
     const isOn = lecLeds.some(led => led.classList.contains('on'));
   
     // Reset classes
@@ -208,10 +208,9 @@ document.getElementById('gvd-e').addEventListener('click', () => {
       document.getElementById('gvd-e-3')
     ];
   
-    const signalValue = parseInt(document.getElementById('internalSignalSlider').value, 10);
+    const signalValue = parseInt(document.getElementById('externalSignalSlider').value, 10);
     const isOn = gvdLeds.some(led => led.classList.contains('on'));
   
-    // Reset classes
     gvdLeds.forEach(led => {
       led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
     });
@@ -231,32 +230,32 @@ document.getElementById('gvd-e').addEventListener('click', () => {
 });
 
 function createArcTicks(containerId, count = 10) {
-    const container = document.getElementById(containerId);
-    const radius = 80;
+  const container = document.getElementById(containerId);
+  const radius = 80;
   
-    for (let i = 0; i <= count; i++) {
-      const angle = map(i, 0, count, -90, 90);
-      const percent = Math.round((i / count) * 100);
-      const isLabeled = percent % 20 === 0;
+  for (let i = 0; i <= count; i++) {
+    const angle = map(i, 0, count, -90, 90);
+    const percent = Math.round((i / count) * 100);
+    const isLabeled = percent % 20 === 0;
   
-      const tick = document.createElement('div');
-      tick.classList.add('tick');
-      if (isLabeled) tick.classList.add('tick-labeled');
-      tick.style.transform = `rotate(${angle}deg) translateY(-${radius}px)`;
-      container.appendChild(tick);
+    const tick = document.createElement('div');
+    tick.classList.add('tick');
+    if (isLabeled) tick.classList.add('tick-labeled');
+    tick.style.transform = `rotate(${angle}deg) translateY(-${radius}px)`;
+    container.appendChild(tick);
   
-      if (isLabeled) {
-        const label = document.createElement('div');
-        label.classList.add('tick-label');
-        label.innerText = `${percent}%`;
-        label.style.transform = `rotate(${angle}deg) translateY(-${radius + 20}px) rotate(${-angle}deg)`;
-        container.appendChild(label);
-      }
+    if (isLabeled) {
+      const label = document.createElement('div');
+      label.classList.add('tick-label');
+      label.innerText = `${percent}%`;
+      label.style.transform = `rotate(${angle}deg) translateY(-${radius + 20}px) rotate(${-angle}deg)`;
+      container.appendChild(label);
     }
+  }
 }
   
 function map(val, inMin, inMax, outMin, outMax) {
-    return ((val - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+  return ((val - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
 createArcTicks('ticksArc');
@@ -264,21 +263,59 @@ createArcTicks('ticksArc');
 let gaugeValue = 0;
   
 function updateGauge(value) {
-    const needle = document.getElementById('needle');
-    const label = document.getElementById('gaugeValue');
-    const clamped = Math.max(0, Math.min(100, value));
-    const angle = map(clamped, 0, 100, -90, 90);
-    needle.style.transform = `rotate(${angle}deg)`;
-    label.textContent = `${clamped}%`;
+  const needle = document.getElementById('needle');
+  const label = document.getElementById('gaugeValue');
+  const clamped = Math.max(0, Math.min(100, value));
+  const angle = map(clamped, 0, 100, -90, 90);
+  needle.style.transform = `rotate(${angle}deg)`;
+  label.textContent = `${clamped}%`;
 }
   
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') {
-      gaugeValue += 10;
-      updateGauge(gaugeValue);
-    } else if (e.key === 'ArrowLeft') {
-      gaugeValue -= 10;
-      updateGauge(gaugeValue);
-    }
+  if (e.key === 'ArrowRight') {
+    if (gaugeValue >= 100) return;
+    gaugeValue += 10;
+    updateGauge(gaugeValue);
+  } else if (e.key === 'ArrowLeft') {
+    if (gaugeValue <= 0) return;
+    gaugeValue -= 10;
+    updateGauge(gaugeValue);
+  }
 });
-  
+
+document.getElementById('configureSignalCalibration').addEventListener('click', () => {
+  const leds = [
+    document.getElementById('rcx-i-1'),
+    document.getElementById('rcx-i-2'),
+    document.getElementById('rcx-i-3'),
+    document.getElementById('lec-i-1'),
+    document.getElementById('lec-i-2'),
+    document.getElementById('lec-i-3'),
+    document.getElementById('gvd-i-1'),
+    document.getElementById('gvd-i-2'),
+    document.getElementById('gvd-i-3'),
+    document.getElementById('rcx-e-1'),
+    document.getElementById('rcx-e-2'),
+    document.getElementById('rcx-e-3'),
+    document.getElementById('lec-e-1'),
+    document.getElementById('lec-e-2'),
+    document.getElementById('lec-e-3'),
+    document.getElementById('gvd-e-1'),
+    document.getElementById('gvd-e-2'),
+    document.getElementById('gvd-e-3')
+  ];
+
+  leds.forEach(led => {
+    if (led.classList.contains('on')) {
+      led.classList.remove('on');
+      led.classList.remove('led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+    }
+  });
+
+  document.getElementById('internalSignalSlider').value = 0;
+  document.getElementById('externalSignalSlider').value = 0;
+  document.getElementById('internalCircleText').textContent = '0%';
+  document.getElementById('externalCircleText').textContent = '0%';
+  document.getElementById('internalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
+  document.getElementById('externalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
+});

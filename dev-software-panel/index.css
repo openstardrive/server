@@ -335,7 +335,7 @@ body {
     background: #686565;
 }
 
-#configurePositronicInterface {
+.configure {
     background: #898484;
     color: white;
     font-weight: bold;
@@ -343,11 +343,11 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s, box-shadow 0.3s;
-    padding: 10px 20px;
-    width: 300px;
+    padding: 10px;
+    font-size: 1rem;
 }
 
-#configurePositronicInterface:hover {
+.configure:hover {
     background: #686565;
 }
 
@@ -474,12 +474,15 @@ body {
     color: #0ff;
     font-size: 0.75rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    left: 0;
     bottom: 0;
     transform-origin: bottom center;
     text-shadow: 0 0 2px #0ff;
     user-select: none;
     pointer-events: none;
+    width: 40px;
+    text-align: center;
+    margin-left: -20px;
+    padding: 5px;
 }
   
 .gauge-value {
