@@ -111,7 +111,7 @@
                 <div class="switchLabel">Bravo - 6</div>
               </div>
             </div>
-            <button id="configurePositronicInterface" class="configure">Configure Positronic Interface</button>
+            <button id="configurePositronicInterface" class="configure">Configure</button>
           </div>
         </div>
         <div id="signalCalibration">
@@ -182,64 +182,72 @@
         </div>
       </div>
       <div id="rowTwo">
-        <div id="alphaCapacitorChargeContainer" class="capacitorContainer">
-          <div id="alphaGuageContainer">
-            <div class="arc-gauge-wrapper">
-              <div class="arc-gauge">
-                <div class="ticks-arc" id="alphaTicksArc"></div>
-                <div class="needle" id="alphaNeedle"></div>
-                <div class="needle-center"></div>
+        <div id="capacitorChargeConduits">
+          <span class="sectionHeading">Capacitor Charge Conduits</span>
+          <div id="capacitorChargeContainers">
+            <div id="alphaCapacitorChargeContainer" class="capacitorContainer">
+              <div id="alphaGuageContainer">
+                <div class="arc-gauge-wrapper">
+                  <span class="sectionHeadingTwo">Alpha Capacitor Conduits</span>
+                  <div class="arc-gauge">
+                    <div class="ticks-arc" id="alphaTicksArc"></div>
+                    <div class="needle" id="alphaNeedle"></div>
+                    <div class="needle-center"></div>
+                  </div>
+                  <div class="gauge-value" id="alphaGaugeValue">0%</div>
+                </div>
               </div>
-              <div class="gauge-value" id="alphaGaugeValue">0%</div>
+              <div id="alphaCapaictorChargeButtonContainer">
+                <div class="capacitorButtonRow">
+                  <button id="alphaMinus5" class="capacitorButton">-5%</button>
+                  <button id="alphaMinus2.5" class="capacitorButton">-2.5%</button>
+                  <button id="alphaPlus4" class="capacitorButton">+4%</button>
+                </div>
+                <div class="capacitorButtonRow">
+                  <button id="alphaMinus4" class="capacitorButton">-4%</button>
+                  <button id="alphaMinus1.5" class="capacitorButton">-1.5%</button>
+                  <button id="alphaPlus1.5" class="capacitorButton">+1.5%</button>
+                </div>
+                <div class="capacitorButtonRow">
+                  <button id="alphaReset" class="capacitorButton">0%</button>
+                  <button id="alphaPlus2.5" class="capacitorButton">+2.5%</button>
+                  <button id="alphaPlus5" class="capacitorButton">+5%</button>
+                </div>
+              </div> 
             </div>
-          </div>
-          <div id="alphaCapaictorChargeButtonContainer">
-            <div class="capacitorButtonRow">
-              <button id="alphaMinus5" class="capacitorButton">-5%</button>
-              <button id="alphaMinus2.5" class="capacitorButton">-2.5%</button>
-              <button id="alphaPlus4" class="capacitorButton">+4%</button>
-            </div>
-            <div class="capacitorButtonRow">
-              <button id="alphaMinus4" class="capacitorButton">-4%</button>
-              <button id="alphaMinus1.5" class="capacitorButton">-1.5%</button>
-              <button id="alphaPlus1.5" class="capacitorButton">+1.5%</button>
-            </div>
-            <div class="capacitorButtonRow">
-              <button id="alphaReset" class="capacitorButton">0%</button>
-              <button id="alphaPlus2.5" class="capacitorButton">+2.5%</button>
-              <button id="alphaPlus5" class="capacitorButton">+5%</button>
+            <button id="capacitorChargeConfigure" class="configure">Configure</button>  
+            <div id="bravoCapacitorChargeContainer" class="capacitorContainer">
+              <div id="bravoGuageContainer">
+                <div class="arc-gauge-wrapper">
+                  <span class="sectionHeadingTwo">Bravo Capacitor Conduits</span>
+                  <div class="arc-gauge">
+                    <div class="ticks-arc" id="bravoTicksArc"></div>
+                    <div class="needle" id="bravoNeedle"></div>
+                    <div class="needle-center"></div>
+                  </div>
+                  <div class="gauge-value" id="bravoGaugeValue">0%</div>
+                </div>
+              </div>
+              <div id="bravoCapaictorChargeButtonContainer">
+                <div class="capacitorButtonRow">
+                  <button id="bravoMinus5" class="capacitorButton">-5%</button>
+                  <button id="bravoMinus2.5" class="capacitorButton">-2.5%</button>
+                  <button id="bravoPlus4" class="capacitorButton">+4%</button>
+                </div>
+                <div class="capacitorButtonRow">
+                  <button id="bravoMinus4" class="capacitorButton">-4%</button>
+                  <button id="bravoMinus1.5" class="capacitorButton">-1.5%</button>
+                  <button id="bravoPlus1.5" class="capacitorButton">+1.5%</button>
+                </div>
+                <div class="capacitorButtonRow">
+                  <button id="bravoReset" class="capacitorButton">0%</button>
+                  <button id="bravoPlus2.5" class="capacitorButton">+2.5%</button>
+                  <button id="bravoPlus5" class="capacitorButton">+5%</button>
+                </div>
+              </div> 
             </div>
           </div> 
-        </div>  
-        <div id="bravoCapacitorChargeContainer" class="capacitorContainer">
-          <div id="bravoGuageContainer">
-            <div class="arc-gauge-wrapper">
-              <div class="arc-gauge">
-                <div class="ticks-arc" id="bravoTicksArc"></div>
-                <div class="needle" id="bravoNeedle"></div>
-                <div class="needle-center"></div>
-              </div>
-              <div class="gauge-value" id="bravoGaugeValue">0%</div>
-            </div>
-          </div>
-          <div id="bravoCapaictorChargeButtonContainer">
-            <div class="capacitorButtonRow">
-              <button id="bravoMinus5" class="capacitorButton">-5%</button>
-              <button id="bravoMinus2.5" class="capacitorButton">-2.5%</button>
-              <button id="bravoPlus4" class="capacitorButton">+4%</button>
-            </div>
-            <div class="capacitorButtonRow">
-              <button id="bravoMinus4" class="capacitorButton">-4%</button>
-              <button id="bravoMinus1.5" class="capacitorButton">-1.5%</button>
-              <button id="bravoPlus1.5" class="capacitorButton">+1.5%</button>
-            </div>
-            <div class="capacitorButtonRow">
-              <button id="bravoReset" class="capacitorButton">0%</button>
-              <button id="bravoPlus2.5" class="capacitorButton">+2.5%</button>
-              <button id="bravoPlus5" class="capacitorButton">+5%</button>
-            </div>
-          </div> 
-        </div>                               
+        </div>                              
       </div>
       
       <script src="index.js"></script>

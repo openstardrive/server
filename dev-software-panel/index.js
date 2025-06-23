@@ -431,3 +431,10 @@ document.getElementById('bravoPlus5').addEventListener('click', () => {
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
   }
 });
+
+document.getElementById('capacitorChargeConfigure').addEventListener('click', () => {
+  alphaGaugeValue = 0;
+  bravoGaugeValue = 0;
+  updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+});

@@ -521,9 +521,10 @@ body {
 
 #rowTwo {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .capacitorButton {
@@ -556,4 +557,22 @@ body {
     align-items: center;
     justify-content: center;
     margin-left: 20px;
+}
+
+#capacitorChargeConduits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#capacitorChargeContainers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: #898484 2px solid;
+    border-radius: 3px;
+    width: 98.5%;
 }
