@@ -261,28 +261,17 @@ function map(val, inMin, inMax, outMin, outMax) {
 createArcTicks('alphaTicksArc');
 createArcTicks('bravoTicksArc');
 
-let gaugeValue = 0;
+let alphaGaugeValue = 0;
+let bravoGaugeValue = 0;
   
-function updateGauge(value) {
-  const needle = document.getElementById('needle');
-  const label = document.getElementById('gaugeValue');
+function updateGauge(needleId, gaugeId, value) {
+  const needle = document.getElementById(needleId);
+  const label = document.getElementById(gaugeId);
   const clamped = Math.max(0, Math.min(100, value));
   const angle = map(clamped, 0, 100, -90, 90);
   needle.style.transform = `rotate(${angle}deg)`;
   label.textContent = `${clamped}%`;
 }
-  
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight') {
-    if (gaugeValue >= 100) return;
-    gaugeValue += 10;
-    updateGauge(gaugeValue);
-  } else if (e.key === 'ArrowLeft') {
-    if (gaugeValue <= 0) return;
-    gaugeValue -= 10;
-    updateGauge(gaugeValue);
-  }
-});
 
 document.getElementById('configureSignalCalibration').addEventListener('click', () => {
   const leds = [
@@ -319,4 +308,126 @@ document.getElementById('configureSignalCalibration').addEventListener('click', 
   document.getElementById('externalCircleText').textContent = '0%';
   document.getElementById('internalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
   document.getElementById('externalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
+});
+
+document.getElementById('alphaMinus5').addEventListener('click', () => {
+  if (alphaGaugeValue >= 5) {
+    alphaGaugeValue -= 5;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('alphaMinus2.5').addEventListener('click', () => {
+  if (alphaGaugeValue >= 2.5) {
+    alphaGaugeValue -= 2.5;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('alphaPlus4').addEventListener('click', () => {
+  if (alphaGaugeValue <= 96) {
+    alphaGaugeValue += 4;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('alphaMinus4').addEventListener('click', () => {
+  if (alphaGaugeValue >= 4) {
+    alphaGaugeValue -= 4;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('alphaMinus1.5').addEventListener('click', () => {
+  if (alphaGaugeValue >= 1.5) {
+    alphaGaugeValue -= 1.5;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('alphaPlus1.5').addEventListener('click', () => {
+  if (alphaGaugeValue <= 98.5) {
+    alphaGaugeValue += 1.5;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('alphaReset').addEventListener('click', () => {
+  alphaGaugeValue = 0;
+  updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+});
+
+document.getElementById('alphaPlus2.5').addEventListener('click', () => {
+  if (alphaGaugeValue <= 97.5) {
+    alphaGaugeValue += 2.5;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('alphaPlus5').addEventListener('click', () => {
+  if (alphaGaugeValue <= 95) {
+    alphaGaugeValue += 5;
+    updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  }
+});
+
+document.getElementById('bravoMinus5').addEventListener('click', () => {
+  if (bravoGaugeValue >= 5) {
+    bravoGaugeValue -= 5;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
+});
+
+document.getElementById('bravoMinus2.5').addEventListener('click', () => {
+  if (bravoGaugeValue >= 2.5) {
+    bravoGaugeValue -= 2.5;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
+});
+
+document.getElementById('bravoPlus4').addEventListener('click', () => {
+  if (bravoGaugeValue <= 96) {
+    bravoGaugeValue += 4;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
+});
+
+document.getElementById('bravoMinus4').addEventListener('click', () => {
+  if (bravoGaugeValue >= 4) {
+    bravoGaugeValue -= 4;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
+});
+
+document.getElementById('bravoMinus1.5').addEventListener('click', () => {
+  if (bravoGaugeValue >= 1.5) {
+    bravoGaugeValue -= 1.5;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
+});
+
+document.getElementById('bravoPlus1.5').addEventListener('click', () => {
+  if (bravoGaugeValue <= 98.5) {
+    bravoGaugeValue += 1.5;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
+});
+
+document.getElementById('bravoReset').addEventListener('click', () => {
+  bravoGaugeValue = 0;
+  updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+});
+
+document.getElementById('bravoPlus2.5').addEventListener('click', () => {
+  if (bravoGaugeValue <= 97.5) {
+    bravoGaugeValue += 2.5;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
+});
+
+document.getElementById('bravoPlus5').addEventListener('click', () => {
+  if (bravoGaugeValue <= 95) {
+    bravoGaugeValue += 5;
+    updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  }
 });

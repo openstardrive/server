@@ -527,8 +527,8 @@ body {
 }
 
 .capacitorButton {
-    width: 55px;
-    height: 55px;
+    width: 70px;
+    height: 70px;
     border-radius: 5px;
     background: #898484;
     color: white;
@@ -537,7 +537,6 @@ body {
     cursor: pointer;
     transition: background 0.3s, box-shadow 0.3s;
     margin: 5px;
-    font-size: 0.8rem;
     text-align: center;
 }
 
@@ -548,4 +547,13 @@ body {
 .capacitorContainer {
     display: flex;
     flex-direction: row;
+    margin: 30px;
+}
+
+#alphaCapaictorChargeButtonContainer, #bravoCapaictorChargeButtonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
 }
