@@ -1,3 +1,5 @@
+const channel = new BroadcastChannel('panel-sync');
+
 const positronicSwitches = [];
 
 function addPositronicSwitches() {
@@ -17,7 +19,8 @@ function addPositronicSwitches() {
 addPositronicSwitches();
 
 function toggleSwitch(element) {
-    element.classList.toggle("on");
+  element.classList.toggle("on");
+  channel.postMessage({ type: 'flipSwitch', id: element.id });
 }
 
 document.getElementById('configurePositronicInterface').addEventListener('click', () => {
