@@ -335,34 +335,35 @@ document.getElementById('alphaMinus5').addEventListener('click', () => {
   if (alphaGaugeValue >= 5) {
     alphaGaugeValue -= 5;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
-  }
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });  }
 });
 
 document.getElementById('alphaMinus2.5').addEventListener('click', () => {
   if (alphaGaugeValue >= 2.5) {
     alphaGaugeValue -= 2.5;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
-  }
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });  }
 });
 
 document.getElementById('alphaPlus4').addEventListener('click', () => {
   if (alphaGaugeValue <= 96) {
     alphaGaugeValue += 4;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
-  }
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });  }
 });
 
 document.getElementById('alphaMinus4').addEventListener('click', () => {
   if (alphaGaugeValue >= 4) {
     alphaGaugeValue -= 4;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
-  }
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });  }
 });
 
 document.getElementById('alphaMinus1.5').addEventListener('click', () => {
   if (alphaGaugeValue >= 1.5) {
     alphaGaugeValue -= 1.5;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });
   }
 });
 
@@ -370,18 +371,21 @@ document.getElementById('alphaPlus1.5').addEventListener('click', () => {
   if (alphaGaugeValue <= 98.5) {
     alphaGaugeValue += 1.5;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });
   }
 });
 
 document.getElementById('alphaReset').addEventListener('click', () => {
   alphaGaugeValue = 0;
   updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });
 });
 
 document.getElementById('alphaPlus2.5').addEventListener('click', () => {
   if (alphaGaugeValue <= 97.5) {
     alphaGaugeValue += 2.5;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });  
   }
 });
 
@@ -389,6 +393,7 @@ document.getElementById('alphaPlus5').addEventListener('click', () => {
   if (alphaGaugeValue <= 95) {
     alphaGaugeValue += 5;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+    channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });
   }
 });
 
@@ -396,6 +401,7 @@ document.getElementById('bravoMinus5').addEventListener('click', () => {
   if (bravoGaugeValue >= 5) {
     bravoGaugeValue -= 5;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 
@@ -403,6 +409,7 @@ document.getElementById('bravoMinus2.5').addEventListener('click', () => {
   if (bravoGaugeValue >= 2.5) {
     bravoGaugeValue -= 2.5;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 
@@ -410,6 +417,7 @@ document.getElementById('bravoPlus4').addEventListener('click', () => {
   if (bravoGaugeValue <= 96) {
     bravoGaugeValue += 4;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 
@@ -417,6 +425,7 @@ document.getElementById('bravoMinus4').addEventListener('click', () => {
   if (bravoGaugeValue >= 4) {
     bravoGaugeValue -= 4;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 
@@ -424,6 +433,7 @@ document.getElementById('bravoMinus1.5').addEventListener('click', () => {
   if (bravoGaugeValue >= 1.5) {
     bravoGaugeValue -= 1.5;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 
@@ -431,18 +441,21 @@ document.getElementById('bravoPlus1.5').addEventListener('click', () => {
   if (bravoGaugeValue <= 98.5) {
     bravoGaugeValue += 1.5;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 
 document.getElementById('bravoReset').addEventListener('click', () => {
   bravoGaugeValue = 0;
   updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
 });
 
 document.getElementById('bravoPlus2.5').addEventListener('click', () => {
   if (bravoGaugeValue <= 97.5) {
     bravoGaugeValue += 2.5;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 
@@ -450,6 +463,7 @@ document.getElementById('bravoPlus5').addEventListener('click', () => {
   if (bravoGaugeValue <= 95) {
     bravoGaugeValue += 5;
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+    channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
   }
 });
 

@@ -107,6 +107,14 @@ channel.onmessage = (e) => {
         document.getElementById('internalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
         document.getElementById('externalCircleDisplay').style.background = 'conic-gradient(rgba(0, 255, 255, 0.6) 0%, #111 0%)';
     }
+    else if (e.data.type === 'alphaGaugeUpdate') {
+        console.log('Updating alpha gauge:', e.data.value);
+        updateGauge('alphaNeedle', 'alphaGaugeValue', e.data.value);
+    }
+    else if (e.data.type === 'bravoGaugeUpdate') {
+        console.log('Updating bravo gauge:', e.data.value);
+        updateGauge('bravoNeedle', 'bravoGaugeValue', e.data.value);
+    }
 };
 
 function updateInternalSignal(value) {
@@ -178,4 +186,12 @@ function createArcTicks(containerId, count = 10) {
 function map(val, inMin, inMax, outMin, outMax) {
     return ((val - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
-  
+
+function updateGauge(needleId, gaugeId, value) {
+    const needle = document.getElementById(needleId);
+    const label = document.getElementById(gaugeId);
+    const clamped = Math.max(0, Math.min(100, value));
+    const angle = map(clamped, 0, 100, -90, 90);
+    needle.style.transform = `rotate(${angle}deg)`;
+    label.textContent = `${clamped}%`;
+}
