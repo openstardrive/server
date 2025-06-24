@@ -471,5 +471,7 @@ document.getElementById('capacitorChargeConfigure').addEventListener('click', ()
   alphaGaugeValue = 0;
   bravoGaugeValue = 0;
   updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
+  channel.postMessage({ type: 'alphaGaugeUpdate', value: alphaGaugeValue });
   updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
+  channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
 });
