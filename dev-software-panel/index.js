@@ -3,7 +3,11 @@ var switchesState = [];
 var rcxIState;
 var lecIState;
 var gvdIState;
+var rcxEState;
+var lecEState;
+var gvdEState;
 var internalSignalValue = 0;
+var externalSignalValue = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   function addPositronicSwitches() {
@@ -129,10 +133,88 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   if (storedRcxEState) {
+    rcxEState = JSON.parse(storedRcxEState);
+    if (rcxEState.active) {
+      const rcxLeds = [
+        document.getElementById('rcx-e-1'),
+        document.getElementById('rcx-e-2'),
+        document.getElementById('rcx-e-3')
+      ];
+    
+      const signalValue = rcxEState.value;
+    
+      // Reset classes
+      rcxLeds.forEach(led => {
+        led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+      });
+      
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+    
+      rcxLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      }); 
+    }
   }
   if (storedLecEState) {
+    lecEState = JSON.parse(storedLecEState);
+    if (lecEState.active) {
+      const lecLeds = [
+        document.getElementById('lec-e-1'),
+        document.getElementById('lec-e-2'),
+        document.getElementById('lec-e-3')
+      ];
+    
+      const signalValue = lecEState.value;
+    
+      // Reset classes
+      lecLeds.forEach(led => {
+        led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+      });
+      
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+    
+      lecLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      }); 
+    }
   }
   if (storedGvdEState) {
+    gvdEState = JSON.parse(storedGvdEState);
+    if (gvdEState.active) {
+      const gvdLeds = [
+        document.getElementById('gvd-e-1'),
+        document.getElementById('gvd-e-2'),
+        document.getElementById('gvd-e-3')
+      ];
+    
+      const signalValue = gvdEState.value;
+    
+      // Reset classes
+      gvdLeds.forEach(led => {
+        led.classList.remove('on', 'led-red', 'led-yellow', 'led-green', 'led-blue', 'led-purple');
+      });
+      
+      let colorClass = 'led-red';
+      if (signalValue < 10) colorClass = 'led-red';
+      else if (signalValue < 30) colorClass = 'led-yellow';
+      else if (signalValue < 60) colorClass = 'led-green';
+      else if (signalValue < 90) colorClass = 'led-blue';
+      else colorClass = 'led-purple';
+    
+      gvdLeds.forEach(led => {
+        led.classList.add('on', colorClass);
+      }); 
+    }
   }
   if (storedAlphaGaugeValue) {
   }
@@ -145,6 +227,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('internalSignalSlider').value = internalSignalValue;
     internalCircleText.textContent = `${internalSignalValue}%`;
     internalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${internalSignalValue}%, #111 0%)`;
+  }
+  if (storedExternalSignalValue) {
+    externalSignalValue = JSON.parse(storedExternalSignalValue);
+    const externalCircleText = document.getElementById('externalCircleText');
+    const externalCircleDisplay = document.getElementById('externalCircleDisplay');
+    document.getElementById('externalSignalSlider').value = externalSignalValue;
+    externalCircleText.textContent = `${externalSignalValue}%`;
+    externalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${externalSignalValue}%, #111 0%)`;
   }
 });
 
@@ -200,6 +290,7 @@ if (!externalSlider || !externalCircleText || !externalCircleDisplay) {
     const value = externalSlider.value;
     externalCircleText.textContent = `${value}%`;
     externalCircleDisplay.style.background = `conic-gradient(rgba(0, 255, 255, 0.6) ${value}%, #111 0%)`;
+    localStorage.setItem('externalSignalValue', JSON.stringify(value));
     channel.postMessage({ type: 'externalSignal', value: value });
   });      
 }
@@ -358,8 +449,20 @@ document.getElementById('rcx-e').addEventListener('click', () => {
       rcxLeds.forEach(led => {
         led.classList.add('on', colorClass);
       });
+
+      rcxEState = {
+        active: true,
+        value: signalValue
+      }
+    }
+    else {
+      rcxEState = {
+        active: false,
+        value: 0
+      };
     }
 
+    localStorage.setItem('rcxEState', JSON.stringify(rcxEState));
     channel.postMessage({ type: 'rcx-e', value: signalValue });
 });
 
@@ -389,8 +492,19 @@ document.getElementById('lec-e').addEventListener('click', () => {
       lecLeds.forEach(led => {
         led.classList.add('on', colorClass);
       });
+      lecEState = {
+        active: true,
+        value: signalValue
+      }
+    }
+    else {
+      lecEState = {
+        active: false,
+        value: 0
+      };
     }
 
+    localStorage.setItem('lecEState', JSON.stringify(lecEState));
     channel.postMessage({ type: 'lec-e', value: signalValue });
 });
 
@@ -419,8 +533,19 @@ document.getElementById('gvd-e').addEventListener('click', () => {
       gvdLeds.forEach(led => {
         led.classList.add('on', colorClass);
       });
+      gvdEState = {
+        active: true,
+        value: signalValue
+      }
+    }
+    else {
+      gvdEState = {
+        active: false,
+        value: 0
+      };
     }
     
+    localStorage.setItem('gvdEState', JSON.stringify(gvdEState));
     channel.postMessage({ type: 'gvd-e', value: signalValue });
 });
 
