@@ -6,3 +6,4 @@ obj/
 *.sqlite
 .idea
 notes.md
+*.pubxml
