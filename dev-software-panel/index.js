@@ -1,8 +1,8 @@
-const channel = new BroadcastChannel('panel-sync');
+var positronicSwitches = [];
+var switchesState = [];
 
-const positronicSwitches = [];
-
-function addPositronicSwitches() {
+document.addEventListener('DOMContentLoaded', () => {
+  function addPositronicSwitches() {
     for (let i = 1; i<= 6; i++) {
       const alphaSwitch = document.getElementById(`alpha-${i}`);
       const betaSwitch = document.getElementById(`bravo-${i}`);
@@ -14,12 +14,58 @@ function addPositronicSwitches() {
         positronicSwitches.push(betaSwitch);
       }
     }
-}
+  }
+  
+  addPositronicSwitches();
 
-addPositronicSwitches();
+  var storedSwitchesState = localStorage.getItem('switchesState');
+  var storedRcxIState = localStorage.getItem('rcxIState');
+  var storedLecIState = localStorage.getItem('lecIState');
+  var storedGvdIState = localStorage.getItem('gvdIState');
+  var storedRcxEState = localStorage.getItem('rcxEState');
+  var storedLecEState = localStorage.getItem('lecEState');
+  var storedGvdEState = localStorage.getItem('gvdEState');
+  var storedAlphaGaugeValue = localStorage.getItem('alphaGaugeValue');
+  var storedBravoGaugeValue = localStorage.getItem('bravoGaugeValue');
+  if (storedSwitchesState) {
+    switchesState = JSON.parse(storedSwitchesState);
+    positronicSwitches.forEach(switchElement => {
+      if (switchesState.includes(switchElement.id)) {
+        switchElement.classList.add("on");
+      } else {
+        switchElement.classList.remove("on");
+      }
+    });
+  }
+  if (storedRcxIState) {
+  }
+  if (storedLecIState) {
+  }
+  if (storedGvdIState) {
+  }
+  if (storedRcxEState) {
+  }
+  if (storedLecEState) {
+  }
+  if (storedGvdEState) {
+  }
+  if (storedAlphaGaugeValue) {
+  }
+  if (storedBravoGaugeValue) {
+  }
+});
+
+const channel = new BroadcastChannel('panel-sync');
 
 function toggleSwitch(element) {
   element.classList.toggle("on");
+  if (element.classList.contains("on")) {
+    switchesState.push(element.id);
+  }
+  else {
+    switchesState = switchesState.filter(id => id !== element.id);
+  }
+  localStorage.setItem('switchesState', JSON.stringify(switchesState));
   channel.postMessage({ type: 'flipSwitch', id: element.id });
 }
 
@@ -29,6 +75,8 @@ document.getElementById('configurePositronicInterface').addEventListener('click'
       switchElement.classList.remove("on");
     }
   });
+  switchesState = [];
+  localStorage.setItem('switchesState', JSON.stringify(switchesState));
   channel.postMessage({ type: 'resetSwitches' });
 });
 
@@ -279,9 +327,6 @@ function map(val, inMin, inMax, outMin, outMax) {
 
 createArcTicks('alphaTicksArc');
 createArcTicks('bravoTicksArc');
-
-let alphaGaugeValue = 0;
-let bravoGaugeValue = 0;
   
 function updateGauge(needleId, gaugeId, value) {
   const needle = document.getElementById(needleId);
