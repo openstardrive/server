@@ -234,10 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }); 
     }
   }
-  if (storedAlphaGaugeValue) {
-  }
-  if (storedBravoGaugeValue) {
-  }
   if (storedInternalSignalValue) {
     internalSignalValue = JSON.parse(storedInternalSignalValue);
     const internalCircleText = document.getElementById('internalCircleText');
