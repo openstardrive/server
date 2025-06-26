@@ -6,13 +6,16 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="miniPanel.css">
+        <link rel="stylesheet" href="damageReport.css">
     </head>
     <body>
         <div id="content">
             <div id="monitorDock">
-                <button id="toggleMonitor">▼ PANEL</button>
-                <div id="slidePanel">
+                <button id="toggleDamageReport">▼ DAMAGE REPORTS</button>
+                <button id="togglePanel">▼ PANEL</button>
+                <div id="panelContent">
                 </div>
+                <div id="damageReportContent"></div>
             </div>
 
             <div id="rowOne">
@@ -308,7 +311,7 @@
                     </div>
                 </div>
 
-                <div id="warheadsContainer">
+                <div id="warheadsContainer"> 
                     <span>Warheads</span>
                     <div id="currentlyLoadedContainer">
                         <span>Currently Loaded: </span>
@@ -475,5 +478,6 @@
         <script src="api.js"></script>
         <script src="index.js"></script>
         <script src="miniPanel.js"></script>
+        <script src="damageReport.js"></script>
     </body>
 </html>

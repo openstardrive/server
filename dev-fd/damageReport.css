@@ -1,0 +1,29 @@
+#toggleDamageReport {
+    background: #0ff;
+    color: #111;
+    border: none;
+    padding: 6px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 8px #0ff8;
+    transition: background 0.2s;
+}
+
+#toggleDamageReport:hover {
+    background: #0cc;
+}
+
+#damageReportContent {
+    background: #111;
+    border-bottom: 1px solid #0ff;
+    box-shadow: 0 4px 12px #0ff4;
+    overflow: hidden;
+    height: 0;
+    transition: height 0.4s ease;
+    color: white;
+}
+
+/* Expanded state */
+#monitorDock.damageReportOpen #damageReportContent {
+    height: 100%;
+}

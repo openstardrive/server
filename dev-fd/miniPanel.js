@@ -12,18 +12,18 @@ var alphaGaugeValue = 0;
 var bravoGaugeValue = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleBtn = document.getElementById('toggleMonitor');
+    const toggleBtn = document.getElementById('togglePanel');
     const dock = document.getElementById('monitorDock');
   
     toggleBtn.addEventListener('click', () => {
-      dock.classList.toggle('open');
-      toggleBtn.textContent = dock.classList.contains('open') ? '▲ HIDE PANEL' : '▼ PANEL';
+      dock.classList.toggle('panelOpen');
+      toggleBtn.textContent = dock.classList.contains('panelOpen') ? '▲ HIDE PANEL' : '▼ PANEL';
     });
   
     fetch('/dev-fd/miniPanel.html')
       .then(res => res.text())
       .then(html => {
-        document.getElementById('slidePanel').innerHTML = html;
+        document.getElementById('panelContent').innerHTML = html;
         createArcTicks('alphaTicksArc');
         createArcTicks('bravoTicksArc');
 
