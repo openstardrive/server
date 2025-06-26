@@ -1,4 +1,5 @@
 const channel = new BroadcastChannel('panel-sync');
+const damageChannel = new BroadcastChannel('damage-channel');
 
 var positronicSwitches = [];
 var switchesState = [];
@@ -260,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('configurePositronicInterface').addEventListener('click', () => {
+    var activatedSwitches = positronicSwitches.filter(switchElement => switchElement.classList.contains("on"));
     positronicSwitches.forEach(switchElement => {
       if (switchElement.classList.contains("on")) {
         switchElement.classList.remove("on");
@@ -268,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     switchesState = [];
     localStorage.setItem('switchesState', JSON.stringify(switchesState));
     channel.postMessage({ type: 'resetSwitches' });
+    damageChannel.postMessage({ type: 'updateDamageReport', switches: activatedSwitches });
   });
 
   const internalSlider = document.getElementById('internalSignalSlider');

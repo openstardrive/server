@@ -133,7 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const channel = new BroadcastChannel('panel-sync');
 channel.onmessage = (e) => {
     if (e.data.type === 'flipSwitch') {
-      const switchElement = document.getElementById(e.data.id).classList.toggle('on');
+      const switchElement = document.getElementById(e.data.id);
+      switchElement.classList.toggle("on");
       if (switchElement.classList.contains("on")) {
         switchesState.push(switchElement.id);
       }
