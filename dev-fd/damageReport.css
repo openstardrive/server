@@ -14,7 +14,7 @@
 }
 
 #damageReportContent {
-    background: #111;
+    background: linear-gradient(to bottom right, #111318, #1a1f24, #0c0f13);
     border-bottom: 1px solid #0ff;
     box-shadow: 0 4px 12px #0ff4;
     overflow: hidden;
@@ -26,4 +26,54 @@
 /* Expanded state */
 #monitorDock.damageReportOpen #damageReportContent {
     height: 100%;
+}
+
+#damageReport {
+    display: flex;
+    flex-direction: row;
+}
+
+.damagedSystemButton {
+    background: linear-gradient(to bottom right, #111318, #1a1f24, #0c0f13);
+    color: white;
+    border: 1px solid #0ff;
+    border-radius: 3px;
+    padding: 6px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 8px #0ff8;
+    transition: background 0.2s, transform 0.2s;
+    margin: 10px;
+}
+
+.damagedSystemButton:hover {
+    background: rgb(4, 86, 86);
+    transform: scale(1.05);
+}
+
+.damagedSystemButton.activeDisplay {
+    background-color: rgb(5, 127, 127);
+}
+
+#listOfReports {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 3px;;
+    margin: 10px;
+    width: 500px;
+}
+
+#currentReport {
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px;
+    margin: 10px;
+    width: 100%;
 }

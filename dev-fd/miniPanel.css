@@ -24,7 +24,7 @@
 }
 
 #panelContent {
-    background: #111;
+    background: linear-gradient(to bottom right, #111318, #1a1f24, #0c0f13);
     border-bottom: 1px solid #0ff;
     box-shadow: 0 4px 12px #0ff4;
     overflow: hidden;
