@@ -261,10 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('configurePositronicInterface').addEventListener('click', () => {
-    var activatedSwitches = positronicSwitches.filter(switchElement => switchElement.classList.contains("on"));
+    var activatedSwitches = [];
     positronicSwitches.forEach(switchElement => {
       if (switchElement.classList.contains("on")) {
+        activatedSwitches.push(true);
         switchElement.classList.remove("on");
+      }
+      else {
+        activatedSwitches.push(false);
       }
     });
     switchesState = [];
@@ -622,6 +626,15 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('gvd-e-3')
     ];
 
+    var calibratedSignals = {
+      rcxI: rcxIState,
+      gvdI: gvdIState,
+      lecI: lecIState,
+      rcxE: rcxEState,
+      lecE: lecEState,
+      gvdE: gvdEState
+    };
+
     leds.forEach(led => {
       if (led.classList.contains('on')) {
         led.classList.remove('on');
@@ -639,12 +652,19 @@ document.addEventListener('DOMContentLoaded', () => {
     rcxIState = { active: false, value: 0 };
     lecIState = { active: false, value: 0 };
     gvdIState = { active: false, value: 0 };
+    rcxEState = { active: false, value: 0 };
+    lecEState = { active: false, value: 0 };
+    gvdEState = { active: false, value: 0 };
     internalSignalValue = 0;
     localStorage.setItem('rcxIState', JSON.stringify(rcxIState));
     localStorage.setItem('lecIState', JSON.stringify(lecIState));
     localStorage.setItem('gvdIState', JSON.stringify(gvdIState));
+    localStorage.setItem('rcxEState', JSON.stringify(rcxEState));
+    localStorage.setItem('lecEState', JSON.stringify(lecEState));
+    localStorage.setItem('gvdEState', JSON.stringify(gvdEState));
     localStorage.setItem('internalSignalValue', JSON.stringify(internalSignalValue));
     channel.postMessage({ type: 'resetCalibration' });
+    damageChannel.postMessage({ type: 'updateDamageReport', calibratedSignals: calibratedSignals });
   });
 
   document.getElementById('alphaMinus5').addEventListener('click', () => {
@@ -802,6 +822,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('capacitorChargeConfigure').addEventListener('click', () => {
+    const configuredCapacitors = {
+      alpha: alphaGaugeValue,
+      bravo: bravoGaugeValue
+    }
     alphaGaugeValue = 0;
     bravoGaugeValue = 0;
     updateGauge('alphaNeedle', 'alphaGaugeValue', alphaGaugeValue);
@@ -810,5 +834,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateGauge('bravoNeedle', 'bravoGaugeValue', bravoGaugeValue);
     localStorage.setItem('bravoGaugeValue', JSON.stringify(bravoGaugeValue));
     channel.postMessage({ type: 'bravoGaugeUpdate', value: bravoGaugeValue });
+    damageChannel.postMessage({ type: 'updateDamageReport', configuredCapacitors: configuredCapacitors });
   });
 });

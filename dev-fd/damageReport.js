@@ -6,7 +6,7 @@ var currentSoftwarePanelSteps = [
         systemName: 'warpEngines',
         stepName: 'warpEngineStep2',
         completionSquare: 'warpEnginesStep2Completion',
-        switches: [true, true, false, false, true, false, false, false, false, true, false, false, true]
+        switches: [true, false, true, false, false, true, false, false, true, false, false, true]
     }, {
         systemName: 'warpEngines',
         stepName: 'warpEngineStep4',
@@ -24,8 +24,8 @@ var currentSoftwarePanelSteps = [
         stepName: 'warpEngineStep5',
         completionSquare: 'warpEnginesStep5Completion',
         capacitorConduits: {
-            alpha: {active: true, minValue: 35, maxValue: 35},
-            bravo: {active: true, minValue: 14, maxValue: 14}
+            alpha: {minValue: 35, maxValue: 35},
+            bravo: {minValue: 14, maxValue: 14}
         }
     }
 ];
@@ -33,25 +33,78 @@ var currentSoftwarePanelSteps = [
 damageChannel.onmessage = (e) => {
     if (e.data.type === 'updateDamageReport') {
         if (e.data.switches) {
-            console.log(e.data.switches);
             var possibleSteps = [];
             currentSoftwarePanelSteps.forEach((step, index) => {
                 if (step.switches) {
                     possibleSteps.push(step);
                 }
             });
-            console.log(possibleSteps);
             possibleSteps.forEach((step) => {
-                console.log(step.switches);
-                if (step.switches === e.data.switches) {
+                var matches = false;
+                for (let i = 0; i < step.switches.length; i++) {
+                    if (step.switches[i] !== e.data.switches[i]) {
+                        matches = false;
+                        break;
+                    }
+                    matches = true;
+                }
+                if (matches) {
                     const completionSquare = document.getElementById(step.completionSquare);
-                    if (completionSquare) {
+                    if(completionSquare.classList.contains('incomplete')) {
                         toggleComplete(completionSquare);
                     }
                 }
             });
         }
-
+        else if (e.data.calibratedSignals) {
+            var possibleSteps = [];
+            currentSoftwarePanelSteps.forEach((step, index) => {
+                if (step.signalCalibration) {
+                    possibleSteps.push(step);
+                }
+            });
+            possibleSteps.forEach((step) => {
+                var matches = true;
+                var signalTypes = ['rcxI', 'lecI', 'gvdI', 'rcxE', 'lecE', 'gvdE'];
+                signalTypes.forEach((signalType) => {
+                    if ((step.signalCalibration[signalType].active === e.data.calibratedSignals[signalType].active) && (e.data.calibratedSignals[signalType].value < step.signalCalibration[signalType].minValue && e.data.calibratedSignals[signalType].value > step.signalCalibration[signalType].maxValue)) {
+                        matches = false;
+                    }
+                })
+                if (matches) {
+                    const completionSquare = document.getElementById(step.completionSquare);
+                    if(completionSquare.classList.contains('incomplete')) {
+                        toggleComplete(completionSquare);
+                    }
+                }
+            });
+        }
+        else if (e.data.configuredCapacitors) {
+            console.log('configuredCapacitors', e.data.configuredCapacitors);
+            var possibleSteps = [];
+            currentSoftwarePanelSteps.forEach((step, index) => {
+                if (step.capacitorConduits) {
+                    possibleSteps.push(step);
+                }
+            });
+            possibleSteps.forEach((step) => {
+                console.log(step.capacitorConduits);
+                var matches = true;
+                var capacitorTypes = ['alpha', 'bravo'];
+                capacitorTypes.forEach((capacitorType) => {
+                    console.log(step.capacitorConduits[capacitorType].minValue, step.capacitorConduits[capacitorType].maxValue, e.data.configuredCapacitors[capacitorType]);
+                    if ((e.data.configuredCapacitors[capacitorType] < step.capacitorConduits[capacitorType].minValue || e.data.configuredCapacitors[capacitorType] > step.capacitorConduits[capacitorType].maxValue)) {
+                        matches = false;
+                    }
+                });
+                if (matches) {
+                    const completionSquare = document.getElementById(step.completionSquare);
+                    if(completionSquare.classList.contains('incomplete')) {
+                        toggleComplete(completionSquare);
+                    }
+                }
+            });
+        }
     }
 };
 

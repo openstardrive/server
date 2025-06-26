@@ -161,7 +161,6 @@ channel.onmessage = (e) => {
         }
 
         addPositronicSwitches();
-        console.log('Resetting switches');
         switchesState = [];
         localStorage.setItem('switchesState', JSON.stringify(switchesState));
         positronicSwitches.forEach(switchElement => {
@@ -335,13 +334,11 @@ channel.onmessage = (e) => {
         localStorage.setItem('externalSignalValue', JSON.stringify(externalSignalValue));
     }
     else if (e.data.type === 'alphaGaugeUpdate') {
-        console.log('Updating alpha gauge:', e.data.value);
         updateGauge('alphaNeedle', 'alphaGaugeValue', e.data.value);
         alphaGaugeValue = e.data.value;
         localStorage.setItem('alphaGaugeValue', JSON.stringify(alphaGaugeValue));
     }
     else if (e.data.type === 'bravoGaugeUpdate') {
-        console.log('Updating bravo gauge:', e.data.value);
         updateGauge('bravoNeedle', 'bravoGaugeValue', e.data.value);
         bravoGaugeValue = e.data.value;
         localStorage.setItem('bravoGaugeValue', JSON.stringify(bravoGaugeValue));
