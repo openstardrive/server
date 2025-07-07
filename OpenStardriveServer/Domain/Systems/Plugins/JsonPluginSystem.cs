@@ -7,7 +7,7 @@ namespace OpenStardriveServer.Domain.Systems.Plugins;
 
 public class JsonPluginSystem : SystemBase<JsonPluginState>, IPoweredSystem
 {
-    public int CurrentPower => throw new NotImplementedException();
+    public int CurrentPower => state.CurrentPower;
     public JsonPluginSystem(IJson json, IJsonPluginTransforms transforms) : base(json)
     {
         SystemName = "json-plugin";
