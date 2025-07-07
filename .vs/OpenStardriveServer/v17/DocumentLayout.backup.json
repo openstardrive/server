@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\appsettings.json",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\appsettings.json",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\appsettings.json",
+              "RelativeToolTip": "OpenStardriveServer\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-24T15:07:56.01Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

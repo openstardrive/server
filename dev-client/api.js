@@ -1,5 +1,5 @@
 const startApi = async (processResults, onPollingStarted, onPollingPaused) => {
-    const apiBaseUrl = 'http://localhost:5002'
+    const apiBaseUrl = 'http://localhost:5000'
     
     let isInPoll = false;
     let cursor = 0;
