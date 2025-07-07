@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{EAB537B5-257E-4AA2-8A24-CFB41AF36CD5}|OpenStardriveServer.UnitTests\\OpenStardriveServer.UnitTests.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver.unittests\\domain\\systems\\plugins\\jsonplugintransformstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAB537B5-257E-4AA2-8A24-CFB41AF36CD5}|OpenStardriveServer.UnitTests\\OpenStardriveServer.UnitTests.csproj|solutionrelative:openstardriveserver.unittests\\domain\\systems\\plugins\\jsonplugintransformstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAB537B5-257E-4AA2-8A24-CFB41AF36CD5}|OpenStardriveServer.UnitTests\\OpenStardriveServer.UnitTests.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver.unittests\\domain\\systems\\navigation\\navigationtransformstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAB537B5-257E-4AA2-8A24-CFB41AF36CD5}|OpenStardriveServer.UnitTests\\OpenStardriveServer.UnitTests.csproj|solutionrelative:openstardriveserver.unittests\\domain\\systems\\navigation\\navigationtransformstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\hostedservices\\serverinitializationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\hostedservices\\serverinitializationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\systems\\plugins\\jsonpluginsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\systems\\plugins\\jsonpluginsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\systems\\registersystemscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\systems\\registersystemscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\systems\\plugins\\jsonplugintransforms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\systems\\plugins\\jsonplugintransforms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\systems\\plugins\\jsonpluginstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\systems\\plugins\\jsonpluginstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,15 +46,93 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NavigationTransformsTests.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer.UnitTests\\Domain\\Systems\\Navigation\\NavigationTransformsTests.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer.UnitTests\\Domain\\Systems\\Navigation\\NavigationTransformsTests.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer.UnitTests\\Domain\\Systems\\Navigation\\NavigationTransformsTests.cs",
+              "RelativeToolTip": "OpenStardriveServer.UnitTests\\Domain\\Systems\\Navigation\\NavigationTransformsTests.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T15:36:48.413Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\appsettings.json",
-              "RelativeDocumentMoniker": "OpenStardriveServer\\appsettings.json",
-              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\appsettings.json",
-              "RelativeToolTip": "OpenStardriveServer\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-24T15:07:56.01Z",
+              "Title": "JsonPluginTransformsTests.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer.UnitTests\\Domain\\Systems\\Plugins\\JsonPluginTransformsTests.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer.UnitTests\\Domain\\Systems\\Plugins\\JsonPluginTransformsTests.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer.UnitTests\\Domain\\Systems\\Plugins\\JsonPluginTransformsTests.cs",
+              "RelativeToolTip": "OpenStardriveServer.UnitTests\\Domain\\Systems\\Plugins\\JsonPluginTransformsTests.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAUwDgAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T15:32:51.79Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "RegisterSystemsCommand.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\RegisterSystemsCommand.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Systems\\RegisterSystemsCommand.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\RegisterSystemsCommand.cs",
+              "RelativeToolTip": "OpenStardriveServer\\Domain\\Systems\\RegisterSystemsCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T14:13:12.129Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ServerInitializationService.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\HostedServices\\ServerInitializationService.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\HostedServices\\ServerInitializationService.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\HostedServices\\ServerInitializationService.cs",
+              "RelativeToolTip": "OpenStardriveServer\\HostedServices\\ServerInitializationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T13:50:29.749Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "JsonPluginSystem.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginSystem.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginSystem.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginSystem.cs",
+              "RelativeToolTip": "OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginSystem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAACFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T13:38:09.625Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "JsonPluginState.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginState.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginState.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginState.cs",
+              "RelativeToolTip": "OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginState.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T13:44:06.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "JsonPluginTransforms.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginTransforms.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginTransforms.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginTransforms.cs",
+              "RelativeToolTip": "OpenStardriveServer\\Domain\\Systems\\Plugins\\JsonPluginTransforms.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T13:53:14.32Z",
               "EditorCaption": ""
             }
           ]
