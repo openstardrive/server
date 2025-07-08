@@ -16,10 +16,10 @@ public class RegisterSystemsCommand : IRegisterSystemsCommand
     private readonly ISystemsRegistry systemsRegistry;
     private readonly IServiceProvider serviceProvider;
 
-    private readonly HashSet<Type> ignoredSystems = new HashSet<Type>
-    {
+    private readonly HashSet<Type> ignoredSystems =
+    [
         typeof(JsonPluginSystem)
-    };
+    ];
 
     public RegisterSystemsCommand(ISystemsRegistry systemsRegistry, IServiceProvider serviceProvider)
     {

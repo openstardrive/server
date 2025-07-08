@@ -466,11 +466,14 @@ var init = async () => {
             arriveInMilliseconds: arriveInMilliseconds
         };
 
-        api.sendCommand("course-calculated", {
+        api.sendCommand("set-course", {
             courseId: courseId,
             destination: destination,
             coordinates: coordinates,
             eta: etaPayload
+        });
+        api.sendCommand("cancel-course-calculation",{
+            courseId: courseId
         });
         document.getElementById("requestedCourse").style.backgroundColor = "#2c5364";
     });

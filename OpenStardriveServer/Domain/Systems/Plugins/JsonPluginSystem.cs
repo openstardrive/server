@@ -8,7 +8,7 @@ namespace OpenStardriveServer.Domain.Systems.Plugins;
 public class JsonPluginSystem : SystemBase<JsonPluginState>, IPoweredSystem
 {
     public int CurrentPower => state.CurrentPower;
-    public JsonPluginSystem(IJson json, IJsonPluginTransforms transforms, string pluginName) : base(json)
+    public JsonPluginSystem(IJson json, IJsonPluginTransforms transforms, string pluginName="mew") : base(json)
     {
         SystemName = "json-plugin-"+pluginName;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
