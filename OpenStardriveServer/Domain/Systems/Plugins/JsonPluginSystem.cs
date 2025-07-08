@@ -8,7 +8,7 @@ namespace OpenStardriveServer.Domain.Systems.Plugins;
 public class JsonPluginSystem : SystemBase<JsonPluginState>, IPoweredSystem
 {
     public int CurrentPower => state.CurrentPower;
-    public JsonPluginSystem(IJson json, IJsonPluginTransforms transforms, string pluginName="mew") : base(json)
+    public JsonPluginSystem(IJson json, IJsonPluginTransforms transforms, string pluginName="mew", List<string> fields=null) : base(json)
     {
         SystemName = "json-plugin-"+pluginName;
         CommandProcessors = new Dictionary<string, Func<Command, CommandResult>>
@@ -17,8 +17,15 @@ public class JsonPluginSystem : SystemBase<JsonPluginState>, IPoweredSystem
             ["set-disabled"] = c => Update(c, transforms.SetDisabled(state, SystemName, Payload<DisabledSystemsPayload>(c))),
             ["set-damaged"] = c => Update(c, transforms.SetDamaged(state, SystemName, Payload<DamagedSystemsPayload>(c))),
             ["set-power"] = c => Update(c, transforms.SetCurrentPower(state, SystemName, Payload<CurrentPowerPayload>(c))),
-            ["set-required-power"] = c => Update(c, transforms.SetRequiredPower(state, SystemName, Payload<RequiredPowerPayload>(c))),
-            ["update-json-state-"+pluginName] = c => Update(c, transforms.UpdateJsonState(state, Payload<UpdateJsonStatePayload>(c)))
+            ["set-required-power"] = c => Update(c, transforms.SetRequiredPower(state, SystemName, Payload<RequiredPowerPayload>(c)))
         };
+
+        if(fields!=null)
+        {
+            foreach (var field in fields)
+            {
+                CommandProcessors[$"update-{pluginName}-{field}"] = c => Update(c, transforms.UpdateJsonState(state, field, Payload<UpdateJsonStatePayload>(c)));
+            }
+        }
     }
 }

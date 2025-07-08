@@ -8,7 +8,7 @@ namespace OpenStardriveServer.Domain.Systems.Plugins;
 
 public interface IJsonPluginTransforms : IStandardTransforms<JsonPluginState>
 {
-    TransformResult<JsonPluginState> UpdateJsonState(JsonPluginState state, UpdateJsonStatePayload payload);
+    TransformResult<JsonPluginState> UpdateJsonState(JsonPluginState state, string key, UpdateJsonStatePayload payload);
 }
 
 public class JsonPluginTransforms : IJsonPluginTransforms
@@ -35,13 +35,13 @@ public class JsonPluginTransforms : IJsonPluginTransforms
     {
         return standardTransforms.SetRequiredPower(state, systemName, payload);
     }
-    public TransformResult<JsonPluginState> UpdateJsonState(JsonPluginState state, UpdateJsonStatePayload payload)
+    public TransformResult<JsonPluginState> UpdateJsonState(JsonPluginState state, string key, UpdateJsonStatePayload payload)
     {
         return TransformResult<JsonPluginState>.StateChanged(state with
         {
             JsonState = new System.Collections.Generic.Dictionary<string, object>(state.JsonState)
             {
-                [payload.Key] = payload.Value
+                [key] = payload.Value
             }
         });
     }

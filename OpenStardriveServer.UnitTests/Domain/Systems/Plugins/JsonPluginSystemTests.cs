@@ -1,4 +1,5 @@
-﻿using OpenStardriveServer.Domain.Systems;
+﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Navigation;
 using OpenStardriveServer.Domain.Systems.Plugins;
 using OpenStardriveServer.Domain.Systems.Standard;
@@ -61,12 +62,12 @@ public class JsonPluginSystemTests : SystemsTest<TestingJsonPluginSystem>
     [Test]
     public void When_updating_json_state()
     {
+        string key = "testKey";
         var payload = new UpdateJsonStatePayload
         {
-            Key = "test-key",
             Value = "test-value"
         };
-        GetMock<IJsonPluginTransforms>().Setup(x => x.UpdateJsonState(Any<JsonPluginState>(), payload)).Returns(expected);
-        TestCommandWithPayload("update-json-state-test", payload, expected);
+        GetMock<IJsonPluginTransforms>().Setup(x => x.UpdateJsonState(Any<JsonPluginState>(),key, payload)).Returns(expected);
+        TestCommandWithPayload("update-test-testKey", payload, expected);
     }
 }

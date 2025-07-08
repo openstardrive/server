@@ -12,6 +12,6 @@ namespace OpenStardriveServer.UnitTests.Domain.Systems.Plugins;
 public class TestingJsonPluginSystem: JsonPluginSystem
 {
     public TestingJsonPluginSystem(IJsonPluginTransforms transforms, IJson json)
-        : base(json, transforms, "test")
+        : base(json, transforms, "test", [ "testKey"])
     { }
 }

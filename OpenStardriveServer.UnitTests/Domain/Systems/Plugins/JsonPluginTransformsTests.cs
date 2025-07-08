@@ -38,19 +38,19 @@ public class JsonPluginTransformsTests: StandardTransformsTest<JsonPluginTransfo
     public void When_updating_json_state_with_new_key()
     {
         var state = new JsonPluginState();
+        string key="test-key";
         var payload = new UpdateJsonStatePayload
         {
-            Key = "test-key",
             Value = "test-value"
         };
 
-        var result = ClassUnderTest.UpdateJsonState(state, payload);
+        var result = ClassUnderTest.UpdateJsonState(state, key, payload);
 
         var jsonState = result.NewState.Value.JsonState;
 
         Assert.That(jsonState, Has.Count.EqualTo(1));
-        Assert.That(jsonState, Contains.Key(payload.Key));
-        Assert.That(jsonState[payload.Key], Is.EqualTo(payload.Value));
+        Assert.That(jsonState, Contains.Key(key));
+        Assert.That(jsonState[key], Is.EqualTo(payload.Value));
     }
 
     [Test]
@@ -63,15 +63,15 @@ public class JsonPluginTransformsTests: StandardTransformsTest<JsonPluginTransfo
                 { "existing-key", "existing-value" }
             }
         };
+        string key = "existing-key";
         var payload = new UpdateJsonStatePayload
         {
-            Key = "existing-key",
             Value = "new-value"
         };
-        var result = ClassUnderTest.UpdateJsonState(state, payload);
+        var result = ClassUnderTest.UpdateJsonState(state, key, payload);
         var jsonState = result.NewState.Value.JsonState;
         Assert.That(jsonState, Has.Count.EqualTo(1));
-        Assert.That(jsonState, Contains.Key(payload.Key));
-        Assert.That(jsonState[payload.Key], Is.EqualTo(payload.Value));
+        Assert.That(jsonState, Contains.Key(key));
+        Assert.That(jsonState[key], Is.EqualTo(payload.Value));
     }
 }

@@ -42,14 +42,27 @@ namespace OpenStardriveServer.Domain.Systems
                     var pluginInfo = json.Deserialize<JsonPluginInfo>(jsonContent);
                     logger.LogInformation("Loading plugin {0} from file {1}", pluginInfo.Name, file);
 
-                    var pluginSystem = new JsonPluginSystem(json, new JsonPluginTransforms(new StandardTransforms<JsonPluginState>()) , pluginInfo.Name);
+                    var fields=new List<string>();
 
                     foreach (var pair in pluginInfo.ExtensionData)
                     {
-                       
+                       fields.Add(pair.Key);
                     }
 
+                    var pluginSystem = new JsonPluginSystem(json, new JsonPluginTransforms(new StandardTransforms<JsonPluginState>()), pluginInfo.Name,fields);
                     plugins.Add(pluginSystem);
+
+                    foreach (var pair in pluginInfo.ExtensionData)
+                    {
+                        pluginSystem.CommandProcessors[$"update-{pluginInfo.Name}-{pair.Key}"].Invoke(new Command
+                        {
+                            Type = $"update-{pluginInfo.Name}-{pair.Key}",
+                            Payload = json.Serialize(new UpdateJsonStatePayload
+                            {
+                                Value = pair.Value
+                            })
+                        });
+                    }
                 }
                 catch (JsonException e)
                 {

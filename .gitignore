@@ -8,3 +8,4 @@ obj/
 notes.md
 *.pubxml
 .vs/
+OpenStardriveServer/openstardriveserver.sql
