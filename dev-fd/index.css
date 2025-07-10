@@ -318,6 +318,16 @@ body {
     justify-content: space-between;
     margin-top: 10px;
 }
+#rowThree {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-top: 10px;
+}
+
+#viewscreenContainer{
+    margin-left: 10px;
+}
 
 #alertContainer {
     display: flex;

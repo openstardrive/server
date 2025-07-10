@@ -217,6 +217,27 @@ var processResults = (results, cursor) => {
         const alertMessage = `${alertLevel} - ${alertName}` || "No current Level";
         document.getElementById("currentAlert").innerText = alertMessage;
     }
+
+    if(systemsUpdated.has('json-plugin-viewscreen')){
+        const viewScreenContainer=document.getElementById("viewscreenDropdownContainer");
+        viewScreenContainer.innerHTML="";
+        systems["json-plugin-viewscreen"].jsonState.Cards.forEach((item)=>{
+            let newItem=document.createElement("li");
+            let itemButton=document.createElement("button");
+
+            itemButton.setAttribute("class","dropdown-item");
+            itemButton.innerText=item;
+            itemButton.addEventListener("click",()=>{
+                api.sendCommand("update-viewscreen-CurrentImage",{
+                    value: item
+                });
+                console.log(item);
+            })
+
+            newItem.appendChild(itemButton);
+            viewScreenContainer.appendChild(newItem);
+        })
+    }
 };
 
 var onPollingPaused = () => {
@@ -916,6 +937,16 @@ var init = async () => {
             inventory: warheadInventory
         });
     });
+
+
+    return api;
 }
 
-init();
+
+let api;
+
+async function setupApi(){
+    api=await init();
+}
+
+setupApi();

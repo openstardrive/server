@@ -1,4 +1,5 @@
 {
     "name":"viewscreen",
-    "current-image":"none"
+    "CurrentImage":"none",
+    "Cards": ["None","Galaxy","GalaxyEdge","RedSpace","PurpleSpace"]
 }
