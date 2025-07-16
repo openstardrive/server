@@ -1,7 +1,9 @@
-using System;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using OpenStardriveServer.Domain.Systems;
 using OpenStardriveServer.Domain.Systems.Clients;
+using OpenStardriveServer.HostedServices;
+using System;
+using System.Threading.Tasks;
 
 namespace OpenStardriveServer.Domain.Workflows;
 
@@ -12,13 +14,17 @@ public interface IPostCommandWorkflow
 
 public class PostCommandWorkflow : IPostCommandWorkflow
 {
+    private static readonly string CLIENT_LOG_TYPE = "External";
+
     private readonly ICommandRepository commandRepository;
     private readonly ISystemsRegistry systemsRegistry;
+    private readonly ILogger<CommandProcessingService> logger;
 
-    public PostCommandWorkflow(ICommandRepository commandRepository, ISystemsRegistry systemsRegistry)
+    public PostCommandWorkflow(ICommandRepository commandRepository, ISystemsRegistry systemsRegistry, ILogger<CommandProcessingService> logger)
     {
         this.commandRepository = commandRepository;
         this.systemsRegistry = systemsRegistry;
+        this.logger = logger;
     }
 
     public async Task<PostCommandResult> PostCommand(string clientSecret, string commandType, string payload)
@@ -33,7 +39,15 @@ public class PostCommandWorkflow : IPostCommandWorkflow
                 Status = PostCommandStatus.ClientNotFound
             };
         }
-            
+
+        //Log the command if the client is of type "External"
+        if (client.Value.ClientType == CLIENT_LOG_TYPE)
+        {
+            logger.LogInformation($@"Running command from external source: {client.Value.Name} with id {client.Value.ClientId}.
+                Comamnd type: {commandType}
+                Payload: {payload}");
+        }
+
         var command = new Command
         {
             ClientId = client.Value.ClientId,
@@ -41,6 +55,8 @@ public class PostCommandWorkflow : IPostCommandWorkflow
             Payload = payload
         };
         await commandRepository.Save(command);
+
+
         return new PostCommandResult
         {
             Status = PostCommandStatus.Success,
