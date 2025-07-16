@@ -329,6 +329,15 @@ body {
     margin-left: 10px;
 }
 
+#viewscreenDropdownContainer {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 30vh;
+    background-color: #007B9E;
+    border-radius: 3px;
+}
+
 #alertContainer {
     display: flex;
     flex-direction: row;

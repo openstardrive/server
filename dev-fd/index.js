@@ -222,10 +222,9 @@ var processResults = (results, cursor) => {
         const viewScreenContainer=document.getElementById("viewscreenDropdownContainer");
         viewScreenContainer.innerHTML="";
         systems["json-plugin-viewscreen"].jsonState.Cards.forEach((item)=>{
-            let newItem=document.createElement("li");
             let itemButton=document.createElement("button");
 
-            itemButton.setAttribute("class","dropdown-item");
+            itemButton.setAttribute("class","alertButton");
             itemButton.innerText=item;
             itemButton.addEventListener("click",()=>{
                 api.sendCommand("update-viewscreen-CurrentImage",{
@@ -234,8 +233,7 @@ var processResults = (results, cursor) => {
                 console.log(item);
             })
 
-            newItem.appendChild(itemButton);
-            viewScreenContainer.appendChild(newItem);
+            viewScreenContainer.appendChild(itemButton);
         })
     }
 };
