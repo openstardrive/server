@@ -83,7 +83,6 @@ const startApi = async (processResults, onPollingStarted, onPollingPaused) => {
                 payload
             })
         });
-
         if (response.status == 200) {
             const json = await response.json()
             return json.commandId
