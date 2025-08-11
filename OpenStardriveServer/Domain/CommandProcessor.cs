@@ -20,20 +20,17 @@ public class CommandProcessor : ICommandProcessor
     private readonly ICommandRepository commandRepository;
     private readonly ICommandResultRepository commandResultRepository;
     private readonly ILogger<CommandProcessor> logger;
-    private readonly IThoriumIntegration thoriumIntegration;
     private long cursor;
 
     public CommandProcessor(ISystemsRegistry systemsRegistry,
         ICommandRepository commandRepository,
         ICommandResultRepository commandResultRepository,
-        ILogger<CommandProcessor> logger,
-        IThoriumIntegration thoriumIntegration)
+        ILogger<CommandProcessor> logger)
     {
         this.systemsRegistry = systemsRegistry;
         this.commandRepository = commandRepository;
         this.commandResultRepository = commandResultRepository;
         this.logger = logger;
-        this.thoriumIntegration = thoriumIntegration;
     }
 
     public IEnumerable<CommandResult> Process(Command command)
@@ -49,7 +46,7 @@ public class CommandProcessor : ICommandProcessor
         try
         {
 
-            thoriumIntegration.TranslateCommand(command);
+           // thoriumIntegration.TranslateCommand(command);
             return x(command);
         }
         catch (JsonException)
