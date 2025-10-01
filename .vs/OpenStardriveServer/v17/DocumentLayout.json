@@ -7,20 +7,20 @@
       "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\integrations\\thoriumintegration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\integrations\\thoriumintegrationresults.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\integrations\\thoriumintegrationresults.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\workflows\\postcommandworkflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\workflows\\postcommandworkflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\systems\\propulsion\\engines\\enginessystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\systems\\propulsion\\engines\\enginessystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\commandprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\commandprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\controllers\\maincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\controllers\\maincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\domain\\commandresultrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|solutionrelative:openstardriveserver\\domain\\commandresultrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{877D9095-B099-4BB4-9B76-3A5D03317720}|OpenStardriveServer\\OpenStardriveServer.csproj|c:\\users\\blaze\\onedrive\\desktop\\quantumleap\\server\\openstardriveserver\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,47 +34,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ThoriumIntegrationResults.cs",
-              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegrationResults.cs",
-              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegrationResults.cs",
-              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegrationResults.cs",
-              "RelativeToolTip": "OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegrationResults.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T20:36:20.76Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ThoriumIntegration.cs",
-              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
-              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
-              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
-              "RelativeToolTip": "OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAUwIIAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T18:18:49.668Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CommandProcessor.cs",
-              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\CommandProcessor.cs",
-              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\CommandProcessor.cs",
-              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\CommandProcessor.cs",
-              "RelativeToolTip": "OpenStardriveServer\\Domain\\CommandProcessor.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAAACMAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T19:23:36.024Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -87,14 +48,40 @@
               "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Systems\\Propulsion\\Engines\\EnginesSystem.cs",
               "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Systems\\Propulsion\\Engines\\EnginesSystem.cs",
               "RelativeToolTip": "OpenStardriveServer\\Domain\\Systems\\Propulsion\\Engines\\EnginesSystem.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAowCgAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAABWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-28T18:25:16.904Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "ThoriumIntegration.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
+              "RelativeToolTip": "OpenStardriveServer\\Domain\\Integrations\\ThoriumIntegration.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-28T18:18:49.668Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PostCommandWorkflow.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Workflows\\PostCommandWorkflow.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\Workflows\\PostCommandWorkflow.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\Workflows\\PostCommandWorkflow.cs",
+              "RelativeToolTip": "OpenStardriveServer\\Domain\\Workflows\\PostCommandWorkflow.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwD0AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T15:43:51.394Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainController.cs",
               "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Controllers\\MainController.cs",
               "RelativeDocumentMoniker": "OpenStardriveServer\\Controllers\\MainController.cs",
@@ -102,7 +89,8 @@
               "RelativeToolTip": "OpenStardriveServer\\Controllers\\MainController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T22:02:11.686Z"
+              "WhenOpened": "2025-07-15T22:02:11.686Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -115,6 +103,18 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-07T19:57:31.215Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CommandResultRepository.cs",
+              "DocumentMoniker": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\CommandResultRepository.cs",
+              "RelativeDocumentMoniker": "OpenStardriveServer\\Domain\\CommandResultRepository.cs",
+              "ToolTip": "C:\\Users\\blaze\\OneDrive\\Desktop\\QuantumLeap\\server\\OpenStardriveServer\\Domain\\CommandResultRepository.cs",
+              "RelativeToolTip": "OpenStardriveServer\\Domain\\CommandResultRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T19:56:33.936Z"
             }
           ]
         }
