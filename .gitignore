@@ -9,3 +9,10 @@ notes.md
 *.pubxml
 .vs/
 OpenStardriveServer/openstardriveserver.sql
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
