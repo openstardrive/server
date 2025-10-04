@@ -231,6 +231,46 @@ const getRenderFunctions = () => {
         return renderDamagedAndDisabled(data) + renderPower(data)
     }
 
+    const renderTeams = data => {
+        if (!data.teams || data.teams.length === 0) {
+            return '<div class="no-teams">No teams currently deployed</div>'
+        }
+
+        return data.teams.map(team => {
+            const priorityClass = team.priority || 'medium'
+            const officersHtml = team.officers && team.officers.length > 0 
+                ? team.officers.map(officer => 
+                    `<div class="officer">
+                        <span class="officer-name">${officer.name}</span>
+                        <span class="officer-position">${officer.position}</span>
+                        <button onclick="commands.removeOfficer('${team.id}', '${officer.id}')" class="remove-btn">X</button>
+                    </div>`
+                  ).join('')
+                : '<div class="no-officers">No officers assigned</div>'
+            
+            const locationHtml = team.location 
+                ? `<div class="location">Location: ${team.location.name || 'Unknown'} (Deck ${team.location.deck?.number || 'Unknown'})</div>`
+                : '<div class="location">Location: Unassigned</div>'
+
+            return `
+                <div class="team ${team.type} priority-${priorityClass}">
+                    <div class="team-header">
+                        <h4>${team.name}</h4>
+                        <span class="team-type">${team.type}</span>
+                        <span class="team-priority priority-${priorityClass}">${priorityClass}</span>
+                        <button onclick="commands.removeTeam('${team.id}')" class="remove-btn">Delete Team</button>
+                    </div>
+                    ${locationHtml}
+                    <div class="orders">Orders: ${team.orders || 'No orders assigned'}</div>
+                    <div class="officers-section">
+                        <h5>Officers (${team.officers?.length || 0}):</h5>
+                        ${officersHtml}
+                    </div>
+                </div>
+            `
+        }).join('')
+    }
+
     return {
         'systems': renderSystems,
         'clients': renderClients,
@@ -247,6 +287,7 @@ const getRenderFunctions = () => {
         'debug': renderDebug,
         'power': renderPowerSystem,
         'alert': renderAlert,
-        'life-support': renderLifeSupport
+        'life-support': renderLifeSupport,
+        'teams': renderTeams
     }
 }

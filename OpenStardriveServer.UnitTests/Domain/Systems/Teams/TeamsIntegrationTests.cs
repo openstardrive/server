@@ -12,7 +12,7 @@ public class TeamsIntegrationTests
         var json = new OpenStardriveServer.Domain.Json();
         var transforms = new TeamsTransforms();
         var system = new TeamsSystem(json, transforms);
-        
+
         // This is the exact payload structure from the user's request
         var jsonPayload = """
         [
@@ -120,10 +120,10 @@ public class TeamsIntegrationTests
         // Assert
         Assert.That(result.System, Is.EqualTo("teams"));
         Assert.That(result.Type, Is.Not.EqualTo(OpenStardriveServer.Domain.CommandResult.NoChangeType));
-        
+
         var resultState = json.Deserialize<TeamsState>(result.Payload);
         Assert.That(resultState.Teams.Length, Is.EqualTo(3));
-        
+
         // Test Alpha Team
         var alphaTeam = resultState.Teams[0];
         Assert.That(alphaTeam.Id, Is.EqualTo("team-uuid-1"));
@@ -135,7 +135,7 @@ public class TeamsIntegrationTests
         Assert.That(alphaTeam.Officers.Length, Is.EqualTo(2));
         Assert.That(alphaTeam.Officers[0].Name, Is.EqualTo("Lieutenant Johnson"));
         Assert.That(alphaTeam.Officers[0].Inventory.Length, Is.EqualTo(2));
-        
+
         // Test Bravo Team
         var bravoTeam = resultState.Teams[1];
         Assert.That(bravoTeam.Id, Is.EqualTo("team-uuid-2"));
@@ -143,7 +143,7 @@ public class TeamsIntegrationTests
         Assert.That(bravoTeam.Priority, Is.EqualTo("high"));
         Assert.That(bravoTeam.Officers.Length, Is.EqualTo(1));
         Assert.That(bravoTeam.Officers[0].Name, Is.EqualTo("Commander Davis"));
-        
+
         // Test Medical Team
         var medicalTeam = resultState.Teams[2];
         Assert.That(medicalTeam.Id, Is.EqualTo("team-uuid-3"));

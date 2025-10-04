@@ -12,7 +12,7 @@ public class TeamsSystemTests
         var json = new OpenStardriveServer.Domain.Json();
         var transforms = new TeamsTransforms();
         var system = new TeamsSystem(json, transforms);
-        
+
         var testTeams = new[]
         {
             new Team
@@ -64,7 +64,7 @@ public class TeamsSystemTests
         // Assert
         Assert.That(result.System, Is.EqualTo("teams"));
         Assert.That(result.Type, Is.Not.EqualTo(OpenStardriveServer.Domain.CommandResult.NoChangeType));
-        
+
         var resultState = json.Deserialize<TeamsState>(result.Payload);
         Assert.That(resultState.Teams.Length, Is.EqualTo(1));
         Assert.That(resultState.Teams[0].Id, Is.EqualTo("team-uuid-1"));

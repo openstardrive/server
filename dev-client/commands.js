@@ -218,6 +218,124 @@ const getCommands = (api, state) => {
         setAlert: change => {
             const level = state.getSystemState('alert').current.level + change
             api.sendCommand('set-alert-level', { level })
+        },
+
+        // Team Management Commands
+        createTeam: () => {
+            const name = document.getElementById('new-team-name').value
+            const type = document.getElementById('new-team-type').value
+            const priority = document.getElementById('new-team-priority').value
+            const orders = document.getElementById('new-team-orders').value
+            
+            if (!name.trim()) {
+                alert('Please enter a team name')
+                return
+            }
+
+            const currentTeams = state.getSystemState('teams')?.teams || []
+            const newTeam = {
+                id: `team-${randomId()}`,
+                name: name.trim(),
+                type: type,
+                simulatorId: 'simulator-1',
+                priority: priority,
+                location: null,
+                orders: orders.trim() || 'Awaiting orders',
+                officers: []
+            }
+
+            const updatedTeams = [...currentTeams, newTeam]
+            api.sendCommand('teams-update', updatedTeams)
+            
+            // Clear the form
+            document.getElementById('new-team-name').value = ''
+            document.getElementById('new-team-orders').value = ''
+            
+            // Update officer team select
+            setTimeout(() => commands.updateOfficerTeamSelect(), 100)
+        },
+
+        addOfficer: () => {
+            const teamId = document.getElementById('officer-team-select').value
+            const name = document.getElementById('new-officer-name').value
+            const position = document.getElementById('new-officer-position').value
+            
+            if (!teamId) {
+                alert('Please select a team')
+                return
+            }
+            if (!name.trim()) {
+                alert('Please enter officer name')
+                return
+            }
+
+            const currentTeams = state.getSystemState('teams')?.teams || []
+            const updatedTeams = currentTeams.map(team => {
+                if (team.id === teamId) {
+                    const newOfficer = {
+                        id: `officer-${randomId()}`,
+                        name: name.trim(),
+                        position: position.trim() || 'Officer',
+                        inventory: []
+                    }
+                    return { ...team, officers: [...team.officers, newOfficer] }
+                }
+                return team
+            })
+
+            api.sendCommand('teams-update', updatedTeams)
+            
+            // Clear the form
+            document.getElementById('new-officer-name').value = ''
+            document.getElementById('new-officer-position').value = ''
+        },
+
+        removeOfficer: (teamId, officerId) => {
+            const currentTeams = state.getSystemState('teams')?.teams || []
+            const updatedTeams = currentTeams.map(team => {
+                if (team.id === teamId) {
+                    return { ...team, officers: team.officers.filter(officer => officer.id !== officerId) }
+                }
+                return team
+            })
+
+            api.sendCommand('teams-update', updatedTeams)
+        },
+
+        removeTeam: (teamId) => {
+            if (!confirm('Are you sure you want to delete this team?')) {
+                return
+            }
+            
+            const currentTeams = state.getSystemState('teams')?.teams || []
+            const updatedTeams = currentTeams.filter(team => team.id !== teamId)
+            
+            api.sendCommand('teams-update', updatedTeams)
+            
+            // Update officer team select
+            setTimeout(() => updateOfficerTeamSelect(), 100)
+        },
+
+        clearAllTeams: () => {
+            if (!confirm('Are you sure you want to remove all teams?')) {
+                return
+            }
+            
+            api.sendCommand('teams-update', [])
+            
+            // Update officer team select
+            setTimeout(() => commands.updateOfficerTeamSelect(), 100)
+        },
+
+        // Helper function to update the officer team select dropdown
+        updateOfficerTeamSelect: () => {
+            const select = document.getElementById('officer-team-select')
+            if (!select || !window.state) return
+            
+            const teams = window.state.getSystemState('teams')?.teams || []
+            
+            select.innerHTML = '<option value="">Select a team...</option>' + 
+                teams.map(team => `<option value="${team.id}">${team.name} (${team.type})</option>`).join('')
         }
     }
 }

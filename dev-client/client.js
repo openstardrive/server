@@ -19,6 +19,11 @@ const start = async () => {
             .forEach(system => {
                 if (renderMap[system]) {
                     document.getElementById(system).innerHTML = renderMap[system](state.getSystemState(system))
+                    
+                    // Update officer team select when teams are updated
+                    if (system === 'teams') {
+                        setTimeout(() => window.commands && window.commands.updateOfficerTeamSelect(), 10)
+                    }
                 } else {
                     console.log('unknown system:', system, state.getSystemState(system))
                 }
@@ -62,7 +67,14 @@ const start = async () => {
 
     let api = await startApi(processResults, onPollingStarted, onPollingPaused)
 
+    // Make state globally available for helper functions
+    window.state = state
+
     setTimeout(() => document.getElementById('system-select').innerHTML = renderMap.systems(state.allSystems()), 3000)
 
-    return getCommands(api, state)
+    const commands = getCommands(api, state)
+    // Make commands globally available for helper functions
+    window.commands = commands
+
+    return commands
 }

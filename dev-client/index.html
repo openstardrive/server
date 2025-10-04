@@ -199,6 +199,39 @@
         </div>
         
         <div class="system">
+            <div>Teams</div>
+            <div>
+                <div id="teams"></div>
+                <div class="team-controls">
+                    <h4>Create New Team</h4>
+                    <input id="new-team-name" type="text" placeholder="Team Name" />
+                    <select id="new-team-type">
+                        <option value="damage">Damage Control</option>
+                        <option value="security">Security</option>
+                        <option value="medical">Medical</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="science">Science</option>
+                    </select>
+                    <select id="new-team-priority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+                    <input id="new-team-orders" type="text" placeholder="Orders" />
+                    <button onclick="commands.createTeam()">Create Team</button>
+                </div>
+                <div class="officer-controls">
+                    <h4>Add Officer</h4>
+                    <select id="officer-team-select"></select>
+                    <input id="new-officer-name" type="text" placeholder="Officer Name" />
+                    <input id="new-officer-position" type="text" placeholder="Position" />
+                    <button onclick="commands.addOfficer()">Add Officer</button>
+                </div>
+                <button onclick="commands.clearAllTeams()">Clear All Teams</button>
+            </div>
+        </div>
+        
+        <div class="system">
             <div>Debug</div>
             <div>
                 <div id="debug"></div>

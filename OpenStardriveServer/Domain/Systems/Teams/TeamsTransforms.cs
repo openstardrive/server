@@ -11,9 +11,9 @@ public class TeamsTransforms : ITeamsTransforms
 {
     public TransformResult<TeamsState> UpdateTeams(TeamsState currentState, Team[] teams)
     {
-        var newState = currentState with 
-        { 
-            Teams = teams 
+        var newState = currentState with
+        {
+            Teams = teams
         };
 
         return TransformResult<TeamsState>.StateChanged(newState);

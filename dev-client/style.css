@@ -106,3 +106,167 @@ button:disabled {
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+/* Teams Styles */
+.team-controls, .officer-controls {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.team-controls h4, .officer-controls h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.team-controls input, .team-controls select,
+.officer-controls input, .officer-controls select {
+    margin: 2px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.no-teams {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.team {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.team.damage {
+    border-left: 4px solid #ff6b35;
+}
+
+.team.security {
+    border-left: 4px solid #1a237e;
+}
+
+.team.medical {
+    border-left: 4px solid #2e7d32;
+}
+
+.team.engineering {
+    border-left: 4px solid #f57c00;
+}
+
+.team.science {
+    border-left: 4px solid #7b1fa2;
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.team-header h4 {
+    margin: 0;
+    color: #333;
+}
+
+.team-type {
+    background-color: #e0e0e0;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10pt;
+    text-transform: capitalize;
+}
+
+.team-priority {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10pt;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.priority-low {
+    background-color: #c8e6c9;
+    color: #2e7d32;
+}
+
+.priority-medium {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.priority-high {
+    background-color: #ffcdd2;
+    color: #d32f2f;
+}
+
+.location {
+    color: #666;
+    font-size: 10pt;
+    margin-bottom: 5px;
+}
+
+.orders {
+    background-color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    font-style: italic;
+}
+
+.officers-section h5 {
+    margin: 10px 0 5px 0;
+    color: #333;
+}
+
+.officer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 5px 10px;
+    margin: 3px 0;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.officer-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.officer-position {
+    color: #666;
+    font-size: 10pt;
+}
+
+.no-officers {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+}
+
+.remove-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: #d32f2f;
+}
