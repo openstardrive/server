@@ -29,7 +29,7 @@ public record ThoriumTeam
     public string Name { get; init; }
     
     [JsonPropertyName("location")]
-    public string Location { get; init; } // Just an ID, not full location object
+    public JsonElement Location { get; init; } // Can be string ID or location object
     
     [JsonPropertyName("priority")]
     public string Priority { get; init; }

@@ -209,12 +209,7 @@ namespace OpenStardriveServer.Domain.Integrations
                 Type = thoriumTeam.Type,
                 SimulatorId = thoriumTeam.SimulatorId,
                 Priority = thoriumTeam.Priority,
-                Location = thoriumTeam.Location != null ? new TeamLocation
-                {
-                    Id = thoriumTeam.Location,
-                    Name = null, // Thorium only provides ID
-                    Deck = null  // Would need additional lookup
-                } : null,
+                Location = ConvertThoriumLocation(thoriumTeam.Location),
                 Orders = thoriumTeam.Orders,
                 Officers = ConvertThoriumOfficers(thoriumTeam.Officers)
             }).ToArray();
@@ -260,6 +255,63 @@ namespace OpenStardriveServer.Domain.Integrations
             }
             
             return new Officer[0];
+        }
+
+        private TeamLocation ConvertThoriumLocation(JsonElement locationElement)
+        {
+            if (locationElement.ValueKind == JsonValueKind.String)
+            {
+                // Format 1: String ID (from Thorium)
+                var locationId = locationElement.GetString();
+                return string.IsNullOrEmpty(locationId) ? null : new TeamLocation
+                {
+                    Id = locationId,
+                    Name = null, // ID only, name would need lookup
+                    Deck = null  // Would need additional lookup
+                };
+            }
+            else if (locationElement.ValueKind == JsonValueKind.Object)
+            {
+                // Format 2: Location object (from dev-client)
+                var locationId = locationElement.TryGetProperty("id", out var idProp) ? idProp.GetString() : null;
+                var locationName = locationElement.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : null;
+                var locationDeck = locationElement.TryGetProperty("deck", out var deckProp) ? deckProp.GetString() : null;
+                
+                return string.IsNullOrEmpty(locationId) ? null : new TeamLocation
+                {
+                    Id = locationId,
+                    Name = locationName,
+                    Deck = string.IsNullOrEmpty(locationDeck) ? null : new Deck
+                    {
+                        Id = locationDeck.ToLowerInvariant().Replace(" ", "-"),
+                        Number = ParseDeckNumber(locationDeck),
+                        Name = locationDeck
+                    }
+                };
+            }
+            else if (locationElement.ValueKind == JsonValueKind.Null)
+            {
+                return null;
+            }
+            
+            return null;
+        }
+
+        private int ParseDeckNumber(string deckName)
+        {
+            if (string.IsNullOrEmpty(deckName))
+                return 0;
+                
+            // Try to extract number from strings like "Deck 1", "Bridge", etc.
+            var words = deckName.Split(' ');
+            foreach (var word in words)
+            {
+                if (int.TryParse(word, out var number))
+                    return number;
+            }
+            
+            // Default deck number if no number found
+            return 1;
         }
 
         private async Task<string> SendReq(string query)
