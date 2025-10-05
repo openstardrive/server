@@ -16,7 +16,7 @@ public class TeamsTransforms : ITeamsTransforms
         Console.WriteLine($"TeamsTransforms.UpdateTeams called:");
         Console.WriteLine($"  Current teams count: {currentState.Teams.Length}");
         Console.WriteLine($"  New teams count: {teams.Length}");
-        
+
         if (currentState.Teams.Length > 0)
         {
             Console.WriteLine("  Existing teams:");
@@ -25,7 +25,7 @@ public class TeamsTransforms : ITeamsTransforms
                 Console.WriteLine($"    - {team.Id}: {team.Name}");
             }
         }
-        
+
         if (teams.Length > 0)
         {
             Console.WriteLine("  New teams:");
@@ -37,7 +37,7 @@ public class TeamsTransforms : ITeamsTransforms
 
         // Merge teams: update existing teams by ID, add new teams
         var mergedTeams = new List<Team>(currentState.Teams);
-        
+
         foreach (var newTeam in teams)
         {
             var existingIndex = mergedTeams.FindIndex(t => t.Id == newTeam.Id);

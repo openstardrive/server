@@ -163,7 +163,7 @@ public class ThoriumIntegrationTeamsTests
         var team = convertedTeams[0];
         Assert.That(team.Id, Is.EqualTo("test-team-direct"));
         Assert.That(team.Name, Is.EqualTo("Direct Format Team"));
-        
+
         // Verify object officers preserve names and positions
         Assert.That(team.Officers.Length, Is.EqualTo(2));
         Assert.That(team.Officers[0].Id, Is.EqualTo("officer-obj-1"));

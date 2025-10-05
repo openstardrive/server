@@ -134,10 +134,10 @@ namespace OpenStardriveServer.Domain.Integrations
                     return SendReq(mutation);
                 } },
                 { "teams-update", (Command cmd) => {
-                    try 
+                    try
                     {
                         Console.WriteLine($"Teams-update payload received: {cmd.Payload}");
-                        
+
                         ThoriumTeam[] thoriumTeams = null;
                         
                         // Try parsing as wrapped format first: {"teams": [...]}
@@ -163,7 +163,7 @@ namespace OpenStardriveServer.Domain.Integrations
                                 throw new InvalidOperationException($"Unable to parse teams payload. Wrapped format error: {ex1.Message}; Direct array error: {ex2.Message}");
                             }
                         }
-                        
+
                         if (thoriumTeams == null || thoriumTeams.Length == 0)
                         {
                             Console.WriteLine("No teams found in payload");
@@ -180,7 +180,7 @@ namespace OpenStardriveServer.Domain.Integrations
                         // Update the original command's payload to the converted format
                         cmd.Payload = internalTeamsPayload;
                         Console.WriteLine($"Updated command payload: {cmd.Payload}");
-                        
+
                         return Task.FromResult("");
                     }
                     catch (Exception ex)
@@ -220,7 +220,7 @@ namespace OpenStardriveServer.Domain.Integrations
             if (officersElement.ValueKind == JsonValueKind.Array)
             {
                 var officers = new List<Officer>();
-                
+
                 foreach (var element in officersElement.EnumerateArray())
                 {
                     if (element.ValueKind == JsonValueKind.String)
@@ -240,7 +240,7 @@ namespace OpenStardriveServer.Domain.Integrations
                         var officerId = element.TryGetProperty("id", out var idProp) ? idProp.GetString() : "";
                         var officerName = element.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : "Unknown";
                         var officerPosition = element.TryGetProperty("position", out var posProp) ? posProp.GetString() : "Officer";
-                        
+
                         officers.Add(new Officer
                         {
                             Id = officerId ?? "",
@@ -250,10 +250,10 @@ namespace OpenStardriveServer.Domain.Integrations
                         });
                     }
                 }
-                
+
                 return officers.ToArray();
             }
-            
+
             return new Officer[0];
         }
 
@@ -275,25 +275,55 @@ namespace OpenStardriveServer.Domain.Integrations
                 // Format 2: Location object (from dev-client)
                 var locationId = locationElement.TryGetProperty("id", out var idProp) ? idProp.GetString() : null;
                 var locationName = locationElement.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : null;
-                var locationDeck = locationElement.TryGetProperty("deck", out var deckProp) ? deckProp.GetString() : null;
-                
+
+                Deck deck = null;
+                if (locationElement.TryGetProperty("deck", out var deckProp))
+                {
+                    if (deckProp.ValueKind == JsonValueKind.String)
+                    {
+                        // Deck as string (e.g., "Deck 1")
+                        var deckString = deckProp.GetString();
+                        if (!string.IsNullOrEmpty(deckString))
+                        {
+                            deck = new Deck
+                            {
+                                Id = deckString.ToLowerInvariant().Replace(" ", "-"),
+                                Number = ParseDeckNumber(deckString),
+                                Name = deckString
+                            };
+                        }
+                    }
+                    else if (deckProp.ValueKind == JsonValueKind.Object)
+                    {
+                        // Deck as object (e.g., {"id": "deck-1", "name": "Deck 1", "number": 1})
+                        var deckId = deckProp.TryGetProperty("id", out var deckIdProp) ? deckIdProp.GetString() : null;
+                        var deckName = deckProp.TryGetProperty("name", out var deckNameProp) ? deckNameProp.GetString() : null;
+                        var deckNumber = deckProp.TryGetProperty("number", out var deckNumberProp) && deckNumberProp.TryGetInt32(out var num) ? num : 1;
+
+                        if (!string.IsNullOrEmpty(deckId))
+                        {
+                            deck = new Deck
+                            {
+                                Id = deckId,
+                                Number = deckNumber,
+                                Name = deckName ?? $"Deck {deckNumber}"
+                            };
+                        }
+                    }
+                }
+
                 return string.IsNullOrEmpty(locationId) ? null : new TeamLocation
                 {
                     Id = locationId,
                     Name = locationName,
-                    Deck = string.IsNullOrEmpty(locationDeck) ? null : new Deck
-                    {
-                        Id = locationDeck.ToLowerInvariant().Replace(" ", "-"),
-                        Number = ParseDeckNumber(locationDeck),
-                        Name = locationDeck
-                    }
+                    Deck = deck
                 };
             }
             else if (locationElement.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            
+
             return null;
         }
 
@@ -301,7 +331,7 @@ namespace OpenStardriveServer.Domain.Integrations
         {
             if (string.IsNullOrEmpty(deckName))
                 return 0;
-                
+
             // Try to extract number from strings like "Deck 1", "Bridge", etc.
             var words = deckName.Split(' ');
             foreach (var word in words)
@@ -309,7 +339,7 @@ namespace OpenStardriveServer.Domain.Integrations
                 if (int.TryParse(word, out var number))
                     return number;
             }
-            
+
             // Default deck number if no number found
             return 1;
         }
