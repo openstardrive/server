@@ -245,7 +245,7 @@ const getCommands = (api, state) => {
             }
 
             const updatedTeams = [...currentTeams, newTeam]
-            api.sendCommand('teams-update', updatedTeams)
+            api.sendCommand('teams-update', { teams: updatedTeams })
             
             // Clear the form
             document.getElementById('new-team-name').value = ''
@@ -283,7 +283,7 @@ const getCommands = (api, state) => {
                 return team
             })
 
-            api.sendCommand('teams-update', updatedTeams)
+            api.sendCommand('teams-update', { teams: updatedTeams })
             
             // Clear the form
             document.getElementById('new-officer-name').value = ''
@@ -299,7 +299,7 @@ const getCommands = (api, state) => {
                 return team
             })
 
-            api.sendCommand('teams-update', updatedTeams)
+            api.sendCommand('teams-update', { teams: updatedTeams })
         },
 
         removeTeam: (teamId) => {
@@ -310,7 +310,7 @@ const getCommands = (api, state) => {
             const currentTeams = state.getSystemState('teams')?.teams || []
             const updatedTeams = currentTeams.filter(team => team.id !== teamId)
             
-            api.sendCommand('teams-update', updatedTeams)
+            api.sendCommand('teams-update', { teams: updatedTeams })
             
             // Update officer team select
             setTimeout(() => updateOfficerTeamSelect(), 100)
@@ -321,7 +321,7 @@ const getCommands = (api, state) => {
                 return
             }
             
-            api.sendCommand('teams-update', [])
+            api.sendCommand('teams-update', { teams: [] })
             
             // Update officer team select
             setTimeout(() => commands.updateOfficerTeamSelect(), 100)
