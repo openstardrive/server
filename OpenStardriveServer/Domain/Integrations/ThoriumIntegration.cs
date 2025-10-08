@@ -138,39 +138,18 @@ namespace OpenStardriveServer.Domain.Integrations
                     {
                         Console.WriteLine($"Teams-update payload received: {cmd.Payload}");
 
-                        ThoriumTeam[] thoriumTeams = null;
-                        
-                        // Try parsing as wrapped format first: {"teams": [...]}
-                        try
-                        {
-                            var wrappedPayload = json.Deserialize<ThoriumTeamsPayload>(cmd.Payload);
-                            thoriumTeams = wrappedPayload.Teams;
-                            Console.WriteLine("Successfully parsed as ThoriumTeamsPayload (wrapped format)");
-                        }
-                        catch (Exception ex1)
-                        {
-                            Console.WriteLine($"Failed to parse as wrapped format: {ex1.Message}");
-                            
-                            // Try parsing as direct array: [{...}, {...}]
-                            try
-                            {
-                                thoriumTeams = json.Deserialize<ThoriumTeam[]>(cmd.Payload);
-                                Console.WriteLine("Successfully parsed as ThoriumTeam array (direct format)");
-                            }
-                            catch (Exception ex2)
-                            {
-                                Console.WriteLine($"Failed to parse as direct array: {ex2.Message}");
-                                throw new InvalidOperationException($"Unable to parse teams payload. Wrapped format error: {ex1.Message}; Direct array error: {ex2.Message}");
-                            }
-                        }
+                        // Parse enhanced Thorium teams format: {"teams": [...]}
+                        var wrappedPayload = json.Deserialize<ThoriumTeamsPayload>(cmd.Payload);
+                        var thoriumTeams = wrappedPayload.Teams;
+                        Console.WriteLine($"Successfully parsed {thoriumTeams.Length} teams from enhanced Thorium format");
 
-                        if (thoriumTeams == null || thoriumTeams.Length == 0)
+                        if (thoriumTeams.Length == 0)
                         {
                             Console.WriteLine("No teams found in payload");
                             return Task.FromResult("");
                         }
                         
-                        // Convert Thorium teams format to our internal Teams format
+                        // Convert enhanced Thorium teams format to our internal Teams format
                         var convertedTeams = ConvertThoriumTeamsToInternalFormat(thoriumTeams);
                         Console.WriteLine($"Converted {convertedTeams.Length} teams to internal format");
                         
@@ -209,7 +188,7 @@ namespace OpenStardriveServer.Domain.Integrations
                 Type = thoriumTeam.Type,
                 SimulatorId = thoriumTeam.SimulatorId,
                 Priority = thoriumTeam.Priority,
-                Location = ConvertThoriumLocation(thoriumTeam.Location),
+                Location = ConvertThoriumLocation(thoriumTeam.Location, thoriumTeam.LocationName),
                 Orders = thoriumTeam.Orders,
                 Officers = ConvertThoriumOfficers(thoriumTeam.Officers)
             }).ToArray();
@@ -217,131 +196,91 @@ namespace OpenStardriveServer.Domain.Integrations
 
         private Officer[] ConvertThoriumOfficers(JsonElement officersElement)
         {
-            if (officersElement.ValueKind == JsonValueKind.Array)
+            if (officersElement.ValueKind != JsonValueKind.Array)
             {
-                var officers = new List<Officer>();
-
-                foreach (var element in officersElement.EnumerateArray())
-                {
-                    if (element.ValueKind == JsonValueKind.String)
-                    {
-                        // Format 1: Array of string IDs (from real Thorium)
-                        officers.Add(new Officer
-                        {
-                            Id = element.GetString() ?? "",
-                            Name = "Unknown", // ID only, name would need lookup
-                            Position = "Officer", // Default position
-                            Inventory = new InventoryItem[0]
-                        });
-                    }
-                    else if (element.ValueKind == JsonValueKind.Object)
-                    {
-                        // Format 2: Array of officer objects (from some Thorium variants)
-                        var officerId = element.TryGetProperty("id", out var idProp) ? idProp.GetString() : "";
-                        var officerName = element.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : "Unknown";
-                        var officerPosition = element.TryGetProperty("position", out var posProp) ? posProp.GetString() : "Officer";
-
-                        officers.Add(new Officer
-                        {
-                            Id = officerId ?? "",
-                            Name = officerName ?? "Unknown",
-                            Position = officerPosition ?? "Officer",
-                            Inventory = new InventoryItem[0] // Handle inventory later if needed
-                        });
-                    }
-                }
-
-                return officers.ToArray();
+                throw new InvalidOperationException("Expected officers to be an array of enhanced officer objects");
             }
 
-            return new Officer[0];
+            var officers = new List<Officer>();
+
+            foreach (var element in officersElement.EnumerateArray())
+            {
+                if (element.ValueKind != JsonValueKind.Object)
+                {
+                    throw new InvalidOperationException("Expected each officer to be an enhanced officer object with fullName, rank, position, etc.");
+                }
+
+                // Parse enhanced officer objects (from getEnhancedTeamData)
+                var officerId = element.TryGetProperty("id", out var idProp) ? idProp.GetString() : "";
+                
+                // Required enhanced fields
+                var fullName = element.TryGetProperty("fullName", out var fullNameProp) ? fullNameProp.GetString() : null;
+                var firstName = element.TryGetProperty("firstName", out var firstNameProp) ? firstNameProp.GetString() : null;
+                var lastName = element.TryGetProperty("lastName", out var lastNameProp) ? lastNameProp.GetString() : null;
+                var rank = element.TryGetProperty("rank", out var rankProp) ? rankProp.GetString() : null;
+                var position = element.TryGetProperty("position", out var posProp) ? posProp.GetString() : null;
+                var shift = element.TryGetProperty("shift", out var shiftProp) ? shiftProp.GetString() : null;
+                
+                // Validate required fields
+                if (string.IsNullOrEmpty(officerId))
+                {
+                    throw new InvalidOperationException("Officer ID is required");
+                }
+                
+                if (string.IsNullOrEmpty(fullName) && (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName)))
+                {
+                    throw new InvalidOperationException("Officer must have either fullName or firstName+lastName");
+                }
+
+                // Build officer name
+                var officerName = fullName ?? $"{firstName} {lastName}";
+                
+                // Build enhanced name with rank if available
+                var displayName = officerName;
+                if (!string.IsNullOrEmpty(rank) && rank != "Unknown")
+                {
+                    displayName = $"{rank} {officerName}";
+                }
+
+                officers.Add(new Officer
+                {
+                    Id = officerId,
+                    Name = displayName,
+                    Position = position ?? "Officer",
+                    Inventory = new InventoryItem[0]
+                });
+            }
+
+            return officers.ToArray();
         }
 
-        private TeamLocation ConvertThoriumLocation(JsonElement locationElement)
+        private TeamLocation ConvertThoriumLocation(JsonElement locationElement, string locationName = null)
         {
-            if (locationElement.ValueKind == JsonValueKind.String)
-            {
-                // Format 1: String ID (from Thorium)
-                var locationId = locationElement.GetString();
-                return string.IsNullOrEmpty(locationId) ? null : new TeamLocation
-                {
-                    Id = locationId,
-                    Name = null, // ID only, name would need lookup
-                    Deck = null  // Would need additional lookup
-                };
-            }
-            else if (locationElement.ValueKind == JsonValueKind.Object)
-            {
-                // Format 2: Location object (from dev-client)
-                var locationId = locationElement.TryGetProperty("id", out var idProp) ? idProp.GetString() : null;
-                var locationName = locationElement.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : null;
-
-                Deck deck = null;
-                if (locationElement.TryGetProperty("deck", out var deckProp))
-                {
-                    if (deckProp.ValueKind == JsonValueKind.String)
-                    {
-                        // Deck as string (e.g., "Deck 1")
-                        var deckString = deckProp.GetString();
-                        if (!string.IsNullOrEmpty(deckString))
-                        {
-                            deck = new Deck
-                            {
-                                Id = deckString.ToLowerInvariant().Replace(" ", "-"),
-                                Number = ParseDeckNumber(deckString),
-                                Name = deckString
-                            };
-                        }
-                    }
-                    else if (deckProp.ValueKind == JsonValueKind.Object)
-                    {
-                        // Deck as object (e.g., {"id": "deck-1", "name": "Deck 1", "number": 1})
-                        var deckId = deckProp.TryGetProperty("id", out var deckIdProp) ? deckIdProp.GetString() : null;
-                        var deckName = deckProp.TryGetProperty("name", out var deckNameProp) ? deckNameProp.GetString() : null;
-                        var deckNumber = deckProp.TryGetProperty("number", out var deckNumberProp) && deckNumberProp.TryGetInt32(out var num) ? num : 1;
-
-                        if (!string.IsNullOrEmpty(deckId))
-                        {
-                            deck = new Deck
-                            {
-                                Id = deckId,
-                                Number = deckNumber,
-                                Name = deckName ?? $"Deck {deckNumber}"
-                            };
-                        }
-                    }
-                }
-
-                return string.IsNullOrEmpty(locationId) ? null : new TeamLocation
-                {
-                    Id = locationId,
-                    Name = locationName,
-                    Deck = deck
-                };
-            }
-            else if (locationElement.ValueKind == JsonValueKind.Null)
+            if (locationElement.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
 
-            return null;
-        }
-
-        private int ParseDeckNumber(string deckName)
-        {
-            if (string.IsNullOrEmpty(deckName))
-                return 0;
-
-            // Try to extract number from strings like "Deck 1", "Bridge", etc.
-            var words = deckName.Split(' ');
-            foreach (var word in words)
+            if (locationElement.ValueKind == JsonValueKind.String)
             {
-                if (int.TryParse(word, out var number))
-                    return number;
-            }
+                // Enhanced format: String ID with locationName provided separately
+                var locationId = locationElement.GetString();
+                if (string.IsNullOrEmpty(locationId)) return null;
 
-            // Default deck number if no number found
-            return 1;
+                if (string.IsNullOrEmpty(locationName))
+                {
+                    throw new InvalidOperationException("Location string ID provided without locationName. Enhanced format requires locationName field.");
+                }
+
+                return new TeamLocation
+                {
+                    Id = locationId,
+                    Name = locationName,
+                    Deck = null  // Enhanced format may not include deck info for string locations
+                };
+            }
+            
+            throw new InvalidOperationException("Expected location to be either null or a string ID with accompanying locationName field");
         }
 
         private async Task<string> SendReq(string query)

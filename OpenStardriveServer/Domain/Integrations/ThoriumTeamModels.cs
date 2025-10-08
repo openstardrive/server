@@ -31,6 +31,9 @@ public record ThoriumTeam
     [JsonPropertyName("location")]
     public JsonElement Location { get; init; } // Can be string ID or location object
 
+    [JsonPropertyName("locationName")]
+    public string LocationName { get; init; } // Enhanced: resolved location name
+
     [JsonPropertyName("priority")]
     public string Priority { get; init; }
 
@@ -39,6 +42,9 @@ public record ThoriumTeam
 
     [JsonPropertyName("officers")]
     public JsonElement Officers { get; init; } // Can be string[] or ThoriumOfficer[]
+
+    [JsonPropertyName("officerCount")]
+    public int OfficerCount { get; init; } // Enhanced: count of officers
 
     [JsonPropertyName("cleared")]
     public bool Cleared { get; init; }
@@ -52,8 +58,23 @@ public record ThoriumOfficer
     [JsonPropertyName("name")]
     public string Name { get; init; }
 
+    [JsonPropertyName("firstName")]
+    public string FirstName { get; init; }
+
+    [JsonPropertyName("lastName")]
+    public string LastName { get; init; }
+
+    [JsonPropertyName("fullName")]
+    public string FullName { get; init; }
+
+    [JsonPropertyName("rank")]
+    public string Rank { get; init; }
+
     [JsonPropertyName("position")]
     public string Position { get; init; }
+
+    [JsonPropertyName("shift")]
+    public string Shift { get; init; }
 
     [JsonPropertyName("inventory")]
     public object[] Inventory { get; init; } = Array.Empty<object>(); // Can be empty or contain items
