@@ -23,8 +23,8 @@ public class ThoriumIntegrationTeamsTests
                     "simulatorId": "52bc8751-5e5f-4de1-b49a-2da67a1642e1",
                     "type": "security",
                     "name": "Testing",
-                    "location": "13e46b9a-df22-4838-a801-502432d62a1d",
                     "locationName": "Main Bridge",
+                    "deckName": "Deck 1",
                     "priority": "low",
                     "orders": "Do the thing!",
                     "officers": [
@@ -80,16 +80,19 @@ public class ThoriumIntegrationTeamsTests
 
         // Verify location conversion
         Assert.That(team.Location, Is.Not.Null);
-        Assert.That(team.Location.Id, Is.EqualTo("13e46b9a-df22-4838-a801-502432d62a1d"));
-        Assert.That(team.Location.Name, Is.EqualTo("Main Bridge"));
+        Assert.That(team.Location.Id, Is.Null); // No location ID in new format
+        Assert.That(team.Location.Name, Is.EqualTo("Main Bridge, Deck 1")); // Combined locationName and deckName
+        Assert.That(team.Location.Deck, Is.Not.Null);
+        Assert.That(team.Location.Deck.Name, Is.EqualTo("Deck 1"));
+        Assert.That(team.Location.Deck.Number, Is.EqualTo(1));
 
         // Verify enhanced officers conversion  
         Assert.That(team.Officers.Length, Is.EqualTo(2));
-        
+
         Assert.That(team.Officers[0].Id, Is.EqualTo("03bcc10d-a1af-4284-a824-837eb195a3ac"));
         Assert.That(team.Officers[0].Name, Is.EqualTo("Master-at-arms Alan Fitzpatrick")); // Enhanced officer with rank
         Assert.That(team.Officers[0].Position, Is.EqualTo("Security Officer"));
-        
+
         Assert.That(team.Officers[1].Id, Is.EqualTo("f20258fe-5ec2-47e0-985b-f5eda152f4ba"));
         Assert.That(team.Officers[1].Name, Is.EqualTo("Lieutenant Sarah Connor")); // Enhanced officer with rank
         Assert.That(team.Officers[1].Position, Is.EqualTo("Security Chief"));

@@ -92,8 +92,6 @@ namespace OpenStardriveServer.Domain.Integrations
 
                 var engines = parent.json.Deserialize<GraphQlResult<EngineResult>>(enginesJson);
 
-                Console.WriteLine($"Engines: {engines.data.engines.Length}");
-
                 sublightId = engines.data.engines[0].id;
                 warpId = engines.data.engines[1].id;
             }
@@ -136,29 +134,23 @@ namespace OpenStardriveServer.Domain.Integrations
                 { "teams-update", (Command cmd) => {
                     try
                     {
-                        Console.WriteLine($"Teams-update payload received: {cmd.Payload}");
-
                         // Parse enhanced Thorium teams format: {"teams": [...]}
                         var wrappedPayload = json.Deserialize<ThoriumTeamsPayload>(cmd.Payload);
                         var thoriumTeams = wrappedPayload.Teams;
-                        Console.WriteLine($"Successfully parsed {thoriumTeams.Length} teams from enhanced Thorium format");
 
                         if (thoriumTeams.Length == 0)
                         {
-                            Console.WriteLine("No teams found in payload");
                             return Task.FromResult("");
                         }
                         
                         // Convert enhanced Thorium teams format to our internal Teams format
                         var convertedTeams = ConvertThoriumTeamsToInternalFormat(thoriumTeams);
-                        Console.WriteLine($"Converted {convertedTeams.Length} teams to internal format");
                         
                         // Create a new command with the converted payload for our Teams system
                         var internalTeamsPayload = json.Serialize(convertedTeams);
                         
                         // Update the original command's payload to the converted format
                         cmd.Payload = internalTeamsPayload;
-                        Console.WriteLine($"Updated command payload: {cmd.Payload}");
 
                         return Task.FromResult("");
                     }
@@ -188,7 +180,7 @@ namespace OpenStardriveServer.Domain.Integrations
                 Type = thoriumTeam.Type,
                 SimulatorId = thoriumTeam.SimulatorId,
                 Priority = thoriumTeam.Priority,
-                Location = ConvertThoriumLocation(thoriumTeam.Location, thoriumTeam.LocationName),
+                Location = ConvertThoriumLocation(thoriumTeam.LocationName, thoriumTeam.DeckName),
                 Orders = thoriumTeam.Orders,
                 Officers = ConvertThoriumOfficers(thoriumTeam.Officers)
             }).ToArray();
@@ -212,7 +204,7 @@ namespace OpenStardriveServer.Domain.Integrations
 
                 // Parse enhanced officer objects (from getEnhancedTeamData)
                 var officerId = element.TryGetProperty("id", out var idProp) ? idProp.GetString() : "";
-                
+
                 // Required enhanced fields
                 var fullName = element.TryGetProperty("fullName", out var fullNameProp) ? fullNameProp.GetString() : null;
                 var firstName = element.TryGetProperty("firstName", out var firstNameProp) ? firstNameProp.GetString() : null;
@@ -220,13 +212,13 @@ namespace OpenStardriveServer.Domain.Integrations
                 var rank = element.TryGetProperty("rank", out var rankProp) ? rankProp.GetString() : null;
                 var position = element.TryGetProperty("position", out var posProp) ? posProp.GetString() : null;
                 var shift = element.TryGetProperty("shift", out var shiftProp) ? shiftProp.GetString() : null;
-                
+
                 // Validate required fields
                 if (string.IsNullOrEmpty(officerId))
                 {
                     throw new InvalidOperationException("Officer ID is required");
                 }
-                
+
                 if (string.IsNullOrEmpty(fullName) && (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName)))
                 {
                     throw new InvalidOperationException("Officer must have either fullName or firstName+lastName");
@@ -234,7 +226,7 @@ namespace OpenStardriveServer.Domain.Integrations
 
                 // Build officer name
                 var officerName = fullName ?? $"{firstName} {lastName}";
-                
+
                 // Build enhanced name with rank if available
                 var displayName = officerName;
                 if (!string.IsNullOrEmpty(rank) && rank != "Unknown")
@@ -254,33 +246,64 @@ namespace OpenStardriveServer.Domain.Integrations
             return officers.ToArray();
         }
 
-        private TeamLocation ConvertThoriumLocation(JsonElement locationElement, string locationName = null)
+        private TeamLocation ConvertThoriumLocation(string locationName = null, string deckName = null)
         {
-            if (locationElement.ValueKind == JsonValueKind.Null)
+            // If no location information provided, return null
+            if (string.IsNullOrEmpty(locationName) && string.IsNullOrEmpty(deckName))
             {
                 return null;
             }
 
-            if (locationElement.ValueKind == JsonValueKind.String)
+            // Build the display name from locationName and deckName
+            string displayName = null;
+            if (!string.IsNullOrEmpty(locationName) && !string.IsNullOrEmpty(deckName))
             {
-                // Enhanced format: String ID with locationName provided separately
-                var locationId = locationElement.GetString();
-                if (string.IsNullOrEmpty(locationId)) return null;
-
-                if (string.IsNullOrEmpty(locationName))
-                {
-                    throw new InvalidOperationException("Location string ID provided without locationName. Enhanced format requires locationName field.");
-                }
-
-                return new TeamLocation
-                {
-                    Id = locationId,
-                    Name = locationName,
-                    Deck = null  // Enhanced format may not include deck info for string locations
-                };
+                displayName = $"{locationName}, {deckName}";
             }
-            
-            throw new InvalidOperationException("Expected location to be either null or a string ID with accompanying locationName field");
+            else if (!string.IsNullOrEmpty(locationName))
+            {
+                displayName = locationName;
+            }
+            else if (!string.IsNullOrEmpty(deckName))
+            {
+                displayName = deckName;
+            }
+
+            return new TeamLocation
+            {
+                Id = null, // No location ID in the new format
+                Name = displayName,
+                Deck = !string.IsNullOrEmpty(deckName) ? CreateDeckFromName(deckName) : null
+            };
+        }
+
+        private Deck CreateDeckFromName(string deckName)
+        {
+            // Parse deck names like "Deck 7" or "Deck 1" to extract the number
+            if (string.IsNullOrEmpty(deckName)) return null;
+
+            // Try to extract deck number from names like "Deck 7"
+            var parts = deckName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= 2 && parts[0].Equals("Deck", StringComparison.OrdinalIgnoreCase))
+            {
+                if (int.TryParse(parts[1], out int deckNumber))
+                {
+                    return new Deck
+                    {
+                        Id = $"deck-{deckNumber}", // Generate a reasonable ID
+                        Number = deckNumber,
+                        Name = deckName
+                    };
+                }
+            }
+
+            // Fallback: create a deck with the full name but unknown number
+            return new Deck
+            {
+                Id = $"deck-{deckName.ToLowerInvariant().Replace(" ", "-")}",
+                Number = 0, // Unknown deck number
+                Name = deckName
+            };
         }
 
         private async Task<string> SendReq(string query)

@@ -28,11 +28,11 @@ public record ThoriumTeam
     [JsonPropertyName("name")]
     public string Name { get; init; }
 
-    [JsonPropertyName("location")]
-    public JsonElement Location { get; init; } // Can be string ID or location object
-
     [JsonPropertyName("locationName")]
     public string LocationName { get; init; } // Enhanced: resolved location name
+
+    [JsonPropertyName("deckName")]
+    public string DeckName { get; init; } // Enhanced: resolved deck name (e.g., "Deck 4")
 
     [JsonPropertyName("priority")]
     public string Priority { get; init; }

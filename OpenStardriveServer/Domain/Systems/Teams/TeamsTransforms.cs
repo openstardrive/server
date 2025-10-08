@@ -37,7 +37,7 @@ public class TeamsTransforms : ITeamsTransforms
 
         // Determine update strategy: merge vs replace
         bool shouldReplace = ShouldReplaceTeams(currentState.Teams, teams);
-        
+
         if (shouldReplace)
         {
             Console.WriteLine("  Strategy: REPLACE (likely dev-client deletion)");
@@ -45,9 +45,9 @@ public class TeamsTransforms : ITeamsTransforms
             Console.WriteLine($"  Final teams count: {replacedState.Teams.Length}");
             return TransformResult<TeamsState>.StateChanged(replacedState);
         }
-        
+
         Console.WriteLine("  Strategy: MERGE (likely external integration)");
-        
+
         // Merge teams: update existing teams by ID, add new teams
         var mergedTeams = new List<Team>(currentState.Teams);
 
@@ -82,36 +82,36 @@ public class TeamsTransforms : ITeamsTransforms
         // If no current teams, it's always a replacement (initial state)
         if (currentTeams.Length == 0)
             return true;
-            
+
         // If no new teams, it's a clear-all operation (replacement)
         if (newTeams.Length == 0)
             return true;
-            
+
         // Heuristic: If all new teams already exist in current teams,
         // and we have fewer new teams than current teams,
         // this is likely a deletion/replacement operation (e.g., dev-client)
         if (newTeams.Length < currentTeams.Length)
         {
-            var allNewTeamsExist = newTeams.All(newTeam => 
+            var allNewTeamsExist = newTeams.All(newTeam =>
                 currentTeams.Any(currentTeam => currentTeam.Id == newTeam.Id));
-                
+
             if (allNewTeamsExist)
             {
                 Console.WriteLine($"    Replace heuristic: All {newTeams.Length} new teams exist in current {currentTeams.Length} teams");
                 return true;
             }
         }
-        
+
         // If new teams contain teams not in current teams, it's likely a merge operation (e.g., Thorium)
-        var hasNewTeams = newTeams.Any(newTeam => 
+        var hasNewTeams = newTeams.Any(newTeam =>
             !currentTeams.Any(currentTeam => currentTeam.Id == newTeam.Id));
-            
+
         if (hasNewTeams)
         {
             Console.WriteLine($"    Merge heuristic: New teams contain teams not in current state");
             return false;
         }
-        
+
         // Default to merge for safety
         Console.WriteLine($"    Default heuristic: Using merge strategy");
         return false;
