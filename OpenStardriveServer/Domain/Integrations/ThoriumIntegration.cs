@@ -1,4 +1,5 @@
-﻿using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
+﻿using Microsoft.Extensions.Logging;
+using OpenStardriveServer.Domain.Systems.Propulsion.Engines;
 using OpenStardriveServer.Domain.Systems.Teams;
 using System;
 using System.Collections.Generic;
@@ -103,6 +104,7 @@ namespace OpenStardriveServer.Domain.Integrations
         }
 
         private readonly IJson json;
+        private readonly ILogger<ThoriumIntegration> logger;
 
         private ThoriumIds ids;
 
@@ -113,9 +115,10 @@ namespace OpenStardriveServer.Domain.Integrations
             BaseAddress = new Uri("http://localhost:3001"),
         };
 
-        public ThoriumIntegration(IJson json)
+        public ThoriumIntegration(IJson json, ILogger<ThoriumIntegration> logger)
         {
             this.json = json;
+            this.logger = logger;
             ids = new ThoriumIds(this);
             commandHandlers = new Dictionary<string, Func<Command, Task<string>>>
             {
@@ -132,15 +135,35 @@ namespace OpenStardriveServer.Domain.Integrations
                     return SendReq(mutation);
                 } },
                 { "teams-update", (Command cmd) => {
+                    logger.LogDebug("teams-update handler called");
+                    logger.LogDebug("Raw command payload: {Payload}", cmd.Payload);
+
                     try
                     {
                         // Parse enhanced Thorium teams format: {"teams": [...]}
                         var wrappedPayload = json.Deserialize<ThoriumTeamsPayload>(cmd.Payload);
                         var thoriumTeams = wrappedPayload.Teams;
 
+                        logger.LogInformation("Received teams-update with {TeamCount} teams", thoriumTeams?.Length ?? 0);
+
+                        if (thoriumTeams == null)
+                        {
+                            logger.LogWarning("Teams array is null in payload");
+                            return Task.FromResult("");
+                        }
+
                         if (thoriumTeams.Length == 0)
                         {
+                            logger.LogDebug("Teams array is empty, nothing to process");
                             return Task.FromResult("");
+                        }
+                        
+                        // Log each team before processing
+                        for (int i = 0; i < thoriumTeams.Length; i++)
+                        {
+                            var team = thoriumTeams[i];
+                            logger.LogDebug("Team {TeamIndex} raw data: ID='{TeamId}', Name='{TeamName}', Type='{TeamType}', Officers count: {OfficerCount}",
+                                i, team?.Id, team?.Name, team?.Type, team?.Officers.GetArrayLength());
                         }
                         
                         // Convert enhanced Thorium teams format to our internal Teams format
@@ -148,16 +171,22 @@ namespace OpenStardriveServer.Domain.Integrations
                         
                         // Create a new command with the converted payload for our Teams system
                         var internalTeamsPayload = json.Serialize(convertedTeams);
+
+                        logger.LogDebug("Successfully converted teams to internal format");
+                        logger.LogDebug("Internal teams payload: {InternalPayload}", internalTeamsPayload);
                         
                         // Update the original command's payload to the converted format
                         cmd.Payload = internalTeamsPayload;
 
+                        logger.LogInformation("teams-update handler completed successfully");
                         return Task.FromResult("");
                     }
                     catch (Exception ex)
                     {
+                        logger.LogError(ex, "Error in teams-update handler. Continuing without updating teams.");
                         Console.WriteLine($"Error in teams-update handler: {ex}");
-                        throw;
+                        // Don't re-throw - just log and continue, so we don't crash the server
+                        return Task.FromResult("");
                     }
                 } }
             };
@@ -173,32 +202,75 @@ namespace OpenStardriveServer.Domain.Integrations
 
         private Team[] ConvertThoriumTeamsToInternalFormat(ThoriumTeam[] thoriumTeams)
         {
-            return thoriumTeams.Select(thoriumTeam => new Team
+            logger.LogDebug("ConvertThoriumTeamsToInternalFormat called with {TeamCount} teams", thoriumTeams?.Length ?? 0);
+
+            if (thoriumTeams == null)
             {
-                Id = thoriumTeam.Id,
-                Name = thoriumTeam.Name,
-                Type = thoriumTeam.Type,
-                SimulatorId = thoriumTeam.SimulatorId,
-                Priority = thoriumTeam.Priority,
-                Location = ConvertThoriumLocation(thoriumTeam.LocationName, thoriumTeam.DeckName),
-                Orders = thoriumTeam.Orders,
-                Officers = ConvertThoriumOfficers(thoriumTeam.Officers)
-            }).ToArray();
+                logger.LogWarning("ThoriumTeams array is null, returning empty array");
+                return new Team[0];
+            }
+
+            var teams = new List<Team>();
+            for (int i = 0; i < thoriumTeams.Length; i++)
+            {
+                var thoriumTeam = thoriumTeams[i];
+                logger.LogDebug("Processing team {TeamIndex}: ID='{TeamId}', Name='{TeamName}', Type='{TeamType}'",
+                    i, thoriumTeam?.Id, thoriumTeam?.Name, thoriumTeam?.Type);
+
+                try
+                {
+                    var team = new Team
+                    {
+                        Id = thoriumTeam.Id,
+                        Name = thoriumTeam.Name,
+                        Type = thoriumTeam.Type,
+                        SimulatorId = thoriumTeam.SimulatorId,
+                        Priority = thoriumTeam.Priority,
+                        Location = ConvertThoriumLocation(thoriumTeam.LocationName, thoriumTeam.DeckName),
+                        Orders = thoriumTeam.Orders,
+                        Officers = ConvertThoriumOfficers(thoriumTeam.Officers)
+                    };
+                    teams.Add(team);
+                    logger.LogDebug("Team {TeamIndex} processed successfully with {OfficerCount} officers", i, team.Officers.Length);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Error processing team {TeamIndex} (ID: '{TeamId}', Name: '{TeamName}'). Skipping this team and continuing with remaining teams.",
+                        i, thoriumTeam?.Id, thoriumTeam?.Name);
+                    // Don't re-throw - just skip this team and continue with the next one
+                }
+            }
+
+            logger.LogDebug("ConvertThoriumTeamsToInternalFormat completed. Successfully processed {SuccessfulTeams} out of {TotalTeams} teams", teams.Count, thoriumTeams.Length);
+            if (teams.Count < thoriumTeams.Length)
+            {
+                logger.LogInformation("Skipped {SkippedTeams} teams due to invalid data", thoriumTeams.Length - teams.Count);
+            }
+            return teams.ToArray();
         }
 
         private Officer[] ConvertThoriumOfficers(JsonElement officersElement)
         {
+            logger.LogDebug("ConvertThoriumOfficers called");
+
             if (officersElement.ValueKind != JsonValueKind.Array)
             {
+                logger.LogError("Expected officers to be an array but got {ValueKind}", officersElement.ValueKind);
                 throw new InvalidOperationException("Expected officers to be an array of enhanced officer objects");
             }
 
             var officers = new List<Officer>();
+            logger.LogDebug("Processing {OfficerCount} officers", officersElement.GetArrayLength());
 
+            var officerIndex = 0;
             foreach (var element in officersElement.EnumerateArray())
             {
+                logger.LogDebug("Processing officer at index {OfficerIndex}", officerIndex);
+                logger.LogDebug("Raw officer JSON: {OfficerJson}", element.GetRawText());
+
                 if (element.ValueKind != JsonValueKind.Object)
                 {
+                    logger.LogError("Expected officer at index {OfficerIndex} to be an object but got {ValueKind}", officerIndex, element.ValueKind);
                     throw new InvalidOperationException("Expected each officer to be an enhanced officer object with fullName, rank, position, etc.");
                 }
 
@@ -213,15 +285,23 @@ namespace OpenStardriveServer.Domain.Integrations
                 var position = element.TryGetProperty("position", out var posProp) ? posProp.GetString() : null;
                 var shift = element.TryGetProperty("shift", out var shiftProp) ? shiftProp.GetString() : null;
 
+                logger.LogDebug("Officer {OfficerIndex} parsed - ID: '{OfficerId}', FullName: '{FullName}', FirstName: '{FirstName}', LastName: '{LastName}', Rank: '{Rank}', Position: '{Position}', Shift: '{Shift}'",
+                    officerIndex, officerId, fullName, firstName, lastName, rank, position, shift);
+
                 // Validate required fields
                 if (string.IsNullOrEmpty(officerId))
                 {
-                    throw new InvalidOperationException("Officer ID is required");
+                    logger.LogWarning("Officer at index {OfficerIndex} has missing or empty ID. Skipping this officer.", officerIndex);
+                    officerIndex++;
+                    continue; // Skip this officer and continue with the next one
                 }
 
                 if (string.IsNullOrEmpty(fullName) && (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName)))
                 {
-                    throw new InvalidOperationException("Officer must have either fullName or firstName+lastName");
+                    logger.LogWarning("Officer at index {OfficerIndex} (ID: '{OfficerId}') has invalid name data - FullName: '{FullName}', FirstName: '{FirstName}', LastName: '{LastName}'. Skipping this officer.",
+                        officerIndex, officerId, fullName, firstName, lastName);
+                    officerIndex++;
+                    continue; // Skip this officer and continue with the next one
                 }
 
                 // Build officer name
@@ -234,6 +314,8 @@ namespace OpenStardriveServer.Domain.Integrations
                     displayName = $"{rank} {officerName}";
                 }
 
+                logger.LogDebug("Officer {OfficerIndex} successfully processed - Final name: '{DisplayName}'", officerIndex, displayName);
+
                 officers.Add(new Officer
                 {
                     Id = officerId,
@@ -241,8 +323,16 @@ namespace OpenStardriveServer.Domain.Integrations
                     Position = position ?? "Officer",
                     Inventory = new InventoryItem[0]
                 });
+
+                officerIndex++;
             }
 
+            var totalOfficersInInput = officersElement.GetArrayLength();
+            logger.LogDebug("ConvertThoriumOfficers completed. Successfully processed {SuccessfulOfficers} out of {TotalOfficers} officers", officers.Count, totalOfficersInInput);
+            if (officers.Count < totalOfficersInInput)
+            {
+                logger.LogInformation("Skipped {SkippedOfficers} officers due to invalid data", totalOfficersInInput - officers.Count);
+            }
             return officers.ToArray();
         }
 

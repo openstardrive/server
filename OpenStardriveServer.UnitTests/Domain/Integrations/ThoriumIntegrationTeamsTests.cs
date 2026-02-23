@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using Moq;
+using OpenStardriveServer.Domain;
 using OpenStardriveServer.Domain.Integrations;
 using OpenStardriveServer.Domain.Systems.Teams;
 using System;
@@ -11,7 +14,8 @@ public class ThoriumIntegrationTeamsTests
     {
         // Arrange
         var json = new OpenStardriveServer.Domain.Json();
-        var thoriumIntegration = new ThoriumIntegration(json);
+        var logger = new Mock<ILogger<ThoriumIntegration>>();
+        var thoriumIntegration = new ThoriumIntegration(json, logger.Object);
 
         // This is the enhanced payload format with wrapped teams and detailed officer information
         var thoriumPayload = """
@@ -96,5 +100,72 @@ public class ThoriumIntegrationTeamsTests
         Assert.That(team.Officers[1].Id, Is.EqualTo("f20258fe-5ec2-47e0-985b-f5eda152f4ba"));
         Assert.That(team.Officers[1].Name, Is.EqualTo("Lieutenant Sarah Connor")); // Enhanced officer with rank
         Assert.That(team.Officers[1].Position, Is.EqualTo("Security Chief"));
+    }
+
+    [Test]
+    public void ThoriumTeamsIntegration_ShouldSkipInvalidOfficersAndContinueProcessing()
+    {
+        // Arrange
+        var json = new OpenStardriveServer.Domain.Json();
+        var logger = new Mock<ILogger<ThoriumIntegration>>();
+        var thoriumIntegration = new ThoriumIntegration(json, logger.Object);
+
+        // Payload with invalid officers (null names) that should be skipped
+        var thoriumPayload = """
+        {
+            "teams": [
+                {
+                    "id": "test-team-1",
+                    "name": "Test Team",
+                    "type": "security",
+                    "simulatorId": "test-sim",
+                    "priority": "high",
+                    "orders": "Test orders",
+                    "officers": [
+                        {
+                            "id": "invalid-officer-1",
+                            "fullName": null,
+                            "firstName": null,
+                            "lastName": null,
+                            "rank": "Ensign",
+                            "position": "Security Officer"
+                        },
+                        {
+                            "id": "valid-officer-1",
+                            "fullName": "John Doe",
+                            "rank": "Lieutenant",
+                            "position": "Tactical Officer"
+                        },
+                        {
+                            "id": "",
+                            "fullName": "Invalid ID Officer",
+                            "rank": "Ensign",
+                            "position": "Security Officer"
+                        }
+                    ]
+                }
+            ]
+        }
+        """;
+
+        var command = new Command
+        {
+            Type = "teams-update",
+            Payload = thoriumPayload
+        };
+
+        // Act - should not throw an exception
+        Assert.DoesNotThrow(() => thoriumIntegration.TranslateCommand(command));
+
+        // The command payload should be updated with only the valid officer
+        var updatedPayload = command.Payload;
+        var teams = json.Deserialize<Team[]>(updatedPayload);
+
+        // Assert
+        Assert.That(teams.Length, Is.EqualTo(1));
+        var team = teams[0];
+        Assert.That(team.Officers.Length, Is.EqualTo(1)); // Only 1 valid officer should remain
+        Assert.That(team.Officers[0].Id, Is.EqualTo("valid-officer-1"));
+        Assert.That(team.Officers[0].Name, Is.EqualTo("Lieutenant John Doe"));
     }
 }
